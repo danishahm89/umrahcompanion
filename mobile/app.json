@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "Umrah Companion",
+    "slug": "umrah-companion",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.alzakwaantours.umrahcompanion",
+      "buildNumber": "1"
+    },
+    "android": {
+      "package": "com.alzakwaantours.umrahcompanion",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "backgroundColor": "#0B5E39",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 220,
+          "resizeMode": "contain",
+          "backgroundColor": "#FBF7EE"
+        }
+      ]
+    ]
+  }
+}

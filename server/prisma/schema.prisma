@@ -1,0 +1,233 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  createdAt    DateTime @default(now())
+}
+
+model AppSettings {
+  id              Int      @id @default(1)
+  companyName     String   @default("Alzakwaan Tours & Travels Pvt Ltd")
+  appName         String   @default("Umrah Companion")
+  countdownTarget DateTime
+  updatedAt       DateTime @updatedAt
+}
+
+model ContactInfo {
+  id             Int      @id @default(1)
+  whatsapp       String
+  phone          String
+  website        String
+  primaryEmail   String
+  secondaryEmail String
+  offices        String
+  updatedAt      DateTime @updatedAt
+}
+
+model Package {
+  id             String             @id @default(cuid())
+  type           String
+  nameEn         String
+  nameHi         String
+  nameUr         String
+  priceInr       Int
+  departDate     DateTime
+  nights         Int
+  hotelStars     String
+  hotelDistM     Int
+  cityEn         String
+  cityHi         String
+  cityUr         String
+  mealsEn        String
+  mealsHi        String
+  mealsUr        String
+  visaIncluded   Boolean            @default(true)
+  flightIncluded Boolean            @default(true)
+  live           Boolean            @default(true)
+  order          Int                @default(0)
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  itinerary      ItineraryItem[]
+  inclusions     PackageInclusion[]
+}
+
+model ItineraryItem {
+  id        String  @id @default(cuid())
+  packageId String
+  package   Package @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  order     Int
+  keyEn     String
+  keyHi     String
+  keyUr     String
+  textEn    String
+  textHi    String
+  textUr    String
+}
+
+model PackageInclusion {
+  id        String  @id @default(cuid())
+  packageId String
+  package   Package @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  order     Int
+  textEn    String
+  textHi    String
+  textUr    String
+}
+
+model GuideRitual {
+  id      String @id @default(cuid())
+  order   Int
+  titleEn String
+  titleHi String
+  titleUr String
+  descEn  String
+  descHi  String
+  descUr  String
+}
+
+model FirstTimeStep {
+  id      String @id @default(cuid())
+  order   Int
+  titleEn String
+  titleHi String
+  titleUr String
+  descEn  String
+  descHi  String
+  descUr  String
+}
+
+model DuaStage {
+  id      String @id @default(cuid())
+  order   Int
+  nameEn  String
+  nameHi  String
+  nameUr  String
+  noteEn  String
+  noteHi  String
+  noteUr  String
+  duas    Dua[]
+}
+
+model Dua {
+  id              String   @id @default(cuid())
+  stageId         String
+  stage           DuaStage @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  order           Int
+  arabic          String
+  transliteration String
+  whenEn          String
+  whenHi          String
+  whenUr          String
+  meaningEn       String
+  meaningHi       String
+  meaningUr       String
+}
+
+model PackingGroup {
+  id      String        @id @default(cuid())
+  order   Int
+  titleEn String
+  titleHi String
+  titleUr String
+  items   PackingItem[]
+}
+
+model PackingItem {
+  id      String       @id @default(cuid())
+  groupId String
+  group   PackingGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  order   Int
+  textEn  String
+  textHi  String
+  textUr  String
+}
+
+model VaccineItem {
+  id        String @id @default(cuid())
+  order     Int
+  nameEn    String
+  nameHi    String
+  nameUr    String
+  statusEn  String
+  statusHi  String
+  statusUr  String
+  descEn    String
+  descHi    String
+  descUr    String
+}
+
+model NewsSource {
+  id           String     @id @default(cuid())
+  name         String
+  domain       String
+  lastSyncedAt DateTime?
+  items        NewsItem[]
+}
+
+model NewsItem {
+  id          String     @id @default(cuid())
+  sourceId    String
+  source      NewsSource @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  publishedAt DateTime   @default(now())
+  titleEn     String
+  titleHi     String
+  titleUr     String
+  bodyEn      String
+  bodyHi      String
+  bodyUr      String
+  approved    Boolean    @default(false)
+}
+
+model NusukLink {
+  id      String @id @default(cuid())
+  order   Int
+  titleEn String
+  titleHi String
+  titleUr String
+  host    String
+  url     String
+}
+
+model FaqItem {
+  id         String @id @default(cuid())
+  order      Int
+  questionEn String
+  questionHi String
+  questionUr String
+  answerEn   String
+  answerHi   String
+  answerUr   String
+}
+
+model Service {
+  id      String @id @default(cuid())
+  order   Int
+  nameEn  String
+  nameHi  String
+  nameUr  String
+  descEn  String
+  descHi  String
+  descUr  String
+  tags    String
+}
+
+model CustomizeEnquiry {
+  id        String   @id @default(cuid())
+  city      String
+  pax       Int
+  nights    Int
+  month     String
+  hotel     String
+  notes     String?
+  createdAt DateTime @default(now())
+}
