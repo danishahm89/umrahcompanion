@@ -16,11 +16,10 @@ model AdminUser {
 }
 
 model AppSettings {
-  id              Int      @id @default(1)
-  companyName     String   @default("Alzakwaan Tours & Travels Pvt Ltd")
-  appName         String   @default("Umrah Companion")
-  countdownTarget DateTime
-  updatedAt       DateTime @updatedAt
+  id          Int      @id @default(1)
+  companyName String   @default("Alzakwaan Tours & Travels Pvt Ltd")
+  appName     String   @default("Umrah Companion")
+  updatedAt   DateTime @updatedAt
 }
 
 model ContactInfo {

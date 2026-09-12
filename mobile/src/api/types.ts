@@ -2,7 +2,6 @@ export interface AppSettings {
   id: number;
   companyName: string;
   appName: string;
-  countdownTarget: string;
 }
 
 export interface ContactInfo {

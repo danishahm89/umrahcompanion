@@ -1,6 +1,5 @@
 import React from 'react';
 import { Pressable, View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ScreenScaffold } from '../components/ScreenScaffold';
@@ -13,7 +12,7 @@ import { Tag } from '../components/Tag';
 import { useTheme } from '../theme/ThemeContext';
 import { useLanguage } from '../i18n/LanguageContext';
 import { useDirection } from '../direction/DirectionContext';
-import { useGuideSteps, useNews, useSettings } from '../api/hooks';
+import { useGuideSteps, useNews } from '../api/hooks';
 import { usePersistentState } from '../storage/usePersistentState';
 import { relativeTime } from '../utils/relativeTime';
 import { radius } from '../theme/tokens';
@@ -35,35 +34,16 @@ export function HomeScreen() {
   const { colors } = useTheme();
   const { t, lang, field } = useLanguage();
   const { row } = useDirection();
-  const { data: settings } = useSettings();
   const { data: news } = useNews();
   const { data: steps } = useGuideSteps();
   const [done] = usePersistentState<Record<number, boolean>>('guide-steps-done', {});
 
   const doneCount = Object.values(done).filter(Boolean).length;
   const totalSteps = steps?.length ?? 6;
-  const days = settings
-    ? Math.max(0, Math.round((new Date(settings.countdownTarget).getTime() - Date.now()) / 86400000))
-    : null;
 
   return (
     <ScreenScaffold title={t('home')} scroll contentContainerStyle={{ paddingBottom: 8 }}>
       <CardStack style={{ paddingBottom: 0 }}>
-        <LinearGradient
-          colors={[colors.accentLight, colors.accent, colors.accentDeep]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={{ borderRadius: radius.lg, padding: 20, overflow: 'hidden' }}
-        >
-          <AppText size={11} color="rgba(255,255,255,0.75)" style={{ letterSpacing: 1.6, textTransform: 'uppercase' }}>{t('countdown')}</AppText>
-          <View style={{ flexDirection: row, alignItems: 'flex-end', gap: 10, marginTop: 8 }}>
-            <AppText weight="displayBlack" size={72} color={colors.goldLight} style={{ lineHeight: 68 }}>
-              {days ?? '--'}
-            </AppText>
-            <AppText weight="semibold" size={16} color="#fff" style={{ paddingBottom: 10 }}>{t('daysWord')}</AppText>
-          </View>
-        </LinearGradient>
-
         <Card>
           <View style={{ flexDirection: row, justifyContent: 'space-between', alignItems: 'baseline' }}>
             <AppText weight="display" size={17} color={colors.text}>{t('progress')}</AppText>

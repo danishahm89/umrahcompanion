@@ -48,10 +48,6 @@ export function ContactPage() {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
         <div><label>Company name</label><input value={settings.companyName} onChange={(e) => setSettings({ ...settings, companyName: e.target.value })} /></div>
         <div><label>App name</label><input value={settings.appName} onChange={(e) => setSettings({ ...settings, appName: e.target.value })} /></div>
-        <div>
-          <label>Countdown target date</label>
-          <input type="date" value={settings.countdownTarget.slice(0, 10)} onChange={(e) => setSettings({ ...settings, countdownTarget: e.target.value })} />
-        </div>
       </div>
       <button className="primary" onClick={saveSettings}>Save settings</button>
 

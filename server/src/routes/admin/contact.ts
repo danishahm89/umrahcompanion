@@ -25,12 +25,11 @@ adminContactRouter.get('/settings', async (_req, res) => {
 });
 
 adminContactRouter.put('/settings', async (req, res) => {
-  const { countdownTarget, ...fields } = req.body ?? {};
-  const data = { ...fields, ...(countdownTarget ? { countdownTarget: new Date(countdownTarget) } : {}) };
+  const fields = req.body ?? {};
   const updated = await prisma.appSettings.upsert({
     where: { id: 1 },
-    create: { id: 1, countdownTarget: new Date(countdownTarget ?? Date.now()), ...fields },
-    update: data,
+    create: { id: 1, ...fields },
+    update: fields,
   });
   res.json(updated);
 });

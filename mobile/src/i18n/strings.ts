@@ -22,8 +22,6 @@ export const STRINGS = {
   tPack: ['Packages', 'पैकेज', 'پیکجز'],
   tNews: ['News', 'ख़बरें', 'خبریں'],
   tMore: ['More', 'और', 'مزید'],
-  countdown: ['Days to your departure', 'आपकी रवानगी में दिन', 'آپ کی روانگی میں دن'],
-  daysWord: ['days left', 'दिन बाक़ी', 'دن باقی'],
   depart: ['Departure', 'रवानगी', 'روانگی'],
   progress: ['Guide progress', 'गाइड प्रगति', 'گائیڈ پیش رفت'],
   continueGuide: ['Continue the guide', 'गाइड जारी रखें', 'گائیڈ جاری رکھیں'],

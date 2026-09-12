@@ -37,7 +37,6 @@ async function main() {
       id: 1,
       companyName: 'Alzakwaan Tours & Travels Pvt Ltd',
       appName: 'Umrah Companion',
-      countdownTarget: new Date(2026, 10, 12),
     },
   });
 
