@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/modernist-bf6b3e55-ea34-41f9-b5fe-92b71ac6904d/styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&family=Noto+Sans+Devanagari:wght@400;600;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&display=swap">
+<script src="_ds/modernist-bf6b3e55-ea34-41f9-b5fe-92b71ac6904d/_ds_bundle.js"></script>
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:var(--desk)}
+:root{
+  --desk:#dcd4c4;
+  --color-bg:#f6f2ea; --color-surface:#eae1d1; --color-text:#14312a;
+  --color-accent:#046a38; --color-accent-600:#03562c; --color-accent-700:#02401f;
+  --color-accent-100:#e2efe6; --color-accent-800:#02401f;
+  --color-neutral-100:#ece7dc; --color-neutral-800:#3a4b44;
+  --color-divider:color-mix(in srgb, #14312a 34%, transparent);
+  --gold:#a9782a;
+  --t80:color-mix(in srgb, var(--color-text) 82%, var(--color-bg));
+  --t70:color-mix(in srgb, var(--color-text) 68%, var(--color-bg));
+  --t50:color-mix(in srgb, var(--color-text) 52%, var(--color-bg));
+  --t20:color-mix(in srgb, var(--color-text) 20%, var(--color-bg));
+}
+[data-app][data-theme="dark"]{
+  --color-bg:#0b1f1a; --color-surface:#14302a; --color-text:#f0ebdf;
+  --color-accent:#2a9c60; --color-accent-600:#35ab6b; --color-accent-700:#45bd7b;
+  --color-accent-100:#193d32; --color-accent-800:#bfe6cd;
+  --color-neutral-100:#1c332c; --color-neutral-800:#d8d2c4;
+  --color-divider:color-mix(in srgb, #f0ebdf 30%, transparent);
+  --gold:#dcb163;
+  background:var(--color-bg); color:var(--color-text);
+}
+[data-app][lang="hi"]{font-family:"Noto Sans Devanagari","Archivo",sans-serif}
+[data-app][lang="ur"]{font-family:"Noto Nastaliq Urdu","Archivo",sans-serif;line-height:2.1}
+[data-app][lang="ur"] [data-h]{line-height:1.9}
+[data-ar]{font-family:"Noto Naskh Arabic",serif;line-height:1.95}
+a{color:var(--color-accent)}
+a:hover{color:var(--color-accent-700)}
+[data-app]::-webkit-scrollbar{display:none}
+</style>
+</helmet>
+
+<div style="display:flex;align-items:flex-start;gap:40px;padding:40px;width:max-content;font-family:Archivo,sans-serif;color:var(--color-text)">
+
+<div style="width:300px;flex:none">
+<div style="font:800 11px/1 Archivo;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent)">Alzakwaan Tours &amp; Travels Pvt Ltd</div>
+<h2 style="margin:10px 0 6px;font:800 30px/1.06 Archivo;letter-spacing:-.02em">Umrah Companion</h2>
+<div style="font:400 13px/1.5 Archivo;color:var(--t70)">Mobile app — one polished flow, 16 screens, trilingual. Modernist system: flat, flush left, 2px rules, no radius, one red.</div>
+<hr class="hr">
+<div style="font:800 11px/1 Archivo;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px">Screens</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px" id="rail">
+<button class="btn btn-secondary" style="font-size:12px;padding:5px 9px" onClick="{{ go.home }}">Home</button>
+<button class="btn btn-secondary" style="font-size:12px;padding:5px 9px" onClick="{{ go.guide }}">Guide hub</button>
+<button class="btn btn-secondary" style="font-size:12px;padding:5px 9px" onClick="{{ go.firsttime }}">First time</button>
+<button class="btn btn-secondary" style="font-size:12px;padding:5px 9px" onClick="{{ go.duas }}">Duas</button>
+<button class="btn btn-secondary" style="font-size:12px;padding:5px 9px" onClick="{{ go.packing }}">Packing</button>
+<button class="btn btn-secondary" style="font-size:12px;padding:5px 9px" onClick="{{ go.vaccine }}">Vaccines</button>
+<button class="btn btn-secondary" style="font-size:12px;padding:5px 9px" onClick="{{ go.news }}">News</button>
+<button class="btn btn-secondary" style="font-size:12px;padding:5px 9px" onClick="{{ go.nusuk }}">Nusuk</button>
+<button class="btn btn-secondary" style="font-size:12px;padding:5px 9px" onClick="{{ go.faq }}">FAQ</button>
+<button class="btn btn-secondary" style="font-size:12px;padding:5px 9px" onClick="{{ go.packages }}">Packages</button>
+<button class="btn btn-secondary" style="font-size:12px;padding:5px 9px" onClick="{{ go.detail }}">Package detail</button>
+<button class="btn btn-secondary" style="font-size:12px;padding:5px 9px" onClick="{{ go.customize }}">Customize</button>
+<button class="btn btn-secondary" style="font-size:12px;padding:5px 9px" onClick="{{ go.services }}">Tickets &amp; visa</button>
+<button class="btn btn-secondary" style="font-size:12px;padding:5px 9px" onClick="{{ go.more }}">More</button>
+<button class="btn btn-secondary" style="font-size:12px;padding:5px 9px" onClick="{{ go.settings }}">Settings</button>
+</div>
+<hr class="hr">
+<div style="font:800 11px/1 Archivo;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px">Assumptions</div>
+<div style="display:flex;flex-direction:column;gap:9px;font:400 12.5px/1.5 Archivo;color:var(--t80)">
+<div><b>Companion first.</b> Home leads with the departure countdown and guide progress; selling sits one tap below.</div>
+<div><b>Language in the header.</b> EN / हिं / اردو on every screen. Urdu ships RTL by default — the toggle in Settings shows the LTR variant you asked to see.</div>
+<div><b>Everything red-dotted is admin-managed.</b> Packages, guide steps, duas, news sources, FAQ, links and contact numbers all come from the panels on the right.</div>
+<div><b>Enquiry is WhatsApp first.</b> Every enquiry composes a prefilled message to +91 99905 43267; call is the secondary action.</div>
+<div><b>Placeholders, not artwork.</b> Grey hatched blocks mark where real photography goes — send images and I will drop them in.</div>
+</div>
+</div>
+
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="440px,900px" style="flex:none;width:402px">
+<div data-app="1" lang="{{ lang }}" dir="{{ dir }}" data-theme="{{ theme }}" style="min-height:100%;display:flex;flex-direction:column;background:var(--color-bg);font-size:15px">
+
+<div style="position:sticky;top:0;z-index:9;background:var(--color-bg);border-bottom:2px solid var(--color-divider);padding-top:54px">
+<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 16px 9px">
+<sc-if value="{{ canBack }}" hint-placeholder-val="{{ true }}">
+<button class="btn" style="padding:2px;margin-top:2px;color:var(--color-text)" onClick="{{ go.back }}" aria-label="Back">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"></path></svg>
+</button>
+</sc-if>
+<div style="flex:1;min-width:0">
+<div data-h="1" style="font:800 19px/1.15 Archivo;letter-spacing:-.015em">{{ title }}</div>
+<div style="font:400 10px/1.3 Archivo;letter-spacing:.1em;text-transform:uppercase;color:var(--t50);margin-top:3px">{{ t.by }}</div>
+</div>
+<div style="display:flex;gap:2px;flex:none;align-items:flex-start">
+<button class="btn" style="padding:4px;margin-inline-end:2px;color:var(--color-text)" onClick="{{ toggleTheme }}" aria-label="Theme">
+<sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"></path></svg>
+</sc-if>
+<sc-if value="{{ isDark }}">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 13.5A8 8 0 1110.5 4a6.2 6.2 0 009.5 9.5z"></path></svg>
+</sc-if>
+</button>
+<button class="btn" style="padding:3px 6px;font-size:12px;flex-direction:column;gap:3px;color:var(--color-text)" onClick="{{ setEn }}">EN
+<sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}"><span style="display:block;width:100%;height:2px;background:var(--color-accent)"></span></sc-if>
+</button>
+<button class="btn" style="padding:3px 6px;font-size:12px;flex-direction:column;gap:3px;color:var(--color-text)" onClick="{{ setHi }}">हिं
+<sc-if value="{{ isHi }}"><span style="display:block;width:100%;height:2px;background:var(--color-accent)"></span></sc-if>
+</button>
+<button class="btn" style="padding:3px 6px;font-size:12px;flex-direction:column;gap:3px;color:var(--color-text)" onClick="{{ setUr }}">اردو
+<sc-if value="{{ isUr }}"><span style="display:block;width:100%;height:2px;background:var(--color-accent)"></span></sc-if>
+</button>
+</div>
+</div>
+</div>
+
+<div style="flex:1">
+
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+<div style="padding:18px 16px 8px;border-bottom:2px solid var(--color-divider)">
+<div style="font:400 10px/1 Archivo;letter-spacing:.14em;text-transform:uppercase;color:var(--t50)">{{ t.countdown }}</div>
+<div style="display:flex;align-items:flex-end;gap:10px;margin-top:6px">
+<div dir="ltr" style="font:800 76px/.82 Archivo;letter-spacing:-.05em;color:var(--gold);unicode-bidi:isolate">{{ days }}</div>
+<div style="font:800 16px/1.1 Archivo;padding-bottom:8px">{{ t.daysWord }}</div>
+</div>
+<div style="display:flex;justify-content:space-between;gap:12px;margin-top:14px;padding-top:10px;border-top:1px solid var(--color-divider);font:400 12.5px/1.4 Archivo">
+<span style="color:var(--t70)">{{ t.depart }} · <span dir="ltr" style="unicode-bidi:isolate">{{ pkg.date }}</span></span>
+<span style="font-weight:600">{{ pkg.name }}</span>
+</div>
+</div>
+<div style="padding:16px;border-bottom:2px solid var(--color-divider)">
+<div style="display:flex;justify-content:space-between;align-items:baseline">
+<div data-h="1" style="font:800 15px/1.2 Archivo">{{ t.progress }}</div>
+<div style="font:600 12px/1 Archivo;color:var(--t50)">{{ doneCount }}/6</div>
+</div>
+<div style="display:flex;gap:3px;margin:10px 0 12px">
+<sc-for list="{{ bars }}" as="b" hint-placeholder-count="6">
+<span style="flex:1;height:8px;background:{{ b.fill }}"></span>
+</sc-for>
+</div>
+<button class="btn btn-primary btn-block" style="justify-content:space-between" onClick="{{ go.firsttime }}">{{ t.continueGuide }}
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+</button>
+</div>
+<div style="border-bottom:2px solid var(--color-divider)">
+<div style="padding:14px 16px 8px;font:400 10px/1 Archivo;letter-spacing:.14em;text-transform:uppercase;color:var(--t50)">{{ t.quick }}</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--color-divider)">
+<button class="btn" style="display:block;text-align:start;background:var(--color-bg);padding:14px;min-height:88px;border:0;color:var(--color-text)" onClick="{{ go.firsttime }}">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="stroke:var(--color-accent)"><path d="M4 5h6a2 2 0 012 2v13H6a2 2 0 01-2-2z"></path><path d="M20 5h-6a2 2 0 00-2 2v13h6a2 2 0 002-2z"></path></svg>
+<span style="display:block;font:800 14px/1.25 Archivo;margin-top:10px">{{ t.firsttime }}</span>
+</button>
+<button class="btn" style="display:block;text-align:start;background:var(--color-bg);padding:14px;min-height:88px;border:0;color:var(--color-text)" onClick="{{ go.duas }}">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="stroke:var(--color-accent)"><path d="M12 20s-7-4.6-7-9.2A3.8 3.8 0 0112 8a3.8 3.8 0 017 2.8C19 15.4 12 20 12 20z"></path></svg>
+<span style="display:block;font:800 14px/1.25 Archivo;margin-top:10px">{{ t.duas }}</span>
+</button>
+<button class="btn" style="display:block;text-align:start;background:var(--color-bg);padding:14px;min-height:88px;border:0;color:var(--color-text)" onClick="{{ go.packing }}">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="stroke:var(--color-accent)"><path d="M3 8h18v12H3zM9 8V4h6v4M3 14h18"></path></svg>
+<span style="display:block;font:800 14px/1.25 Archivo;margin-top:10px">{{ t.packing }}</span>
+</button>
+<button class="btn" style="display:block;text-align:start;background:var(--color-bg);padding:14px;min-height:88px;border:0;color:var(--color-text)" onClick="{{ go.vaccine }}">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="stroke:var(--color-accent)"><path d="M12 3l7 3v6c0 4.2-3 6.8-7 8-4-1.2-7-3.8-7-8V6z"></path><path d="M9 12l2.2 2.2L15.5 10"></path></svg>
+<span style="display:block;font:800 14px/1.25 Archivo;margin-top:10px">{{ t.vaccine }}</span>
+</button>
+<button class="btn" style="display:block;text-align:start;background:var(--color-bg);padding:14px;min-height:88px;border:0;color:var(--color-text)" onClick="{{ go.nusuk }}">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="stroke:var(--color-accent)"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a15 15 0 010 18 15 15 0 010-18z"></path></svg>
+<span style="display:block;font:800 14px/1.25 Archivo;margin-top:10px">{{ t.nusuk }}</span>
+</button>
+<button class="btn" style="display:block;text-align:start;background:var(--color-bg);padding:14px;min-height:88px;border:0;color:var(--color-text)" onClick="{{ go.packages }}">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="stroke:var(--color-accent)"><path d="M3 7l9-4 9 4v10l-9 4-9-4zM3 7l9 4 9-4M12 11v10"></path></svg>
+<span style="display:block;font:800 14px/1.25 Archivo;margin-top:10px">{{ t.packages }}</span>
+</button>
+<button class="btn" style="display:block;text-align:start;background:var(--color-bg);padding:14px;min-height:88px;border:0;color:var(--color-text)" onClick="{{ go.gallery }}">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="stroke:var(--color-accent)"><path d="M3 5h18v14H3z"></path><path d="M3 16l5-5 4 4 3-3 6 6"></path><circle cx="8.5" cy="9" r="1.4"></circle></svg>
+<span style="display:block;font:800 14px/1.25 Archivo;margin-top:10px">{{ t.gallery }}</span>
+</button>
+<button class="btn" style="display:block;text-align:start;background:var(--color-bg);padding:14px;min-height:88px;border:0;color:var(--color-text)" onClick="{{ go.faq }}">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="stroke:var(--color-accent)"><circle cx="12" cy="12" r="9"></circle><path d="M9.5 9.2a2.6 2.6 0 015 .8c0 1.7-2.5 2-2.5 3.7"></path><path d="M12 17.2h.01"></path></svg>
+<span style="display:block;font:800 14px/1.25 Archivo;margin-top:10px">{{ t.faq }}</span>
+</button>
+</div>
+</div>
+<div style="padding:16px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">
+<div data-h="1" style="font:800 15px/1.2 Archivo">{{ t.latest }}</div>
+<button class="btn btn-ghost" style="font-size:12px" onClick="{{ go.news }}">{{ t.viewAll }}</button>
+</div>
+<sc-for list="{{ newsTop }}" as="n" hint-placeholder-count="2">
+<div style="padding:11px 0;border-top:1px solid var(--color-divider)">
+<div style="display:flex;gap:8px;align-items:center;font:600 10px/1 Archivo;letter-spacing:.06em;text-transform:uppercase;color:var(--t50)">
+<span class="tag tag-accent" style="font-size:10px;padding:2px 6px">{{ n.src }}</span><span>{{ n.time }}</span>
+</div>
+<div style="font:600 13.5px/1.4 Archivo;margin-top:6px">{{ n.t }}</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ isGuide }}">
+<div style="padding:16px;border-bottom:2px solid var(--color-divider);font:400 13px/1.55 Archivo;color:var(--t80)">{{ t.guideIntro }}</div>
+<button class="btn" style="display:flex;width:100%;justify-content:space-between;align-items:center;padding:14px 16px;background:var(--color-accent);color:var(--color-bg);border:0;text-align:start" onClick="{{ go.firsttime }}">
+<span style="font:800 15px/1.2 Archivo">{{ t.firsttime }}</span>
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+</button>
+<sc-for list="{{ rituals }}" as="r" hint-placeholder-count="6">
+<div style="display:flex;gap:14px;padding:15px 16px;border-bottom:1px solid var(--color-divider)">
+<div style="font:800 13px/1.2 Archivo;color:var(--color-accent);flex:none;width:22px">{{ r.n }}</div>
+<div style="flex:1;min-width:0">
+<div data-h="1" style="font:800 15px/1.2 Archivo">{{ r.t }}</div>
+<div style="font:400 12.5px/1.5 Archivo;color:var(--t70);margin-top:4px">{{ r.d }}</div>
+</div>
+</div>
+</sc-for>
+<div style="padding:16px">
+<button class="btn btn-secondary btn-block" onClick="{{ go.duas }}">{{ t.duas }}</button>
+<button class="btn btn-secondary btn-block" onClick="{{ go.packing }}">{{ t.packing }}</button>
+<button class="btn btn-secondary btn-block" onClick="{{ go.vaccine }}">{{ t.vaccine }}</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ isFirst }}">
+<div style="padding:14px 16px;border-bottom:2px solid var(--color-divider);display:flex;justify-content:space-between;align-items:center">
+<div style="font:400 12.5px/1.4 Archivo;color:var(--t70)">{{ t.tapDone }}</div>
+<div style="font:800 13px/1 Archivo;color:var(--color-accent)">{{ doneCount }}/6</div>
+</div>
+<sc-for list="{{ steps }}" as="s" hint-placeholder-count="6">
+<button class="btn" style="display:flex;width:100%;gap:13px;align-items:flex-start;padding:15px 16px;border:0;border-bottom:1px solid var(--color-divider);background:transparent;text-align:start" onClick="{{ s.toggle }}">
+<span style="flex:none;width:22px;height:22px;border:2px solid var(--color-text);display:flex;align-items:center;justify-content:center;margin-top:1px">
+<sc-if value="{{ s.done }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke:var(--color-accent)" stroke-width="3.5"><path d="M20 6L9 17l-5-5"></path></svg></sc-if>
+</span>
+<span style="flex:1;min-width:0">
+<span style="display:block;font:400 10px/1 Archivo;letter-spacing:.1em;color:var(--t50)">{{ s.n }}</span>
+<span data-h="1" style="display:block;font:800 15px/1.2 Archivo;margin-top:6px">{{ s.t }}</span>
+<span style="display:block;font:400 12.5px/1.5 Archivo;color:var(--t70);margin-top:4px">{{ s.d }}</span>
+</span>
+</button>
+</sc-for>
+<div style="padding:16px">
+<button class="btn btn-primary btn-block" style="justify-content:space-between" onClick="{{ go.duas }}">{{ t.duas }}
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ isDuas }}">
+<div style="display:grid;grid-template-columns:repeat(4,1fr);border-bottom:2px solid var(--color-divider);position:sticky;top:117px;background:var(--color-bg);z-index:8">
+<button class="btn" style="flex-direction:column;gap:7px;padding:10px 4px 0;border:0;background:transparent;font-size:12.5px;color:var(--color-text)" onClick="{{ setStage0 }}">{{ stageNames.0 }}
+<span style="display:block;width:100%;height:3px;background:transparent"><sc-if value="{{ st0 }}"><span style="display:block;height:3px;background:var(--color-accent)"></span></sc-if></span>
+</button>
+<button class="btn" style="flex-direction:column;gap:7px;padding:10px 4px 0;border:0;background:transparent;font-size:12.5px;color:var(--color-text)" onClick="{{ setStage1 }}">{{ stageNames.1 }}
+<span style="display:block;width:100%;height:3px;background:transparent"><sc-if value="{{ st1 }}"><span style="display:block;height:3px;background:var(--color-accent)"></span></sc-if></span>
+</button>
+<button class="btn" style="flex-direction:column;gap:7px;padding:10px 4px 0;border:0;background:transparent;font-size:12.5px;color:var(--color-text)" onClick="{{ setStage2 }}">{{ stageNames.2 }}
+<span style="display:block;width:100%;height:3px;background:transparent"><sc-if value="{{ st2 }}"><span style="display:block;height:3px;background:var(--color-accent)"></span></sc-if></span>
+</button>
+<button class="btn" style="flex-direction:column;gap:7px;padding:10px 4px 0;border:0;background:transparent;font-size:12.5px;color:var(--color-text)" onClick="{{ setStage3 }}">{{ stageNames.3 }}
+<span style="display:block;width:100%;height:3px;background:transparent"><sc-if value="{{ st3 }}"><span style="display:block;height:3px;background:var(--color-accent)"></span></sc-if></span>
+</button>
+</div>
+<div style="padding:14px 16px 6px;font:400 12.5px/1.5 Archivo;color:var(--t70)">{{ stageNote }}</div>
+<sc-for list="{{ duas }}" as="d" hint-placeholder-count="2">
+<div style="padding:16px;border-top:1px solid var(--color-divider)">
+<div style="font:400 10px/1 Archivo;letter-spacing:.12em;text-transform:uppercase;color:var(--color-accent)">{{ d.when }}</div>
+<div data-ar="1" dir="rtl" style="font-size:23px;margin-top:12px">{{ d.ar }}</div>
+<div style="font:400 12.5px/1.55 Archivo;color:var(--t50);font-style:italic;margin-top:12px;padding-top:10px;border-top:1px solid var(--color-divider)">{{ d.tr }}</div>
+<div style="font:400 13.5px/1.55 Archivo;margin-top:8px">{{ d.mn }}</div>
+</div>
+</sc-for>
+</sc-if>
+
+<sc-if value="{{ isPacking }}">
+<div style="padding:14px 16px;border-bottom:2px solid var(--color-divider);display:flex;justify-content:space-between;align-items:center">
+<div style="font:400 12.5px/1.4 Archivo;color:var(--t70)">{{ t.packNote }}</div>
+<div style="font:800 13px/1 Archivo;color:var(--color-accent)">{{ packCount }}</div>
+</div>
+<sc-for list="{{ packing }}" as="g" hint-placeholder-count="4">
+<div>
+<div style="padding:13px 16px 9px;background:var(--color-surface);border-bottom:1px solid var(--color-divider);font:800 11px/1 Archivo;letter-spacing:.12em;text-transform:uppercase">{{ g.t }}</div>
+<sc-for list="{{ g.items }}" as="i" hint-placeholder-count="6">
+<button class="btn" style="display:flex;width:100%;gap:12px;align-items:center;padding:12px 16px;border:0;border-bottom:1px solid var(--color-divider);background:transparent;text-align:start;font:400 14px/1.35 Archivo;color:var(--color-text)" onClick="{{ i.toggle }}">
+<span style="flex:none;width:20px;height:20px;border:2px solid var(--color-text);display:flex;align-items:center;justify-content:center">
+<sc-if value="{{ i.done }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke:var(--color-accent)" stroke-width="3.5"><path d="M20 6L9 17l-5-5"></path></svg></sc-if>
+</span>
+<span style="flex:1">{{ i.t }}</span>
+</button>
+</sc-for>
+</div>
+</sc-for>
+</sc-if>
+
+<sc-if value="{{ isVaccine }}">
+<div style="padding:14px 16px;border-bottom:2px solid var(--color-divider);font:400 12.5px/1.5 Archivo;color:var(--t70)">{{ t.vaxNote }}</div>
+<sc-for list="{{ vaccines }}" as="v" hint-placeholder-count="5">
+<button class="btn" style="display:flex;width:100%;gap:12px;align-items:flex-start;padding:15px 16px;border:0;border-bottom:1px solid var(--color-divider);background:transparent;text-align:start" onClick="{{ v.toggle }}">
+<span style="flex:none;width:20px;height:20px;border:2px solid var(--color-text);display:flex;align-items:center;justify-content:center;margin-top:2px">
+<sc-if value="{{ v.done }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke:var(--color-accent)" stroke-width="3.5"><path d="M20 6L9 17l-5-5"></path></svg></sc-if>
+</span>
+<span style="flex:1;min-width:0">
+<span style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+<span data-h="1" style="font:800 14.5px/1.2 Archivo">{{ v.t }}</span>
+<span class="tag tag-outline" style="font-size:10px;padding:2px 6px">{{ v.status }}</span>
+</span>
+<span style="display:block;font:400 12.5px/1.5 Archivo;color:var(--t70);margin-top:5px">{{ v.d }}</span>
+</span>
+</button>
+</sc-for>
+</sc-if>
+
+<sc-if value="{{ isNews }}">
+<div style="padding:13px 16px;border-bottom:2px solid var(--color-divider);display:flex;align-items:center;gap:8px;font:400 11.5px/1.4 Archivo;color:var(--t70)">
+<span style="width:8px;height:8px;background:var(--color-accent);flex:none"></span>{{ t.syncNote }}
+</div>
+<sc-for list="{{ news }}" as="n" hint-placeholder-count="4">
+<div style="padding:16px;border-bottom:1px solid var(--color-divider)">
+<div style="display:flex;gap:8px;align-items:center">
+<span class="tag tag-accent" style="font-size:10px;padding:2px 6px">{{ n.src }}</span>
+<span style="font:400 10px/1 Archivo;letter-spacing:.06em;text-transform:uppercase;color:var(--t50)">{{ n.time }}</span>
+</div>
+<div data-h="1" style="font:800 16px/1.22 Archivo;margin-top:9px">{{ n.t }}</div>
+<div style="font:400 13px/1.5 Archivo;color:var(--t70);margin-top:6px">{{ n.d }}</div>
+</div>
+</sc-for>
+<div style="padding:16px">
+<button class="btn btn-secondary btn-block" onClick="{{ go.nusuk }}">{{ t.nusuk }}</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ isNusuk }}">
+<div style="padding:16px;border-bottom:2px solid var(--color-divider);font:400 13px/1.55 Archivo;color:var(--t80)">{{ t.nusukIntro }}</div>
+<sc-for list="{{ nusukLinks }}" as="l" hint-placeholder-count="6">
+<a href="{{ l.url }}" target="_blank" rel="noopener" style="display:flex;gap:12px;align-items:center;padding:15px 16px;border-bottom:1px solid var(--color-divider);text-decoration:none;color:var(--color-text)">
+<span style="flex:1;min-width:0">
+<span data-h="1" style="display:block;font:800 14.5px/1.2 Archivo">{{ l.t }}</span>
+<span dir="ltr" style="display:block;font:400 12px/1.4 Archivo;color:var(--t50);margin-top:4px;unicode-bidi:isolate">{{ l.host }}</span>
+</span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke:var(--color-accent)" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"></path></svg>
+</a>
+</sc-for>
+</sc-if>
+
+<sc-if value="{{ isFaq }}">
+<sc-for list="{{ faq }}" as="f" hint-placeholder-count="6">
+<div style="border-bottom:1px solid var(--color-divider)">
+<button class="btn" style="display:flex;width:100%;gap:12px;align-items:flex-start;padding:15px 16px;border:0;background:transparent;text-align:start;color:var(--color-text)" onClick="{{ f.toggle }}">
+<span data-h="1" style="flex:1;min-width:0;font:800 14.5px/1.3 Archivo">{{ f.q }}</span>
+<span style="flex:none;margin-top:2px;color:var(--color-accent)">
+<sc-if value="{{ f.open }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"></path></svg></sc-if>
+<sc-if value="{{ f.shut }}" hint-placeholder-val="{{ true }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"></path></svg></sc-if>
+</span>
+</button>
+<sc-if value="{{ f.open }}">
+<div style="padding:0 16px 16px;font:400 13px/1.55 Archivo;color:var(--t80)">{{ f.a }}</div>
+</sc-if>
+</div>
+</sc-for>
+<div style="padding:16px">
+<a class="btn btn-primary btn-block" href="{{ waGeneral }}" target="_blank" rel="noopener">{{ t.enquire }}</a>
+</div>
+</sc-if>
+
+<sc-if value="{{ isPackages }}">
+<div style="padding:14px 16px;border-bottom:2px solid var(--color-divider);font:400 12.5px/1.5 Archivo;color:var(--t70)">{{ t.pkgNote }}</div>
+<sc-for list="{{ packages }}" as="p" hint-placeholder-count="4">
+<div style="border-bottom:2px solid var(--color-divider)">
+<button class="btn" style="display:block;width:100%;padding:16px 16px 12px;border:0;background:transparent;text-align:start;color:var(--color-text)" onClick="{{ p.open }}">
+<span style="display:flex;justify-content:space-between;gap:10px;align-items:baseline">
+<span class="tag tag-accent" style="font-size:10px;padding:2px 6px">{{ p.type }}</span>
+<span style="font:400 10px/1 Archivo;letter-spacing:.08em;text-transform:uppercase;color:var(--t50)">{{ p.dateLabel }} <span dir="ltr" style="unicode-bidi:isolate">{{ p.date }}</span></span>
+</span>
+<span data-h="1" style="display:block;font:800 18px/1.18 Archivo;margin-top:10px">{{ p.name }}</span>
+<span style="display:flex;align-items:baseline;gap:7px;margin-top:9px">
+<span style="font:400 11px/1 Archivo;color:var(--t50)">{{ p.from }}</span>
+<span style="font:800 24px/1 Archivo;color:var(--color-accent)">{{ p.price }}</span>
+<span style="font:400 11px/1 Archivo;color:var(--t50)">{{ p.per }}</span>
+</span>
+<span style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--color-divider);margin-top:14px">
+<sc-for list="{{ p.facts }}" as="fa" hint-placeholder-count="6">
+<span style="display:block;background:var(--color-bg);padding:8px 10px">
+<span style="display:block;font:400 9.5px/1 Archivo;letter-spacing:.1em;text-transform:uppercase;color:var(--t50)">{{ fa.k }}</span>
+<span dir="ltr" style="display:block;font:600 13px/1.3 Archivo;margin-top:4px;unicode-bidi:isolate">{{ fa.v }}</span>
+</span>
+</sc-for>
+</span>
+</button>
+<div style="display:flex;gap:1px;background:var(--color-divider);padding:0 16px 16px">
+<a class="btn btn-primary" style="flex:1;justify-content:flex-start" href="{{ p.wa }}" target="_blank" rel="noopener">{{ t.enquire }}</a>
+<button class="btn btn-secondary" style="flex:none" onClick="{{ p.open }}">{{ t.details }}</button>
+</div>
+</div>
+</sc-for>
+<div style="padding:16px">
+<button class="btn btn-secondary btn-block" onClick="{{ go.customize }}">{{ t.customize }}</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ isDetail }}">
+<div style="padding:16px;border-bottom:2px solid var(--color-divider)">
+<span class="tag tag-accent" style="font-size:10px;padding:2px 6px">{{ pkg.type }}</span>
+<div data-h="1" style="font:800 26px/1.1 Archivo;letter-spacing:-.02em;margin-top:10px">{{ pkg.name }}</div>
+<div style="display:flex;align-items:baseline;gap:7px;margin-top:10px">
+<span style="font:400 11px/1 Archivo;color:var(--t50)">{{ pkg.from }}</span>
+<span style="font:800 30px/1 Archivo;color:var(--color-accent)">{{ pkg.price }}</span>
+<span style="font:400 11px/1 Archivo;color:var(--t50)">{{ pkg.per }}</span>
+</div>
+</div>
+<div class="grayscale" style="position:relative;height:168px;border-bottom:2px solid var(--color-divider)">
+<image-slot id="pkg-hero" shape="rect" placeholder="Drop a hotel or Haram photograph"></image-slot>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--color-divider);border-bottom:2px solid var(--color-divider)">
+<sc-for list="{{ pkg.facts }}" as="fa" hint-placeholder-count="10">
+<div style="background:var(--color-bg);padding:11px 14px">
+<div style="font:400 9.5px/1 Archivo;letter-spacing:.1em;text-transform:uppercase;color:var(--t50)">{{ fa.k }}</div>
+<div dir="ltr" style="font:600 13.5px/1.3 Archivo;margin-top:4px;unicode-bidi:isolate">{{ fa.v }}</div>
+</div>
+</sc-for>
+</div>
+<div style="padding:16px;border-bottom:2px solid var(--color-divider)">
+<div data-h="1" style="font:800 11px/1 Archivo;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">{{ t.itinerary }}</div>
+<sc-for list="{{ pkg.itin }}" as="it" hint-placeholder-count="4">
+<div style="display:flex;gap:12px;padding:9px 0;border-top:1px solid var(--color-divider)">
+<div style="flex:none;width:54px;font:800 12px/1.4 Archivo;color:var(--color-accent)">{{ it.k }}</div>
+<div style="flex:1;font:400 13px/1.45 Archivo">{{ it.v }}</div>
+</div>
+</sc-for>
+</div>
+<div style="padding:16px;border-bottom:2px solid var(--color-divider)">
+<div data-h="1" style="font:800 11px/1 Archivo;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px">{{ t.included }}</div>
+<sc-for list="{{ pkg.incl }}" as="i" hint-placeholder-count="6">
+<div style="display:flex;gap:10px;align-items:flex-start;padding:6px 0;font:400 13.5px/1.45 Archivo">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke:var(--color-accent)" stroke-width="3" style="margin-top:4px;flex:none"><path d="M20 6L9 17l-5-5"></path></svg>
+<span>{{ i }}</span>
+</div>
+</sc-for>
+</div>
+<div style="padding:16px">
+<a class="btn btn-primary btn-block" href="{{ pkg.wa }}" target="_blank" rel="noopener">{{ t.enquire }}</a>
+<a class="btn btn-secondary btn-block" href="{{ tel }}">{{ t.call }}</a>
+<button class="btn btn-secondary btn-block" onClick="{{ go.customize }}">{{ t.customize }}</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ isCustomize }}">
+<div style="padding:16px;border-bottom:2px solid var(--color-divider);font:400 13px/1.55 Archivo;color:var(--t80)">{{ t.customIntro }}</div>
+<div style="padding:16px;display:flex;flex-direction:column;gap:14px;border-bottom:2px solid var(--color-divider)">
+<div class="field">
+<label>{{ t.fCity }}</label>
+<div style="display:flex;gap:1px;background:var(--color-divider)">
+<sc-for list="{{ cities }}" as="c" hint-placeholder-count="4">
+<button class="btn" style="flex:1;justify-content:center;background:var(--color-surface);border:0;font-size:13px;padding:9px 4px;color:var(--color-text)" onClick="{{ c.pick }}">{{ c.t }}
+<sc-if value="{{ c.on }}"><span style="width:7px;height:7px;background:var(--color-accent);flex:none"></span></sc-if>
+</button>
+</sc-for>
+</div>
+</div>
+<div style="display:flex;gap:12px">
+<div class="field" style="flex:1">
+<label>{{ t.fPax }}</label>
+<input class="input" type="number" value="{{ form.pax }}" onChange="{{ onPax }}">
+</div>
+<div class="field" style="flex:1">
+<label>{{ t.fNights }}</label>
+<input class="input" type="number" value="{{ form.nights }}" onChange="{{ onNights }}">
+</div>
+</div>
+<div class="field">
+<label>{{ t.fMonth }}</label>
+<input class="input" type="text" value="{{ form.month }}" onChange="{{ onMonth }}">
+</div>
+<div class="field">
+<label>{{ t.fHotel }}</label>
+<div style="display:flex;gap:1px;background:var(--color-divider)">
+<sc-for list="{{ hotels }}" as="h" hint-placeholder-count="3">
+<button class="btn" style="flex:1;justify-content:center;background:var(--color-surface);border:0;font-size:13px;padding:9px 4px;color:var(--color-text)" onClick="{{ h.pick }}">{{ h.t }}
+<sc-if value="{{ h.on }}"><span style="width:7px;height:7px;background:var(--color-accent);flex:none"></span></sc-if>
+</button>
+</sc-for>
+</div>
+</div>
+<div class="field">
+<label>{{ t.fNotes }}</label>
+<textarea class="input" onChange="{{ onNotes }}" placeholder="{{ t.notesHint }}">{{ form.notes }}</textarea>
+</div>
+</div>
+<div style="padding:16px;background:var(--color-surface);border-bottom:2px solid var(--color-divider)">
+<div style="font:400 10px/1 Archivo;letter-spacing:.12em;text-transform:uppercase;color:var(--t50)">{{ t.preview }}</div>
+<div style="font:400 13px/1.6 Archivo;margin-top:9px;white-space:pre-line;unicode-bidi:isolate">{{ waPreview }}</div>
+</div>
+<div style="padding:16px">
+<a class="btn btn-primary btn-block" href="{{ waCustom }}" target="_blank" rel="noopener">{{ t.sendWa }}</a>
+<a class="btn btn-secondary btn-block" href="{{ tel }}">{{ t.call }}</a>
+</div>
+</sc-if>
+
+<sc-if value="{{ isServices }}">
+<sc-for list="{{ services }}" as="s" hint-placeholder-count="3">
+<div style="padding:16px;border-bottom:2px solid var(--color-divider)">
+<div style="font:400 10px/1 Archivo;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent)">{{ s.n }}</div>
+<div data-h="1" style="font:800 20px/1.15 Archivo;margin-top:8px">{{ s.t }}</div>
+<div style="font:400 13px/1.5 Archivo;color:var(--t70);margin-top:6px">{{ s.d }}</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px">
+<sc-for list="{{ s.tags }}" as="g" hint-placeholder-count="3">
+<span class="tag tag-outline" style="font-size:11px;padding:3px 8px">{{ g }}</span>
+</sc-for>
+</div>
+<a class="btn btn-primary btn-block" href="{{ s.wa }}" target="_blank" rel="noopener">{{ t.enquire }}</a>
+</div>
+</sc-for>
+</sc-if>
+
+<sc-if value="{{ isMore }}">
+<button class="btn" style="display:flex;width:100%;gap:13px;align-items:center;padding:15px 16px;border:0;border-bottom:1px solid var(--color-divider);background:transparent;text-align:start;color:var(--color-text)" onClick="{{ go.gallery }}">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="stroke:var(--color-accent);flex:none"><path d="M3 5h18v14H3z"></path><path d="M3 16l5-5 4 4 3-3 6 6"></path><circle cx="8.5" cy="9" r="1.4"></circle></svg>
+<span style="flex:1;min-width:0;font:600 14.5px/1.3 Archivo">{{ t.gallery }}</span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke:var(--t50)" stroke-width="2"><path d="M9 6l6 6-6 6"></path></svg>
+</button>
+<button class="btn" style="display:flex;width:100%;gap:13px;align-items:center;padding:15px 16px;border:0;border-bottom:1px solid var(--color-divider);background:transparent;text-align:start;color:var(--color-text)" onClick="{{ go.faq }}">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="stroke:var(--color-accent);flex:none"><circle cx="12" cy="12" r="9"></circle><path d="M9.5 9.2a2.6 2.6 0 015 .8c0 1.7-2.5 2-2.5 3.7"></path><path d="M12 17.2h.01"></path></svg>
+<span style="flex:1;min-width:0;font:600 14.5px/1.3 Archivo">{{ t.faq }}</span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke:var(--t50)" stroke-width="2"><path d="M9 6l6 6-6 6"></path></svg>
+</button>
+<button class="btn" style="display:flex;width:100%;gap:13px;align-items:center;padding:15px 16px;border:0;border-bottom:1px solid var(--color-divider);background:transparent;text-align:start;color:var(--color-text)" onClick="{{ go.services }}">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="stroke:var(--color-accent);flex:none"><path d="M3 8a2 2 0 012-2h14a2 2 0 012 2 2 2 0 000 4 2 2 0 00-2 2v2H5a2 2 0 01-2-2 2 2 0 000-4z"></path><path d="M10 6v12"></path></svg>
+<span style="flex:1;min-width:0;font:600 14.5px/1.3 Archivo">{{ t.services }}</span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke:var(--t50)" stroke-width="2"><path d="M9 6l6 6-6 6"></path></svg>
+</button>
+<button class="btn" style="display:flex;width:100%;gap:13px;align-items:center;padding:15px 16px;border:0;border-bottom:1px solid var(--color-divider);background:transparent;text-align:start;color:var(--color-text)" onClick="{{ go.nusuk }}">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="stroke:var(--color-accent);flex:none"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a15 15 0 010 18 15 15 0 010-18z"></path></svg>
+<span style="flex:1;min-width:0;font:600 14.5px/1.3 Archivo">{{ t.nusuk }}</span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke:var(--t50)" stroke-width="2"><path d="M9 6l6 6-6 6"></path></svg>
+</button>
+<button class="btn" style="display:flex;width:100%;gap:13px;align-items:center;padding:15px 16px;border:0;border-bottom:1px solid var(--color-divider);background:transparent;text-align:start;color:var(--color-text)" onClick="{{ go.packing }}">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="stroke:var(--color-accent);flex:none"><path d="M3 8h18v12H3zM9 8V4h6v4M3 14h18"></path></svg>
+<span style="flex:1;min-width:0;font:600 14.5px/1.3 Archivo">{{ t.packing }}</span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke:var(--t50)" stroke-width="2"><path d="M9 6l6 6-6 6"></path></svg>
+</button>
+<button class="btn" style="display:flex;width:100%;gap:13px;align-items:center;padding:15px 16px;border:0;border-bottom:1px solid var(--color-divider);background:transparent;text-align:start;color:var(--color-text)" onClick="{{ go.vaccine }}">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="stroke:var(--color-accent);flex:none"><path d="M12 3l7 3v6c0 4.2-3 6.8-7 8-4-1.2-7-3.8-7-8V6z"></path><path d="M9 12l2.2 2.2L15.5 10"></path></svg>
+<span style="flex:1;min-width:0;font:600 14.5px/1.3 Archivo">{{ t.vaccine }}</span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke:var(--t50)" stroke-width="2"><path d="M9 6l6 6-6 6"></path></svg>
+</button>
+<button class="btn" style="display:flex;width:100%;gap:13px;align-items:center;padding:15px 16px;border:0;border-bottom:1px solid var(--color-divider);background:transparent;text-align:start;color:var(--color-text)" onClick="{{ go.duas }}">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="stroke:var(--color-accent);flex:none"><path d="M12 20s-7-4.6-7-9.2A3.8 3.8 0 0112 8a3.8 3.8 0 017 2.8C19 15.4 12 20 12 20z"></path></svg>
+<span style="flex:1;min-width:0;font:600 14.5px/1.3 Archivo">{{ t.duas }}</span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke:var(--t50)" stroke-width="2"><path d="M9 6l6 6-6 6"></path></svg>
+</button>
+<button class="btn" style="display:flex;width:100%;gap:13px;align-items:center;padding:15px 16px;border:0;border-bottom:1px solid var(--color-divider);background:transparent;text-align:start;color:var(--color-text)" onClick="{{ go.customize }}">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="stroke:var(--color-accent);flex:none"><path d="M4 7h16M4 12h16M4 17h16"></path><circle cx="9" cy="7" r="2"></circle><circle cx="15" cy="12" r="2"></circle><circle cx="8" cy="17" r="2"></circle></svg>
+<span style="flex:1;min-width:0;font:600 14.5px/1.3 Archivo">{{ t.customize }}</span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke:var(--t50)" stroke-width="2"><path d="M9 6l6 6-6 6"></path></svg>
+</button>
+<button class="btn" style="display:flex;width:100%;gap:13px;align-items:center;padding:15px 16px;border:0;border-bottom:1px solid var(--color-divider);background:transparent;text-align:start;color:var(--color-text)" onClick="{{ go.settings }}">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="stroke:var(--color-accent);flex:none"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"></path></svg>
+<span style="flex:1;min-width:0;font:600 14.5px/1.3 Archivo">{{ t.settings }}</span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke:var(--t50)" stroke-width="2"><path d="M9 6l6 6-6 6"></path></svg>
+</button>
+<div style="padding:16px">
+<a class="btn btn-primary btn-block" href="{{ waGeneral }}" target="_blank" rel="noopener">{{ t.enquire }}</a>
+<a class="btn btn-secondary btn-block" href="{{ tel }}">{{ t.call }}</a>
+</div>
+</sc-if>
+
+<sc-if value="{{ isGallery }}">
+<div style="padding:16px;border-bottom:2px solid var(--color-divider);font:400 13px/1.55 Archivo;color:var(--t80)">{{ t.galleryIntro }}</div>
+<div style="padding:16px;border-bottom:2px solid var(--color-divider)">
+<div class="grayscale" style="position:relative;height:190px">
+<image-slot id="gal-lead" shape="rect" placeholder="Drop a group photograph"></image-slot>
+</div>
+<div style="display:flex;justify-content:space-between;gap:10px;margin-top:9px;font:400 11.5px/1.4 Archivo">
+<span style="font-weight:600">{{ albums.0.cap }}</span>
+<span dir="ltr" style="color:var(--t50);unicode-bidi:isolate">{{ albums.0.meta }}</span>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--color-divider);border-bottom:2px solid var(--color-divider)">
+<div style="background:var(--color-bg);padding:12px">
+<div class="grayscale" style="position:relative;height:110px">
+<image-slot id="gal-2" shape="rect" placeholder="Drop a photo"></image-slot>
+</div>
+<div style="font:600 11.5px/1.35 Archivo;margin-top:8px">{{ albums.1.cap }}</div>
+<div dir="ltr" style="font:400 10.5px/1.3 Archivo;color:var(--t50);margin-top:3px;unicode-bidi:isolate">{{ albums.1.meta }}</div>
+</div>
+<div style="background:var(--color-bg);padding:12px">
+<div class="grayscale" style="position:relative;height:110px">
+<image-slot id="gal-3" shape="rect" placeholder="Drop a photo"></image-slot>
+</div>
+<div style="font:600 11.5px/1.35 Archivo;margin-top:8px">{{ albums.2.cap }}</div>
+<div dir="ltr" style="font:400 10.5px/1.3 Archivo;color:var(--t50);margin-top:3px;unicode-bidi:isolate">{{ albums.2.meta }}</div>
+</div>
+<div style="background:var(--color-bg);padding:12px">
+<div class="grayscale" style="position:relative;height:110px">
+<image-slot id="gal-4" shape="rect" placeholder="Drop a photo"></image-slot>
+</div>
+<div style="font:600 11.5px/1.35 Archivo;margin-top:8px">{{ albums.3.cap }}</div>
+<div dir="ltr" style="font:400 10.5px/1.3 Archivo;color:var(--t50);margin-top:3px;unicode-bidi:isolate">{{ albums.3.meta }}</div>
+</div>
+<div style="background:var(--color-bg);padding:12px">
+<div class="grayscale" style="position:relative;height:110px">
+<image-slot id="gal-5" shape="rect" placeholder="Drop a photo"></image-slot>
+</div>
+<div style="font:600 11.5px/1.35 Archivo;margin-top:8px">{{ albums.4.cap }}</div>
+<div dir="ltr" style="font:400 10.5px/1.3 Archivo;color:var(--t50);margin-top:3px;unicode-bidi:isolate">{{ albums.4.meta }}</div>
+</div>
+</div>
+<div style="padding:16px">
+<button class="btn btn-primary btn-block" style="justify-content:space-between">{{ t.addPhotos }}
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"></path></svg>
+</button>
+<div style="font:400 12px/1.5 Archivo;color:var(--t50);margin-top:10px">{{ t.galleryNote }}</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isSettings }}">
+<div style="padding:15px 16px;border-bottom:2px solid var(--color-divider)">
+<div style="font:800 11px/1 Archivo;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">{{ t.appearance }}</div>
+<div style="display:flex;gap:1px;background:var(--color-divider)">
+<button class="btn" style="flex:1;justify-content:center;background:var(--color-surface);border:0;font-size:13px;padding:10px 4px;color:var(--color-text)" onClick="{{ setLight }}">{{ t.light }}<sc-if value="{{ isLight }}"><span style="width:7px;height:7px;background:var(--color-accent)"></span></sc-if></button>
+<button class="btn" style="flex:1;justify-content:center;background:var(--color-surface);border:0;font-size:13px;padding:10px 4px;color:var(--color-text)" onClick="{{ setDark }}">{{ t.dark }}<sc-if value="{{ isDark }}"><span style="width:7px;height:7px;background:var(--color-accent)"></span></sc-if></button>
+</div>
+</div>
+<div style="padding:15px 16px;border-bottom:2px solid var(--color-divider)">
+<div style="font:800 11px/1 Archivo;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">{{ t.language }}</div>
+<div style="display:flex;gap:1px;background:var(--color-divider)">
+<button class="btn" style="flex:1;justify-content:center;background:var(--color-surface);border:0;font-size:13px;padding:10px 4px;color:var(--color-text)" onClick="{{ setEn }}">English<sc-if value="{{ isEn }}"><span style="width:7px;height:7px;background:var(--color-accent)"></span></sc-if></button>
+<button class="btn" style="flex:1;justify-content:center;background:var(--color-surface);border:0;font-size:13px;padding:10px 4px;color:var(--color-text)" onClick="{{ setHi }}">हिन्दी<sc-if value="{{ isHi }}"><span style="width:7px;height:7px;background:var(--color-accent)"></span></sc-if></button>
+<button class="btn" style="flex:1;justify-content:center;background:var(--color-surface);border:0;font-size:13px;padding:10px 4px;color:var(--color-text)" onClick="{{ setUr }}">اردو<sc-if value="{{ isUr }}"><span style="width:7px;height:7px;background:var(--color-accent)"></span></sc-if></button>
+</div>
+</div>
+<div style="padding:15px 16px;border-bottom:2px solid var(--color-divider)">
+<div style="font:800 11px/1 Archivo;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px">{{ t.urduLayout }}</div>
+<div style="font:400 12.5px/1.5 Archivo;color:var(--t70);margin-bottom:12px">{{ t.urduLayoutNote }}</div>
+<div style="display:flex;gap:1px;background:var(--color-divider)">
+<button class="btn" style="flex:1;justify-content:center;background:var(--color-surface);border:0;font-size:13px;padding:10px 4px;color:var(--color-text)" onClick="{{ setRtl }}">RTL<sc-if value="{{ isRtl }}"><span style="width:7px;height:7px;background:var(--color-accent)"></span></sc-if></button>
+<button class="btn" style="flex:1;justify-content:center;background:var(--color-surface);border:0;font-size:13px;padding:10px 4px;color:var(--color-text)" onClick="{{ setLtr }}">LTR<sc-if value="{{ isLtr }}"><span style="width:7px;height:7px;background:var(--color-accent)"></span></sc-if></button>
+</div>
+</div>
+<div style="padding:15px 16px;border-bottom:2px solid var(--color-divider)">
+<div style="font:800 11px/1 Archivo;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px">{{ t.contact }}</div>
+<sc-for list="{{ contacts }}" as="c" hint-placeholder-count="4">
+<div style="display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--color-divider);font:400 13px/1.4 Archivo">
+<span style="color:var(--t50)">{{ c.k }}</span><span dir="ltr" style="font-weight:600;text-align:end;unicode-bidi:isolate">{{ c.v }}</span>
+</div>
+</sc-for>
+</div>
+<div style="padding:15px 16px">
+<div style="font:800 11px/1 Archivo;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px">{{ t.offices }}</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--color-divider)">
+<div style="background:var(--color-bg);padding:12px 10px;font:800 14px/1.2 Archivo">Aligarh</div>
+<div style="background:var(--color-bg);padding:12px 10px;font:800 14px/1.2 Archivo">Delhi</div>
+<div style="background:var(--color-bg);padding:12px 10px;font:800 14px/1.2 Archivo">Patna</div>
+</div>
+<a class="btn btn-secondary btn-block" href="https://alzakwaantours.in" target="_blank" rel="noopener">alzakwaantours.in</a>
+</div>
+</sc-if>
+
+</div>
+
+<div style="position:sticky;bottom:0;z-index:9;background:var(--color-bg);border-top:2px solid var(--color-divider);padding-bottom:24px">
+<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--color-divider)">
+<button class="btn" style="display:block;text-align:start;background:var(--color-bg);border:0;padding:9px 8px 12px;color:var(--color-text)" onClick="{{ go.home }}">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 10.5L12 3l9 7.5V21H3z"></path></svg>
+<span style="display:block;font:600 10px/1.2 Archivo;margin-top:5px">{{ t.tHome }}</span>
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}"><span style="display:block;height:2px;background:var(--color-accent);margin-top:5px"></span></sc-if>
+</button>
+<button class="btn" style="display:block;text-align:start;background:var(--color-bg);border:0;padding:9px 8px 12px;color:var(--color-text)" onClick="{{ go.guide }}">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 4h7v16H4zM13 4h7v16h-7z"></path></svg>
+<span style="display:block;font:600 10px/1.2 Archivo;margin-top:5px">{{ t.tGuide }}</span>
+<sc-if value="{{ tabGuide }}"><span style="display:block;height:2px;background:var(--color-accent);margin-top:5px"></span></sc-if>
+</button>
+<button class="btn" style="display:block;text-align:start;background:var(--color-bg);border:0;padding:9px 8px 12px;color:var(--color-text)" onClick="{{ go.packages }}">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 7l9-4 9 4v10l-9 4-9-4zM3 7l9 4 9-4M12 11v10"></path></svg>
+<span style="display:block;font:600 10px/1.2 Archivo;margin-top:5px">{{ t.tPack }}</span>
+<sc-if value="{{ tabPackages }}"><span style="display:block;height:2px;background:var(--color-accent);margin-top:5px"></span></sc-if>
+</button>
+<button class="btn" style="display:block;text-align:start;background:var(--color-bg);border:0;padding:9px 8px 12px;color:var(--color-text)" onClick="{{ go.news }}">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 5h16v14H4zM7 9h10M7 13h10M7 17h6"></path></svg>
+<span style="display:block;font:600 10px/1.2 Archivo;margin-top:5px">{{ t.tNews }}</span>
+<sc-if value="{{ tabNews }}"><span style="display:block;height:2px;background:var(--color-accent);margin-top:5px"></span></sc-if>
+</button>
+<button class="btn" style="display:block;text-align:start;background:var(--color-bg);border:0;padding:9px 8px 12px;color:var(--color-text)" onClick="{{ go.more }}">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+<span style="display:block;font:600 10px/1.2 Archivo;margin-top:5px">{{ t.tMore }}</span>
+<sc-if value="{{ tabMore }}"><span style="display:block;height:2px;background:var(--color-accent);margin-top:5px"></span></sc-if>
+</button>
+</div>
+</div>
+
+</div>
+</x-import>
+
+<div style="width:880px;flex:none;display:flex;flex-direction:column;gap:28px">
+
+<div style="background:var(--color-bg);border:2px solid var(--color-divider)">
+<div style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:2px solid var(--color-divider)">
+<div>
+<div style="font:400 10px/1 Archivo;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent)">Admin panel — web</div>
+<h3 style="margin:8px 0 0;font:800 22px/1.1 Archivo">Packages</h3>
+</div>
+<div style="display:flex;gap:8px">
+<button class="btn btn-secondary">Import CSV</button>
+<button class="btn btn-primary">New package</button>
+</div>
+</div>
+<table class="table" style="width:100%;border-collapse:collapse;font-size:13px">
+<thead>
+<tr>
+<th style="text-align:left;padding:10px 20px">Package</th>
+<th style="text-align:left;padding:10px 12px">Price from</th>
+<th style="text-align:left;padding:10px 12px">Nights</th>
+<th style="text-align:left;padding:10px 12px">Haram</th>
+<th style="text-align:left;padding:10px 12px">Departs</th>
+<th style="text-align:left;padding:10px 12px">Translations</th>
+<th style="text-align:left;padding:10px 20px">Live</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="padding:12px 20px;font-weight:600">Economy Umrah — 10 Nights</td>
+<td style="padding:12px">₹78,500</td><td style="padding:12px">10</td><td style="padding:12px">900 m</td><td style="padding:12px">12 Nov 2026</td>
+<td style="padding:12px"><span class="tag tag-neutral" style="font-size:10px;padding:2px 6px">EN</span> <span class="tag tag-neutral" style="font-size:10px;padding:2px 6px">HI</span> <span class="tag tag-neutral" style="font-size:10px;padding:2px 6px">UR</span></td>
+<td style="padding:12px 20px"><span class="tag tag-accent" style="font-size:10px;padding:2px 6px">On</span></td>
+</tr>
+<tr>
+<td style="padding:12px 20px;font-weight:600">Comfort Umrah — 14 Nights</td>
+<td style="padding:12px">₹1,12,000</td><td style="padding:12px">14</td><td style="padding:12px">450 m</td><td style="padding:12px">24 Nov 2026</td>
+<td style="padding:12px"><span class="tag tag-neutral" style="font-size:10px;padding:2px 6px">EN</span> <span class="tag tag-neutral" style="font-size:10px;padding:2px 6px">HI</span> <span class="tag tag-outline" style="font-size:10px;padding:2px 6px">UR missing</span></td>
+<td style="padding:12px 20px"><span class="tag tag-accent" style="font-size:10px;padding:2px 6px">On</span></td>
+</tr>
+<tr>
+<td style="padding:12px 20px;font-weight:600">Premium Haram View — 12 Nights</td>
+<td style="padding:12px">₹1,85,000</td><td style="padding:12px">12</td><td style="padding:12px">150 m</td><td style="padding:12px">05 Dec 2026</td>
+<td style="padding:12px"><span class="tag tag-neutral" style="font-size:10px;padding:2px 6px">EN</span> <span class="tag tag-neutral" style="font-size:10px;padding:2px 6px">HI</span> <span class="tag tag-neutral" style="font-size:10px;padding:2px 6px">UR</span></td>
+<td style="padding:12px 20px"><span class="tag tag-accent" style="font-size:10px;padding:2px 6px">On</span></td>
+</tr>
+<tr>
+<td style="padding:12px 20px;font-weight:600">Ramadan Umrah — 15 Nights</td>
+<td style="padding:12px">₹2,10,000</td><td style="padding:12px">15</td><td style="padding:12px">600 m</td><td style="padding:12px">18 Feb 2027</td>
+<td style="padding:12px"><span class="tag tag-neutral" style="font-size:10px;padding:2px 6px">EN</span> <span class="tag tag-outline" style="font-size:10px;padding:2px 6px">HI draft</span> <span class="tag tag-outline" style="font-size:10px;padding:2px 6px">UR missing</span></td>
+<td style="padding:12px 20px"><span class="tag tag-outline" style="font-size:10px;padding:2px 6px">Draft</span></td>
+</tr>
+</tbody>
+</table>
+<div style="padding:16px 20px;border-top:2px solid var(--color-divider);font:400 12.5px/1.5 Archivo;color:var(--t70)">Every field on the app's package card and detail screen is edited here, per language. Turning a package off removes it from the app without a release.</div>
+</div>
+
+<div style="background:var(--color-bg);border:2px solid var(--color-divider)">
+<div style="padding:16px 20px;border-bottom:2px solid var(--color-divider)">
+<div style="font:400 10px/1 Archivo;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent)">Admin panel — web</div>
+<h3 style="margin:8px 0 0;font:800 22px/1.1 Archivo">Content, links &amp; contact</h3>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--color-divider)">
+<div style="background:var(--color-bg);padding:18px 20px">
+<div style="font:800 11px/1 Archivo;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">Content collections</div>
+<div style="display:flex;flex-direction:column;gap:0">
+<div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--color-divider);font-size:13px"><span>Umrah guide — 6 rituals</span><span class="tag tag-neutral" style="font-size:10px;padding:2px 6px">EN HI UR</span></div>
+<div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--color-divider);font-size:13px"><span>First-time walkthrough — 6 steps</span><span class="tag tag-neutral" style="font-size:10px;padding:2px 6px">EN HI UR</span></div>
+<div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--color-divider);font-size:13px"><span>Duas — 4 stages, 8 entries</span><span class="tag tag-neutral" style="font-size:10px;padding:2px 6px">AR + 3</span></div>
+<div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--color-divider);font-size:13px"><span>Packing checklist — 4 groups</span><span class="tag tag-neutral" style="font-size:10px;padding:2px 6px">EN HI UR</span></div>
+<div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--color-divider);font-size:13px"><span>Vaccine checklist — 5 items</span><span class="tag tag-neutral" style="font-size:10px;padding:2px 6px">EN HI UR</span></div>
+<div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--color-divider);font-size:13px"><span>FAQ — 6 questions</span><span class="tag tag-outline" style="font-size:10px;padding:2px 6px">UR 4/6</span></div>
+</div>
+</div>
+<div style="background:var(--color-bg);padding:18px 20px">
+<div style="font:800 11px/1 Archivo;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">News sources</div>
+<div style="display:flex;flex-direction:column;gap:0;font-size:13px">
+<div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--color-divider)"><span>nusuk.sa — announcements</span><span class="tag tag-accent" style="font-size:10px;padding:2px 6px">Synced 2h</span></div>
+<div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--color-divider)"><span>haj.gov.sa — Ministry of Hajj &amp; Umrah</span><span class="tag tag-accent" style="font-size:10px;padding:2px 6px">Synced 2h</span></div>
+<div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--color-divider)"><span>spa.gov.sa — Saudi Press Agency</span><span class="tag tag-accent" style="font-size:10px;padding:2px 6px">Synced 6h</span></div>
+<div style="display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--color-divider)"><span>Manual post by staff</span><span class="tag tag-outline" style="font-size:10px;padding:2px 6px">Always on</span></div>
+</div>
+<div style="font:400 12px/1.5 Archivo;color:var(--t70);margin-top:12px">Fetched items land in a review queue — staff approve and translate before they appear in the app.</div>
+</div>
+</div>
+<div style="border-top:2px solid var(--color-divider);padding:18px 20px">
+<div style="font:800 11px/1 Archivo;letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px">Contact &amp; links used by every enquiry button</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+<div class="field"><label>WhatsApp number</label><input class="input" value="+91 99905 43267" readonly></div>
+<div class="field"><label>Call number</label><input class="input" value="+91 85338 98533" readonly></div>
+<div class="field"><label>Website</label><input class="input" value="alzakwaantours.in" readonly></div>
+<div class="field"><label>Primary email</label><input class="input" value="info@alzakwaantours.in" readonly></div>
+<div class="field"><label>Secondary email</label><input class="input" value="alzakwaantours@gmail.com" readonly></div>
+<div class="field"><label>Offices</label><input class="input" value="Aligarh · Delhi · Patna" readonly></div>
+</div>
+<div style="display:flex;gap:8px;margin-top:18px"><button class="btn btn-primary">Save &amp; publish</button><button class="btn btn-secondary">Preview in app</button></div>
+</div>
+</div>
+
+<div style="font:400 12.5px/1.6 Archivo;color:var(--t70);max-width:640px">
+<b style="color:var(--color-text)">Next steps</b> — send real photography for Makkah, Madinah and hotels; confirm the Nusuk deep links you want surfaced; and tell me whether Hajj should be a separate tab or a filter inside Packages.
+</div>
+
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = {
+    screen: 'home', lang: 'en', rtl: true, theme: 'light', stage: 0, faq: -1, pkg: 0,
+    done: {}, checks: {},
+    form: { city: 'Delhi', pax: 2, nights: 10, month: 'Nov 2026', hotel: '4★', notes: '' },
+    stack: []
+  };
+
+  S = {
+    by: ['Alzakwaan Tours & Travels Pvt Ltd', 'अलज़कवान टूर्स एंड ट्रेवल्स प्रा. लि.', 'الزکوان ٹورس اینڈ ٹریولز پرائیویٹ لمیٹڈ'],
+    home: ['Umrah Companion', 'उमराह कंपेनियन', 'عمرہ کمپینین'],
+    guide: ['Umrah Guide', 'उमराह गाइड', 'عمرہ گائیڈ'],
+    firsttime: ['First Time Umrah', 'पहली बार उमराह', 'پہلی بار عمرہ'],
+    duas: ['Duas for the Journey', 'सफ़र की दुआएँ', 'سفر کی دعائیں'],
+    packing: ['Packing Checklist', 'सामान चेकलिस्ट', 'سامان چیک لسٹ'],
+    vaccine: ['Vaccine Checklist', 'टीका चेकलिस्ट', 'ویکسین چیک لسٹ'],
+    news: ['Umrah News', 'उमराह ख़बरें', 'عمرہ خبریں'],
+    nusuk: ['Nusuk Services', 'नुसुक सेवाएँ', 'نسک سروسز'],
+    faq: ['Questions & Answers', 'सवाल और जवाब', 'سوال و جواب'],
+    packages: ['Umrah Packages', 'उमराह पैकेज', 'عمرہ پیکجز'],
+    customize: ['Customize Package', 'पैकेज कस्टमाइज़ करें', 'پیکج کسٹمائز کریں'],
+    services: ['Tickets & Visa', 'टिकट और वीज़ा', 'ٹکٹ اور ویزا'],
+    more: ['More', 'और', 'مزید'],
+    settings: ['Settings', 'सेटिंग्स', 'ترتیبات'],
+    tHome: ['Home', 'होम', 'ہوم'], tGuide: ['Guide', 'गाइड', 'گائیڈ'],
+    tPack: ['Packages', 'पैकेज', 'پیکجز'], tNews: ['News', 'ख़बरें', 'خبریں'],
+    tMore: ['More', 'और', 'مزید'],
+    countdown: ['Days to your departure', 'आपकी रवानगी में दिन', 'آپ کی روانگی میں دن'],
+    daysWord: ['days left', 'दिन बाक़ी', 'دن باقی'],
+    depart: ['Departure', 'रवानगी', 'روانگی'],
+    progress: ['Guide progress', 'गाइड प्रगति', 'گائیڈ پیش رفت'],
+    continueGuide: ['Continue the guide', 'गाइड जारी रखें', 'گائیڈ جاری رکھیں'],
+    quick: ['Quick access', 'त्वरित पहुँच', 'فوری رسائی'],
+    latest: ['From official sources', 'आधिकारिक स्रोतों से', 'سرکاری ذرائع سے'],
+    viewAll: ['View all', 'सभी देखें', 'سب دیکھیں'],
+    enquire: ['Enquire on WhatsApp', 'WhatsApp पर पूछें', 'واٹس ایپ پر پوچھیں'],
+    call: ['Call the office', 'ऑफ़िस को कॉल करें', 'دفتر کو کال کریں'],
+    details: ['Details', 'विवरण', 'تفصیل'],
+    guideIntro: ['Six stages, in the order you will perform them. Read before you travel, follow along in Makkah.', 'छह चरण, उसी क्रम में जिस क्रम में आप उन्हें करेंगे। सफ़र से पहले पढ़ें, मक्का में साथ-साथ देखें।', 'چھ مراحل، اسی ترتیب سے جس ترتیب سے آپ انہیں ادا کریں گے۔ سفر سے پہلے پڑھیں، مکہ میں ساتھ دیکھیں۔'],
+    tapDone: ['Tap a step to mark it done', 'पूरा हुआ चरण टैप करें', 'مکمل مرحلہ ٹیپ کریں'],
+    packNote: ['Tap to tick. Your list is saved.', 'टैप कर टिक करें। सूची सेव रहती है।', 'ٹیپ کر کے ٹک کریں۔ فہرست محفوظ رہتی ہے۔'],
+    vaxNote: ['Meningococcal ACWY is required before your visa is issued. Confirm the rest with your doctor.', 'वीज़ा से पहले मेनिंगोकोकल ACWY ज़रूरी है। बाक़ी अपने डॉक्टर से पुष्टि करें।', 'ویزا سے پہلے مینینگوکوکل ACWY لازمی ہے۔ باقی اپنے ڈاکٹر سے تصدیق کریں۔'],
+    syncNote: ['Synced 2 hours ago from nusuk.sa, haj.gov.sa and spa.gov.sa', '2 घंटे पहले nusuk.sa, haj.gov.sa और spa.gov.sa से सिंक', '2 گھنٹے پہلے nusuk.sa، haj.gov.sa اور spa.gov.sa سے سنک'],
+    nusukIntro: ['Direct links into the official Nusuk platform. They open in your browser or the Nusuk app.', 'आधिकारिक नुसुक प्लैटफ़ॉर्म के सीधे लिंक। ये ब्राउज़र या नुसुक ऐप में खुलते हैं।', 'سرکاری نسک پلیٹ فارم کے سیدھے لنکس۔ یہ براؤزر یا نسک ایپ میں کھلتے ہیں۔'],
+    pkgNote: ['Prices are per person on twin sharing, ex-India.', 'क़ीमतें प्रति व्यक्ति, ट्विन शेयरिंग, भारत से।', 'قیمتیں فی کس، ٹوئن شیئرنگ، بھارت سے۔'],
+    itinerary: ['Itinerary', 'यात्रा क्रम', 'سفر نامہ'],
+    included: ['What is included', 'क्या शामिल है', 'کیا شامل ہے'],
+    photoSlot: ['Hotel / Haram photograph', 'होटल / हरम की तस्वीर', 'ہوٹل / حرم کی تصویر'],
+    customIntro: ['Tell us what you need and we will price it. The details go straight to our WhatsApp.', 'बताइए आपको क्या चाहिए, हम क़ीमत बता देंगे। जानकारी सीधे हमारे WhatsApp पर जाएगी।', 'بتائیے آپ کو کیا چاہیے، ہم قیمت بتا دیں گے۔ تفصیل سیدھے ہمارے واٹس ایپ پر جائے گی۔'],
+    fCity: ['Departure city', 'रवानगी शहर', 'روانگی کا شہر'],
+    fPax: ['Travellers', 'यात्री', 'مسافر'],
+    fNights: ['Nights', 'रातें', 'راتیں'],
+    fMonth: ['Preferred month', 'पसंदीदा महीना', 'پسندیدہ مہینہ'],
+    fHotel: ['Hotel category', 'होटल श्रेणी', 'ہوٹل کا درجہ'],
+    fNotes: ['Anything else', 'और कुछ', 'اور کچھ'],
+    notesHint: ['Elders in the group, wheelchair, meals…', 'बुज़ुर्ग, व्हीलचेयर, खाना…', 'بزرگ، وہیل چیئر، کھانا…'],
+    preview: ['Message we will send', 'हम यह संदेश भेजेंगे', 'ہم یہ پیغام بھیجیں گے'],
+    sendWa: ['Send on WhatsApp', 'WhatsApp पर भेजें', 'واٹس ایپ پر بھیجیں'],
+    language: ['Language', 'भाषा', 'زبان'],
+    urduLayout: ['Urdu layout', 'उर्दू लेआउट', 'اردو لے آؤٹ'],
+    urduLayoutNote: ['RTL mirrors the whole screen. LTR keeps Urdu script in the English layout.', 'RTL पूरी स्क्रीन को मिरर करता है। LTR उर्दू लिपि को अंग्रेज़ी लेआउट में रखता है।', 'RTL پوری اسکرین کو مرر کرتا ہے۔ LTR اردو رسم الخط کو انگریزی لے آؤٹ میں رکھتا ہے۔'],
+    gallery: ['Past Journeys', 'पिछले सफ़र', 'گزشتہ سفر'],
+    galleryIntro: ['Photographs from groups we have taken for Umrah. Uploaded by our office after each departure.', 'उमराह पर ले जाए गए ग्रुपों की तस्वीरें। हर रवानगी के बाद हमारा दफ़्तर अपलोड करता है।', 'عمرہ پر لے جائے گئے گروپوں کی تصاویر۔ ہر روانگی کے بعد ہمارا دفتر اپ لوڈ کرتا ہے۔'],
+    galleryNote: ['Pilgrims can send their own photos; our staff review them before they appear here.', 'ज़ायरीन अपनी तस्वीरें भेज सकते हैं; स्टाफ़ जाँच के बाद यहाँ दिखाता है।', 'زائرین اپنی تصاویر بھیج سکتے ہیں؛ اسٹاف جانچ کے بعد یہاں دکھاتا ہے۔'],
+    addPhotos: ['Add your photos', 'अपनी तस्वीरें जोड़ें', 'اپنی تصاویر شامل کریں'],
+    appearance: ['Appearance', 'रूप', 'ظاہری شکل'],
+    light: ['Light', 'लाइट', 'لائٹ'],
+    dark: ['Dark', 'डार्क', 'ڈارک'],
+    contact: ['Contact', 'संपर्क', 'رابطہ'],
+    offices: ['Offices', 'दफ़्तर', 'دفاتر']
+  };
+
+  RIT = [
+    ['Niyyah & Ihram', 'नीयत और एहराम', 'نیت اور احرام', 'Enter Ihram at or before the Miqat, after two rakat and the intention.', 'मीक़ात पर या उससे पहले, दो रकात और नीयत के बाद एहराम बाँधें।', 'میقات پر یا اس سے پہلے، دو رکعت اور نیت کے بعد احرام باندھیں۔'],
+    ['Talbiyah', 'तलबिया', 'تلبیہ', 'Recite it aloud from the Miqat until you reach the Haram.', 'मीक़ात से हरम पहुँचने तक बुलंद आवाज़ में पढ़ें।', 'میقات سے حرم پہنچنے تک بلند آواز میں پڑھیں۔'],
+    ['Tawaf', 'तवाफ़', 'طواف', 'Seven circuits of the Kaaba, beginning and ending at the Black Stone.', 'काबा के सात चक्कर, हजरे-अस्वद से शुरू और वहीं ख़त्म।', 'کعبہ کے سات چکر، حجرِ اسود سے شروع اور وہیں ختم۔'],
+    ['Sai', 'सई', 'سعی', 'Seven walks between Safa and Marwah, starting at Safa.', 'सफ़ा और मरवा के बीच सात चक्कर, सफ़ा से शुरू।', 'صفا اور مروہ کے درمیان سات چکر، صفا سے شروع۔'],
+    ['Halq or Taqsir', 'हल्क़ या तक़सीर', 'حلق یا تقصیر', 'Shave or trim the hair. Ihram ends here and Umrah is complete.', 'बाल मुँडवाएँ या कटवाएँ। यहीं एहराम ख़त्म और उमराह पूरा।', 'بال منڈوائیں یا کٹوائیں۔ یہیں احرام ختم اور عمرہ مکمل۔'],
+    ['Zamzam & farewell', 'ज़मज़म और विदाई', 'زمزم اور الوداع', 'Drink Zamzam, pray, and make your closing duas before leaving.', 'ज़मज़म पिएँ, नमाज़ पढ़ें और रुख़्सत से पहले दुआ करें।', 'زمزم پییں، نماز پڑھیں اور رخصت سے پہلے دعا کریں۔']
+  ];
+
+  STEPS = [
+    ['Documents & Nusuk ID', 'दस्तावेज़ और नुसुक आईडी', 'دستاویزات اور نسک آئی ڈی', 'Passport valid six months, photographs, and a Nusuk account.', 'छह महीने वैध पासपोर्ट, फ़ोटो और नुसुक अकाउंट।', 'چھ ماہ کا معتبر پاسپورٹ، تصاویر اور نسک اکاؤنٹ۔'],
+    ['Vaccines', 'टीके', 'ویکسین', 'Meningitis ACWY certificate must be ready before the visa.', 'वीज़ा से पहले मेनिंजाइटिस ACWY सर्टिफ़िकेट तैयार रखें।', 'ویزا سے پہلے مینینجائٹس ACWY سرٹیفکیٹ تیار رکھیں۔'],
+    ['At the airport', 'एयरपोर्ट पर', 'ایئرپورٹ پر', 'Keep Ihram in your cabin bag and change before the Miqat.', 'एहराम केबिन बैग में रखें और मीक़ात से पहले बदलें।', 'احرام کیبن بیگ میں رکھیں اور میقات سے پہلے تبدیل کریں۔'],
+    ['Entering Ihram', 'एहराम बाँधना', 'احرام باندھنا', 'Two white sheets, two rakat, then the intention and Talbiyah.', 'दो सफ़ेद चादरें, दो रकात, फिर नीयत और तलबिया।', 'دو سفید چادریں، دو رکعت، پھر نیت اور تلبیہ۔'],
+    ['Performing Umrah', 'उमराह अदा करना', 'عمرہ ادا کرنا', 'Tawaf, then Sai, then Halq or Taqsir. Take water and go slowly.', 'तवाफ़, फिर सई, फिर हल्क़ या तक़सीर। पानी रखें, आराम से चलें।', 'طواف، پھر سعی، پھر حلق یا تقصیر۔ پانی رکھیں، آرام سے چلیں۔'],
+    ['Madinah & return', 'मदीना और वापसी', 'مدینہ اور واپسی', 'Book the Rawdah permit on Nusuk and keep return papers together.', 'नुसुक पर रौज़ा परमिट बुक करें और वापसी के कागज़ साथ रखें।', 'نسک پر روضہ پرمٹ بک کریں اور واپسی کے کاغذات ساتھ رکھیں۔']
+  ];
+
+  STAGES = [
+    ['Ihram', 'एहराम', 'احرام'], ['Tawaf', 'तवाफ़', 'طواف'],
+    ['Sai', 'सई', 'سعی'], ['Halq', 'हल्क़', 'حلق']
+  ];
+
+  STAGE_NOTE = [
+    ['Said after the two rakat, then repeated on the way.', 'दो रकात के बाद पढ़ें, फिर रास्ते में दोहराएँ।', 'دو رکعت کے بعد پڑھیں، پھر راستے میں دہرائیں۔'],
+    ['Said at the start of each circuit and between the corners.', 'हर चक्कर की शुरुआत में और कोनों के बीच पढ़ें।', 'ہر چکر کے آغاز پر اور کونوں کے درمیان پڑھیں۔'],
+    ['Said on Safa and repeated during the seven walks.', 'सफ़ा पर पढ़ें और सात चक्करों में दोहराएँ।', 'صفا پر پڑھیں اور سات چکروں میں دہرائیں۔'],
+    ['Said after the hair is cut and with Zamzam water.', 'बाल कटने के बाद और ज़मज़म पीते वक़्त पढ़ें।', 'بال کٹنے کے بعد اور زمزم پیتے وقت پڑھیں۔']
+  ];
+
+  DUAS = [
+    [
+      { ar: 'اللَّهُمَّ إِنِّي أُرِيدُ الْعُمْرَةَ فَيَسِّرْهَا لِي وَتَقَبَّلْهَا مِنِّي', tr: 'Allahumma inni uridul-\u2018umrata fa-yassirha li wa taqabbalha minni', w: ['Intention', 'नीयत', 'نیت'], m: ['O Allah, I intend Umrah — make it easy for me and accept it from me.', 'ऐ अल्लाह, मैं उमराह का इरादा रखता हूँ — इसे आसान कर और मुझसे क़बूल कर।', 'اے اللہ، میں عمرہ کا ارادہ رکھتا ہوں — اسے آسان کر اور مجھ سے قبول کر۔'] },
+      { ar: 'لَبَّيْكَ اللَّهُمَّ لَبَّيْكَ، لَبَّيْكَ لَا شَرِيكَ لَكَ لَبَّيْكَ، إِنَّ الْحَمْدَ وَالنِّعْمَةَ لَكَ وَالْمُلْكَ، لَا شَرِيكَ لَكَ', tr: 'Labbayk Allahumma labbayk, labbayka la sharika laka labbayk…', w: ['Talbiyah', 'तलबिया', 'تلبیہ'], m: ['Here I am, O Allah, here I am. You have no partner. All praise, blessing and dominion are Yours.', 'मैं हाज़िर हूँ ऐ अल्लाह, मैं हाज़िर हूँ। तेरा कोई शरीक नहीं। हर तारीफ़, नेमत और बादशाही तेरी है।', 'میں حاضر ہوں اے اللہ، میں حاضر ہوں۔ تیرا کوئی شریک نہیں۔ ہر تعریف، نعمت اور بادشاہی تیری ہے۔'] }
+    ],
+    [
+      { ar: 'بِسْمِ اللَّهِ وَاللَّهُ أَكْبَرُ', tr: 'Bismillahi wallahu akbar', w: ['At the Black Stone', 'हजरे-अस्वद पर', 'حجرِ اسود پر'], m: ['In the name of Allah, and Allah is the Greatest.', 'अल्लाह के नाम से, और अल्लाह सबसे बड़ा है।', 'اللہ کے نام سے، اور اللہ سب سے بڑا ہے۔'] },
+      { ar: 'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ', tr: 'Rabbana atina fid-dunya hasanatan wa fil-akhirati hasanatan wa qina \u2018adhaban-nar', w: ['Yemeni corner to the Black Stone', 'रुक्ने-यमानी से हजरे-अस्वद तक', 'رکنِ یمانی سے حجرِ اسود تک'], m: ['Our Lord, give us good in this world and the next, and save us from the Fire.', 'ऐ हमारे रब, हमें दुनिया और आख़िरत में भलाई दे और आग के अज़ाब से बचा।', 'اے ہمارے رب، ہمیں دنیا اور آخرت میں بھلائی دے اور آگ کے عذاب سے بچا۔'] }
+    ],
+    [
+      { ar: 'إِنَّ الصَّفَا وَالْمَرْوَةَ مِنْ شَعَائِرِ اللَّهِ', tr: 'Inna s-Safa wal-Marwata min sha\u2018a\u2019irillah', w: ['On Safa', 'सफ़ा पर', 'صفا پر'], m: ['Indeed Safa and Marwah are among the signs of Allah.', 'बेशक सफ़ा और मरवा अल्लाह की निशानियों में से हैं।', 'بے شک صفا اور مروہ اللہ کی نشانیوں میں سے ہیں۔'] },
+      { ar: 'رَبِّ اغْفِرْ وَارْحَمْ إِنَّكَ أَنْتَ الْأَعَزُّ الْأَكْرَمُ', tr: 'Rabbighfir warham innaka antal-a\u2018azzul-akram', w: ['Between Safa and Marwah', 'सफ़ा और मरवा के बीच', 'صفا اور مروہ کے درمیان'], m: ['My Lord, forgive and have mercy — You are the Most Mighty, the Most Generous.', 'ऐ मेरे रब, माफ़ कर और रहम कर — तू ही सबसे ग़ालिब, सबसे करीम है।', 'اے میرے رب، معاف کر اور رحم کر — تو ہی سب سے غالب، سب سے کریم ہے۔'] }
+    ],
+    [
+      { ar: 'اللَّهُمَّ تَقَبَّلْ مِنِّي وَاغْفِرْ لِي', tr: 'Allahumma taqabbal minni waghfir li', w: ['After Halq', 'हल्क़ के बाद', 'حلق کے بعد'], m: ['O Allah, accept this from me and forgive me.', 'ऐ अल्लाह, इसे मुझसे क़बूल कर और मुझे माफ़ कर।', 'اے اللہ، اسے مجھ سے قبول کر اور مجھے معاف کر۔'] },
+      { ar: 'اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا وَرِزْقًا وَاسِعًا وَشِفَاءً مِنْ كُلِّ دَاءٍ', tr: 'Allahumma inni as\u2019aluka \u2018ilman nafi\u2018an wa rizqan wasi\u2018an wa shifa\u2019an min kulli da\u2019', w: ['Drinking Zamzam', 'ज़मज़म पीते वक़्त', 'زمزم پیتے وقت'], m: ['O Allah, I ask You for useful knowledge, ample provision and a cure from every illness.', 'ऐ अल्लाह, मैं तुझसे नफ़ा देने वाला इल्म, कुशादा रिज़्क़ और हर बीमारी से शिफ़ा माँगता हूँ।', 'اے اللہ، میں تجھ سے نفع بخش علم، کشادہ رزق اور ہر بیماری سے شفا مانگتا ہوں۔'] }
+    ]
+  ];
+
+  PACK = [
+    [['Documents', 'दस्तावेज़', 'دستاویزات'], [
+      ['Passport', 'पासपोर्ट', 'پاسپورٹ'], ['Visa printout', 'वीज़ा प्रिंटआउट', 'ویزا پرنٹ آؤٹ'],
+      ['Nusuk permit QR', 'नुसुक परमिट QR', 'نسک پرمٹ QR'], ['Vaccine certificate', 'टीका सर्टिफ़िकेट', 'ویکسین سرٹیفکیٹ'],
+      ['Four photographs', 'चार फ़ोटो', 'چار تصاویر'], ['Ticket copies', 'टिकट की कॉपी', 'ٹکٹ کی کاپی']
+    ]],
+    [['Ihram & clothing', 'एहराम और कपड़े', 'احرام اور کپڑے'], [
+      ['Two Ihram sheets', 'दो एहराम चादरें', 'دو احرام چادریں'], ['Ihram belt', 'एहराम बेल्ट', 'احرام بیلٹ'],
+      ['Unstitched slippers', 'बिना सिलाई चप्पल', 'بغیر سلائی چپل'], ['Prayer cap', 'टोपी', 'ٹوپی'],
+      ['Loose clothing / abaya', 'ढीले कपड़े / अबाया', 'ڈھیلے کپڑے / عبایا'], ['Unscented soap', 'बिना ख़ुशबू साबुन', 'بغیر خوشبو صابن']
+    ]],
+    [['Health', 'सेहत', 'صحت'], [
+      ['Prescription medicines', 'नियमित दवाएँ', 'مستقل دوائیں'], ['ORS sachets', 'ORS पैकेट', 'او آر ایس ساشے'],
+      ['Bandages & antiseptic', 'पट्टी और एंटीसेप्टिक', 'پٹی اور اینٹی سیپٹک'], ['Petroleum jelly', 'वैसलीन', 'ویزلین'],
+      ['Masks', 'मास्क', 'ماسک']
+    ]],
+    [['Essentials', 'ज़रूरी सामान', 'ضروری سامان'], [
+      ['Zamzam bottle', 'ज़मज़म बोतल', 'زمزم بوتل'], ['Foldable prayer mat', 'तह होने वाली जानमाज़', 'تہ ہونے والی جانماز'],
+      ['Power bank', 'पावर बैंक', 'پاور بینک'], ['Universal adapter', 'यूनिवर्सल अडैप्टर', 'یونیورسل اڈاپٹر'],
+      ['Shoe bag', 'जूते का थैला', 'جوتوں کا تھیلا'], ['Umbrella', 'छतरी', 'چھتری']
+    ]]
+  ];
+
+  VAX = [
+    ['Meningococcal ACWY', 'मेनिंगोकोकल ACWY', 'مینینگوکوکل ACWY', 'Mandatory', 'Taken 10 days to 3 years before arrival. Certificate checked at visa stage.', '10 दिन से 3 साल पहले लगवाएँ। सर्टिफ़िकेट वीज़ा में जाँचा जाता है।', '10 دن سے 3 سال پہلے لگوائیں۔ سرٹیفکیٹ ویزا میں چیک ہوتا ہے۔'],
+    ['Polio (OPV)', 'पोलियो (OPV)', 'پولیو (OPV)', 'Required for India', 'One dose 4 weeks to 12 months before departure.', 'रवानगी से 4 हफ़्ते से 12 महीने पहले एक ख़ुराक।', 'روانگی سے 4 ہفتے تا 12 ماہ پہلے ایک خوراک۔'],
+    ['Seasonal influenza', 'मौसमी फ़्लू', 'موسمی فلو', 'Recommended', 'Advised for crowded seasons and for elders.', 'भीड़ के मौसम और बुज़ुर्गों के लिए सलाह दी जाती है।', 'ہجوم کے موسم اور بزرگوں کے لیے مشورہ دیا جاتا ہے۔'],
+    ['COVID-19', 'कोविड-19', 'کووڈ-19', 'Recommended', 'Follow the current Saudi advisory at the time of travel.', 'सफ़र के वक़्त की मौजूदा सऊदी सलाह देखें।', 'سفر کے وقت کی موجودہ سعودی ہدایت دیکھیں۔'],
+    ['Yellow fever', 'येलो फ़ीवर', 'یلو فیور', 'If transiting', 'Only if you transit a listed country. Ask us if unsure.', 'सिर्फ़ सूचीबद्ध देश से ट्रांज़िट पर। शक हो तो पूछें।', 'صرف فہرست میں شامل ملک سے ٹرانزٹ پر۔ شک ہو تو پوچھیں۔']
+  ];
+
+  NEWS = [
+    ['Nusuk', '2h', 'Umrah permit slots opened for Safar 1448', 'New booking windows released for Makkah and for Rawdah visits in Madinah.', 'सफ़र 1448 के लिए उमराह परमिट स्लॉट खुले', 'मक्का और मदीना में रौज़ा ज़ियारत के लिए नई बुकिंग विंडो जारी।', 'صفر 1448 کے لیے عمرہ پرمٹ سلاٹ کھل گئے', 'مکہ اور مدینہ میں روضہ زیارت کے لیے نئی بکنگ ونڈو جاری۔'],
+    ['Ministry of Hajj', '5h', 'Rawdah permits bookable ten days ahead', 'The booking horizon has been extended; one visit per pilgrim per season.', 'रौज़ा परमिट दस दिन पहले बुक हो सकेंगे', 'बुकिंग अवधि बढ़ाई गई; हर ज़ायरीन को सीज़न में एक ज़ियारत।', 'روضہ پرمٹ دس دن پہلے بک ہو سکیں گے', 'بکنگ مدت بڑھا دی گئی؛ ہر زائر کو سیزن میں ایک زیارت۔'],
+    ['Saudi Press Agency', '1d', 'Additional Mataf capacity opens for peak hours', 'Crowd management adds new routes for wheelchair users.', 'पीक आवर्स में मताफ़ की अतिरिक्त क्षमता', 'भीड़ प्रबंधन में व्हीलचेयर के लिए नए रास्ते।', 'پیک آورز میں مطاف کی اضافی گنجائش', 'ہجوم کے انتظام میں وہیل چیئر کے لیے نئے راستے۔'],
+    ['Nusuk', '2d', 'Nusuk app adds an Urdu interface', 'Pilgrims can now switch the permit flow to Urdu.', 'नुसुक ऐप में उर्दू इंटरफ़ेस', 'ज़ायरीन अब परमिट प्रक्रिया उर्दू में कर सकते हैं।', 'نسک ایپ میں اردو انٹرفیس', 'زائرین اب پرمٹ کا عمل اردو میں کر سکتے ہیں۔']
+  ];
+
+  LINKS = [
+    ['Nusuk portal — sign in', 'नुसुक पोर्टल — साइन इन', 'نسک پورٹل — سائن ان', 'nusuk.sa', 'https://www.nusuk.sa'],
+    ['Book an Umrah permit', 'उमराह परमिट बुक करें', 'عمرہ پرمٹ بک کریں', 'nusuk.sa · permits', 'https://www.nusuk.sa'],
+    ['Book a Rawdah visit', 'रौज़ा ज़ियारत बुक करें', 'روضہ زیارت بک کریں', 'nusuk.sa · Madinah', 'https://www.nusuk.sa'],
+    ['Nusuk Masar guide', 'नुसुक मसार गाइड', 'نسک مسار گائیڈ', 'nusuk.sa · masar', 'https://www.nusuk.sa'],
+    ['Ministry of Hajj & Umrah', 'हज और उमराह मंत्रालय', 'وزارتِ حج و عمرہ', 'haj.gov.sa', 'https://www.haj.gov.sa'],
+    ['Visa status check', 'वीज़ा स्थिति जाँचें', 'ویزا اسٹیٹس چیک کریں', 'visa.mofa.gov.sa', 'https://visa.mofa.gov.sa']
+  ];
+
+  FAQ = [
+    ['How long does an Umrah visa take?', 'उमराह वीज़ा में कितना समय लगता है?', 'عمرہ ویزا میں کتنا وقت لگتا ہے؟', 'Usually 5 to 10 working days once documents and the ACWY certificate are with us.', 'दस्तावेज़ और ACWY सर्टिफ़िकेट मिलने के बाद आम तौर पर 5 से 10 कार्यदिवस।', 'دستاویزات اور ACWY سرٹیفکیٹ ملنے کے بعد عام طور پر 5 سے 10 کاروباری دن۔'],
+    ['Can women travel without a mahram?', 'महिलाएँ मेहरम के बिना जा सकती हैं?', 'خواتین محرم کے بغیر جا سکتی ہیں؟', 'Yes — current Saudi rules allow it, and we place solo travellers in group rooms.', 'हाँ — मौजूदा सऊदी नियम इसकी इजाज़त देते हैं; अकेली यात्री ग्रुप रूम में रखी जाती हैं।', 'جی ہاں — موجودہ سعودی قواعد اجازت دیتے ہیں؛ اکیلی مسافر گروپ روم میں رکھی جاتی ہیں۔'],
+    ['Is the Rawdah visit included?', 'रौज़ा ज़ियारत शामिल है?', 'روضہ زیارت شامل ہے؟', 'We book it on Nusuk for you, but slots are issued by the Ministry and cannot be guaranteed.', 'हम नुसुक पर बुक करते हैं, लेकिन स्लॉट मंत्रालय देता है, गारंटी नहीं दी जा सकती।', 'ہم نسک پر بک کرتے ہیں، مگر سلاٹ وزارت دیتی ہے، ضمانت نہیں دی جا سکتی۔'],
+    ['What is not included in the price?', 'क़ीमत में क्या शामिल नहीं?', 'قیمت میں کیا شامل نہیں؟', 'Personal shopping, laundry, extra meals, and anything marked optional on the package.', 'निजी ख़रीदारी, कपड़े धुलाई, अतिरिक्त खाना और पैकेज में वैकल्पिक चीज़ें।', 'ذاتی خریداری، کپڑے دھلائی، اضافی کھانا اور پیکج میں اختیاری اشیاء۔'],
+    ['Can you arrange wheelchairs?', 'व्हीलचेयर का इंतिज़ाम हो सकता है?', 'وہیل چیئر کا انتظام ہو سکتا ہے؟', 'Yes, at the airport and in the Haram. Tell us at booking so we can request it early.', 'हाँ, एयरपोर्ट और हरम में। बुकिंग के वक़्त बताएँ ताकि पहले से माँगा जाए।', 'جی ہاں، ایئرپورٹ اور حرم میں۔ بکنگ کے وقت بتائیں تاکہ پہلے سے درخواست ہو۔'],
+    ['Do you also book air and train tickets?', 'हवाई और रेल टिकट भी बुक करते हैं?', 'ہوائی اور ٹرین ٹکٹ بھی بک کرتے ہیں؟', 'Yes — domestic and international air, plus IRCTC train tickets to your departure city.', 'हाँ — घरेलू और अंतरराष्ट्रीय हवाई, साथ ही रवानगी शहर तक IRCTC रेल टिकट।', 'جی ہاں — ملکی و بین الاقوامی ہوائی، اور روانگی شہر تک IRCTC ٹرین ٹکٹ۔']
+  ];
+
+  PKGS = [
+    { name: ['Economy Umrah — 10 Nights', 'इकॉनमी उमराह — 10 रातें', 'اکانومی عمرہ — 10 راتیں'], price: '₹78,500', type: ['Group', 'ग्रुप', 'گروپ'], date: '12 Nov 2026', nights: '10', dist: '900 m', stars: '3★', city: ['Delhi', 'दिल्ली', 'دہلی'], meals: ['Breakfast', 'नाश्ता', 'ناشتہ'] },
+    { name: ['Comfort Umrah — 14 Nights', 'कम्फ़र्ट उमराह — 14 रातें', 'کمفرٹ عمرہ — 14 راتیں'], price: '₹1,12,000', type: ['Group', 'ग्रुप', 'گروپ'], date: '24 Nov 2026', nights: '14', dist: '450 m', stars: '4★', city: ['Delhi', 'दिल्ली', 'دہلی'], meals: ['Breakfast & dinner', 'नाश्ता और रात का खाना', 'ناشتہ اور رات کا کھانا'] },
+    { name: ['Premium Haram View — 12 Nights', 'प्रीमियम हरम व्यू — 12 रातें', 'پریمیم حرم ویو — 12 راتیں'], price: '₹1,85,000', type: ['Private', 'प्राइवेट', 'پرائیویٹ'], date: '05 Dec 2026', nights: '12', dist: '150 m', stars: '5★', city: ['Lucknow', 'लखनऊ', 'لکھنؤ'], meals: ['Full board', 'तीनों वक़्त का खाना', 'تینوں وقت کا کھانا'] },
+    { name: ['Ramadan Umrah — 15 Nights', 'रमज़ान उमराह — 15 रातें', 'رمضان عمرہ — 15 راتیں'], price: '₹2,10,000', type: ['Group', 'ग्रुप', 'گروپ'], date: '18 Feb 2027', nights: '15', dist: '600 m', stars: '4★', city: ['Patna', 'पटना', 'پٹنہ'], meals: ['Full board', 'तीनों वक़्त का खाना', 'تینوں وقت کا کھانا'] }
+  ];
+
+  FACTS = {
+    nights: ['Nights', 'रातें', 'راتیں'], dist: ['From Haram', 'हरम से', 'حرم سے'],
+    stars: ['Hotel', 'होटल', 'ہوٹل'], city: ['Departs from', 'रवानगी', 'روانگی'],
+    visa: ['Visa', 'वीज़ा', 'ویزا'], meals: ['Meals', 'खाना', 'کھانا'],
+    flight: ['Flight', 'फ़्लाइट', 'فلائٹ'], type: ['Type', 'प्रकार', 'قسم'],
+    yes: ['Included', 'शामिल', 'شامل'], next: ['Next departure', 'अगली रवानगी', 'اگلی روانگی']
+  };
+
+  SERV = [
+    ['01', 'Air tickets', 'हवाई टिकट', 'ہوائی ٹکٹ', 'Domestic and international fares, including Jeddah and Madinah sectors for pilgrims.', 'घरेलू और अंतरराष्ट्रीय किराए, ज़ायरीन के लिए जेद्दा और मदीना सेक्टर सहित।', 'ملکی و بین الاقوامی کرائے، زائرین کے لیے جدہ اور مدینہ سیکٹر سمیت۔', ['Jeddah', 'Madinah', 'Dubai', 'Group fares']],
+    ['02', 'Train tickets', 'रेल टिकट', 'ٹرین ٹکٹ', 'IRCTC bookings to your departure airport, including group and tatkal requests.', 'रवानगी एयरपोर्ट तक IRCTC बुकिंग, ग्रुप और तत्काल सहित।', 'روانگی ایئرپورٹ تک IRCTC بکنگ، گروپ اور تتکال سمیت۔', ['IRCTC', 'Group', 'Tatkal']],
+    ['03', 'Visa services', 'वीज़ा सेवाएँ', 'ویزا سروسز', 'Umrah and Hajj visas, plus tourist and business visas for other countries.', 'उमराह और हज वीज़ा, साथ ही अन्य देशों के टूरिस्ट और बिज़नेस वीज़ा।', 'عمرہ اور حج ویزا، نیز دیگر ممالک کے ٹورسٹ اور بزنس ویزا۔', ['Umrah', 'Hajj', 'Tourist', 'Business']]
+  ];
+
+  li() { return this.state.lang === 'hi' ? 1 : this.state.lang === 'ur' ? 2 : 0; }
+  pick(arr) { return arr[this.li()] ?? arr[0]; }
+  nav(s) { this.setState(st => ({ screen: s, stack: st.screen === s ? st.stack : [...st.stack, st.screen] })); }
+
+  renderVals() {
+    const i = this.li(), L = a => a[i] ?? a[0], S = this.state;
+    const t = {}; for (const k in this.S) t[k] = L(this.S[k]);
+    const nav = s => () => this.nav(s);
+    const go = {
+      home: nav('home'), guide: nav('guide'), firsttime: nav('firsttime'), duas: nav('duas'),
+      packing: nav('packing'), vaccine: nav('vaccine'), news: nav('news'), nusuk: nav('nusuk'),
+      faq: nav('faq'), packages: nav('packages'), detail: nav('detail'), customize: nav('customize'),
+      services: nav('services'), more: nav('more'), settings: nav('settings'),
+      back: () => this.setState(st => ({ screen: st.stack[st.stack.length - 1] || 'home', stack: st.stack.slice(0, -1) }))
+    };
+
+    const dep = new Date(2026, 10, 12);
+    const days = Math.max(0, Math.round((dep - new Date()) / 86400000));
+    const doneCount = Object.values(S.done).filter(Boolean).length;
+    const bars = [0, 1, 2, 3, 4, 5].map(n => ({ fill: S.done[n] ? 'var(--color-accent)' : 'var(--t20)' }));
+
+    const F = this.FACTS;
+    const facts = p => [
+      { k: L(F.nights), v: p.nights }, { k: L(F.dist), v: p.dist },
+      { k: L(F.stars), v: p.stars }, { k: L(F.city), v: L(p.city) },
+      { k: L(F.visa), v: L(F.yes) }, { k: L(F.meals), v: L(p.meals) },
+      { k: L(F.flight), v: L(F.yes) }, { k: L(F.type), v: L(p.type) }
+    ];
+    const waNum = '919990543267';
+    const wa = msg => 'https://wa.me/' + waNum + '?text=' + encodeURIComponent(msg);
+    const packages = this.PKGS.map((p, n) => ({
+      name: L(p.name), price: p.price, type: L(p.type), date: p.date, from: L(['From', 'से', 'سے']),
+      per: L(['per person', 'प्रति व्यक्ति', 'فی کس']), dateLabel: L(F.next), facts: facts(p).slice(0, 6),
+      wa: wa('Assalamu alaikum, I am interested in ' + p.name[0] + ' (' + p.price + ', departs ' + p.date + '). Please share details.'),
+      open: () => this.setState({ pkg: n }, () => this.nav('detail'))
+    }));
+    const cur = this.PKGS[S.pkg];
+    const pkg = {
+      name: L(cur.name), price: cur.price, type: L(cur.type), date: cur.date, facts: facts(cur),
+      from: L(['From', 'से', 'سے']), per: L(['per person', 'प्रति व्यक्ति', 'فی کس']),
+      wa: wa('Assalamu alaikum, I am interested in ' + cur.name[0] + '. Please share details.'),
+      itin: [
+        { k: L(['Day 1', 'दिन 1', 'دن 1']), v: L(['Flight to Jeddah, transfer to Makkah, Ihram at the Miqat', 'जेद्दा उड़ान, मक्का ट्रांसफ़र, मीक़ात पर एहराम', 'جدہ پرواز، مکہ منتقلی، میقات پر احرام']) },
+        { k: L(['Day 2', 'दिन 2', 'دن 2']), v: L(['Umrah with a guide from our staff', 'हमारे स्टाफ़ के गाइड के साथ उमराह', 'ہمارے اسٹاف کے گائیڈ کے ساتھ عمرہ']) },
+        { k: L(['Makkah', 'मक्का', 'مکہ']), v: L(['Seven nights, ziyarat of Mina and Arafat', 'सात रातें, मीना और अराफ़ात की ज़ियारत', 'سات راتیں، منیٰ اور عرفات کی زیارت']) },
+        { k: L(['Madinah', 'मदीना', 'مدینہ']), v: L(['Three nights, Rawdah permit requested on Nusuk', 'तीन रातें, नुसुक पर रौज़ा परमिट', 'تین راتیں، نسک پر روضہ پرمٹ']) }
+      ],
+      incl: [
+        L(['Return flights from your departure city', 'रवानगी शहर से आने-जाने की फ़्लाइट', 'روانگی شہر سے آنے جانے کی فلائٹ']),
+        L(['Umrah visa and Nusuk permits', 'उमराह वीज़ा और नुसुक परमिट', 'عمرہ ویزا اور نسک پرمٹ']),
+        L(['Hotels in Makkah and Madinah', 'मक्का और मदीना में होटल', 'مکہ اور مدینہ میں ہوٹل']),
+        L(['Air-conditioned transport and Ziyarat', 'एसी ट्रांसपोर्ट और ज़ियारत', 'اے سی ٹرانسپورٹ اور زیارت']),
+        L(['Urdu and Hindi speaking group leader', 'उर्दू और हिंदी बोलने वाला ग्रुप लीडर', 'اردو اور ہندی بولنے والا گروپ لیڈر']),
+        L(['Zamzam and travel kit', 'ज़मज़म और ट्रैवल किट', 'زمزم اور ٹریول کٹ'])
+      ]
+    };
+
+    const f = S.form;
+    const waPreview = L([
+      'Assalamu alaikum, I want a customized Umrah package.\nFrom: ' + f.city + '\nTravellers: ' + f.pax + '\nNights: ' + f.nights + '\nMonth: ' + f.month + '\nHotel: ' + f.hotel + (f.notes ? '\nNotes: ' + f.notes : ''),
+      'अस्सलामु अलैकुम, मुझे कस्टमाइज़्ड उमराह पैकेज चाहिए।\nशहर: ' + f.city + '\nयात्री: ' + f.pax + '\nरातें: ' + f.nights + '\nमहीना: ' + f.month + '\nहोटल: ' + f.hotel + (f.notes ? '\nनोट: ' + f.notes : ''),
+      'السلام علیکم، مجھے کسٹمائزڈ عمرہ پیکج چاہیے۔\nشہر: ' + f.city + '\nمسافر: ' + f.pax + '\nراتیں: ' + f.nights + '\nمہینہ: ' + f.month + '\nہوٹل: ' + f.hotel + (f.notes ? '\nنوٹ: ' + f.notes : '')
+    ]);
+    const setF = k => e => { const v = e.target.value; this.setState(st => ({ form: { ...st.form, [k]: v } })); };
+
+    const titles = { home: t.home, guide: t.guide, firsttime: t.firsttime, duas: t.duas, packing: t.packing, vaccine: t.vaccine, news: t.news, nusuk: t.nusuk, faq: t.faq, packages: t.packages, detail: t.packages, customize: t.customize, services: t.services, more: t.more, settings: t.settings };
+
+    return {
+      t, lang: S.lang, dir: S.lang === 'ur' && S.rtl ? 'rtl' : 'ltr', title: titles[S.screen],
+      isEn: S.lang === 'en', isHi: S.lang === 'hi', isUr: S.lang === 'ur',
+      isRtl: S.rtl, isLtr: !S.rtl,
+      setEn: () => this.setState({ lang: 'en' }), setHi: () => this.setState({ lang: 'hi' }), setUr: () => this.setState({ lang: 'ur' }),
+      setRtl: () => this.setState({ rtl: true }), setLtr: () => this.setState({ rtl: false }),
+      go, canBack: S.stack.length > 0,
+      isHome: S.screen === 'home', isGuide: S.screen === 'guide', isFirst: S.screen === 'firsttime',
+      isDuas: S.screen === 'duas', isPacking: S.screen === 'packing', isVaccine: S.screen === 'vaccine',
+      isNews: S.screen === 'news', isNusuk: S.screen === 'nusuk', isFaq: S.screen === 'faq',
+      isPackages: S.screen === 'packages', isDetail: S.screen === 'detail', isCustomize: S.screen === 'customize',
+      isServices: S.screen === 'services', isMore: S.screen === 'more', isSettings: S.screen === 'settings',
+      tabGuide: ['guide', 'firsttime', 'duas', 'packing', 'vaccine'].includes(S.screen),
+      tabPackages: ['packages', 'detail', 'customize'].includes(S.screen),
+      tabNews: ['news', 'nusuk'].includes(S.screen),
+      tabMore: ['more', 'settings', 'faq', 'services'].includes(S.screen),
+      days, doneCount, bars,
+      quick: [
+        { n: '01', t: t.firsttime, open: go.firsttime }, { n: '02', t: t.duas, open: go.duas },
+        { n: '03', t: t.packing, open: go.packing }, { n: '04', t: t.vaccine, open: go.vaccine },
+        { n: '05', t: t.nusuk, open: go.nusuk }, { n: '06', t: t.packages, open: go.packages }
+      ],
+      rituals: this.RIT.map((r, n) => ({ n: '0' + (n + 1), t: r[i], d: r[3 + i] })),
+      steps: this.STEPS.map((s, n) => ({
+        n: 'Step 0' + (n + 1), t: s[i], d: s[3 + i], done: !!S.done[n],
+        toggle: () => this.setState(st => ({ done: { ...st.done, [n]: !st.done[n] } }))
+      })),
+      stageNames: this.STAGES.map(s => s[i]),
+      st0: S.stage === 0, st1: S.stage === 1, st2: S.stage === 2, st3: S.stage === 3,
+      setStage0: () => this.setState({ stage: 0 }), setStage1: () => this.setState({ stage: 1 }),
+      setStage2: () => this.setState({ stage: 2 }), setStage3: () => this.setState({ stage: 3 }),
+      stageNote: this.STAGE_NOTE[S.stage][i],
+      duas: this.DUAS[S.stage].map(d => ({ ar: d.ar, tr: d.tr, when: d.w[i], mn: d.m[i] })),
+      packing: this.PACK.map(([g, items], gi) => ({
+        t: g[i], items: items.map((it, n) => ({
+          t: it[i], done: !!S.checks[gi + '-' + n],
+          toggle: () => this.setState(st => ({ checks: { ...st.checks, [gi + '-' + n]: !st.checks[gi + '-' + n] } }))
+        }))
+      })),
+      packCount: Object.values(S.checks).filter(Boolean).length + '/23',
+      vaccines: this.VAX.map((v, n) => ({
+        t: v[i], status: v[3], d: v[4 + i], done: !!S.checks['v' + n],
+        toggle: () => this.setState(st => ({ checks: { ...st.checks, ['v' + n]: !st.checks['v' + n] } }))
+      })),
+      news: this.NEWS.map(n => ({ src: n[0], time: n[1], t: i === 0 ? n[2] : n[2 + i * 2], d: i === 0 ? n[3] : n[3 + i * 2] })),
+      newsTop: this.NEWS.slice(0, 2).map(n => ({ src: n[0], time: n[1], t: i === 0 ? n[2] : n[2 + i * 2] })),
+      nusukLinks: this.LINKS.map(l => ({ t: l[i], host: l[3], url: l[4] })),
+      faq: this.FAQ.map((q, n) => ({
+        q: q[i], a: q[3 + i], open: S.faq === n, shut: S.faq !== n,
+        toggle: () => this.setState(st => ({ faq: st.faq === n ? -1 : n }))
+      })),
+      packages, pkg,
+      cities: ['Delhi', 'Lucknow', 'Patna', 'Kolkata'].map(c => ({ t: c, on: f.city === c, pick: () => this.setState(st => ({ form: { ...st.form, city: c } })) })),
+      hotels: ['3★', '4★', '5★'].map(h => ({ t: h, on: f.hotel === h, pick: () => this.setState(st => ({ form: { ...st.form, hotel: h } })) })),
+      form: f, onPax: setF('pax'), onNights: setF('nights'), onMonth: setF('month'), onNotes: setF('notes'),
+      waPreview, waCustom: wa(waPreview), waGeneral: wa('Assalamu alaikum, I have a question about Umrah packages.'), tel: 'tel:+918533898533',
+      services: this.SERV.map(s => ({ n: s[0], t: s[1 + i], d: s[4 + i], tags: s[7], wa: wa('Assalamu alaikum, I need help with ' + s[1] + '.') })),
+      moreLinks: [
+        { t: t.faq, open: go.faq }, { t: t.services, open: go.services }, { t: t.nusuk, open: go.nusuk },
+        { t: t.packing, open: go.packing }, { t: t.vaccine, open: go.vaccine }, { t: t.duas, open: go.duas },
+        { t: t.customize, open: go.customize }, { t: t.settings, open: go.settings }
+      ],
+      contacts: [
+        { k: 'WhatsApp', v: '+91 99905 43267' }, { k: L(['Phone', 'फ़ोन', 'فون']), v: '+91 85338 98533' },
+        { k: L(['Email', 'ईमेल', 'ای میل']), v: 'info@alzakwaantours.in' },
+        { k: L(['Website', 'वेबसाइट', 'ویب سائٹ']), v: 'alzakwaantours.in' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
