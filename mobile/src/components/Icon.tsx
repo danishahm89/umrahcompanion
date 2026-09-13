@@ -36,6 +36,8 @@ const ICONS = {
     paths: ['M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2'],
   },
   services: { paths: ['M3 8a2 2 0 012-2h14a2 2 0 012 2 2 2 0 000 4 2 2 0 00-2 2v2H5a2 2 0 01-2-2 2 2 0 000-4z', 'M10 6v12'] },
+  book: { paths: ['M5 4h11a3 3 0 013 3v13H8a3 3 0 00-3 3z', 'M5 4v16', 'M8 9h7M8 13h5'] },
+  contact: { paths: ['M4 4h4l2 4-2 2a10 10 0 006 6l2-2 4 2v4a2 2 0 01-2 2A14 14 0 014 6a2 2 0 010-2z'] },
 } as const;
 
 export type IconName = keyof typeof ICONS;

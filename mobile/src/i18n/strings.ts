@@ -114,6 +114,15 @@ export const STRINGS = {
   phone: ['Phone', 'फ़ोन', 'فون'],
   email: ['Email', 'ईमेल', 'ای میل'],
   website: ['Website', 'वेबसाइट', 'ویب سائٹ'],
+  ebooks: ['Ebooks', 'ई-पुस्तकें', 'ای کتابیں'],
+  ebooksIntro: [
+    'Guides and booklets to read before your journey.',
+    'सफ़र से पहले पढ़ने के लिए गाइड और पुस्तिकाएँ।',
+    'سفر سے پہلے پڑھنے کے لیے گائیڈز اور کتابچے۔',
+  ],
+  openEbook: ['Open', 'खोलें', 'کھولیں'],
+  noEbooks: ['No ebooks added yet.', 'अभी तक कोई ई-पुस्तक नहीं जोड़ी गई।', 'ابھی تک کوئی ای کتاب شامل نہیں کی گئی۔'],
+  contactUs: ['Contact Us', 'हमसे संपर्क करें', 'ہم سے رابطہ کریں'],
 } satisfies Record<string, [string, string, string]>;
 
 export type StringKey = keyof typeof STRINGS;

@@ -120,6 +120,14 @@ export interface Service {
   tags: string[];
 }
 
+export interface Ebook {
+  id: string; order: number;
+  titleEn: string; titleHi: string; titleUr: string;
+  descEn: string; descHi: string; descUr: string;
+  coverImageUrl: string | null;
+  driveUrl: string;
+}
+
 export interface CustomizeEnquiryInput {
   city: string;
   pax: number;

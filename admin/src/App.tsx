@@ -12,6 +12,7 @@ import { NewsPage } from './pages/NewsPage';
 import { NusukLinksPage } from './pages/NusukLinksPage';
 import { FaqPage } from './pages/FaqPage';
 import { ServicesPage } from './pages/ServicesPage';
+import { EbooksPage } from './pages/EbooksPage';
 import { ContactPage } from './pages/ContactPage';
 import { EnquiriesPage } from './pages/EnquiriesPage';
 
@@ -38,6 +39,7 @@ function AppRoutes() {
         <Route path="/nusuk-links" element={<NusukLinksPage />} />
         <Route path="/faq" element={<FaqPage />} />
         <Route path="/services" element={<ServicesPage />} />
+        <Route path="/ebooks" element={<EbooksPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/enquiries" element={<EnquiriesPage />} />
       </Route>

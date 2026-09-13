@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { apiGet, apiPost } from './client';
 import type {
-  AppSettings, ContactInfo, CustomizeEnquiryInput, DuaStage, FaqItem, FirstTimeStep,
+  AppSettings, ContactInfo, CustomizeEnquiryInput, DuaStage, Ebook, FaqItem, FirstTimeStep,
   GuideRitual, NewsItem, NusukLink, Package, PackingGroup, Service, VaccineItem,
 } from './types';
 
@@ -30,6 +30,7 @@ export const useNews = () => useQuery({ queryKey: ['news'], queryFn: () => apiGe
 export const useNusukLinks = () => useQuery({ queryKey: ['nusuk-links'], queryFn: () => apiGet<NusukLink[]>('/nusuk-links') });
 export const useFaq = () => useQuery({ queryKey: ['faq'], queryFn: () => apiGet<FaqItem[]>('/faq') });
 export const useServices = () => useQuery({ queryKey: ['services'], queryFn: () => apiGet<Service[]>('/services') });
+export const useEbooks = () => useQuery({ queryKey: ['ebooks'], queryFn: () => apiGet<Ebook[]>('/ebooks') });
 
 export const useSubmitEnquiry = () =>
   useMutation({ mutationFn: (input: CustomizeEnquiryInput) => apiPost('/enquiries', input) });

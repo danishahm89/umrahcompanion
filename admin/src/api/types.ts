@@ -36,6 +36,14 @@ export interface Service extends Translated3 {
   tags: string; // JSON-encoded string[]
 }
 
+export interface Ebook extends Translated3 {
+  id: string;
+  titleEn: string; titleHi: string; titleUr: string;
+  descEn: string; descHi: string; descUr: string;
+  coverImageUrl: string | null;
+  driveUrl: string;
+}
+
 export interface ItineraryItem {
   id?: string;
   order: number;

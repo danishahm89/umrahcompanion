@@ -20,6 +20,8 @@ import { PackagesScreen } from '../screens/PackagesScreen';
 import { PackageDetailScreen } from '../screens/PackageDetailScreen';
 import { CustomizeScreen } from '../screens/CustomizeScreen';
 import { ServicesScreen } from '../screens/ServicesScreen';
+import { EbooksScreen } from '../screens/EbooksScreen';
+import { ContactUsScreen } from '../screens/ContactUsScreen';
 import { MoreScreen } from '../screens/MoreScreen';
 import { SettingsScreen } from '../screens/SettingsScreen';
 import { GalleryScreen } from '../screens/GalleryScreen';
@@ -52,6 +54,8 @@ export function RootNavigator() {
             <Stack.Screen name="PackageDetail" component={PackageDetailScreen} />
             <Stack.Screen name="Customize" component={CustomizeScreen} />
             <Stack.Screen name="Services" component={ServicesScreen} />
+            <Stack.Screen name="Ebooks" component={EbooksScreen} />
+            <Stack.Screen name="ContactUs" component={ContactUsScreen} />
             <Stack.Screen name="More" component={MoreScreen} />
             <Stack.Screen name="Settings" component={SettingsScreen} />
             <Stack.Screen name="Gallery" component={GalleryScreen} />

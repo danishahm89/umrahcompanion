@@ -12,6 +12,7 @@ const NAV = [
   { to: '/nusuk-links', label: 'Nusuk links' },
   { to: '/faq', label: 'FAQ' },
   { to: '/services', label: 'Services' },
+  { to: '/ebooks', label: 'Ebooks' },
   { to: '/contact', label: 'Contact & settings' },
   { to: '/enquiries', label: 'Enquiries' },
 ];
