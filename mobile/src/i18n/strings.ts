@@ -183,6 +183,19 @@ export const STRINGS = {
   fFullName: ['Full name', 'पूरा नाम', 'پورا نام'],
   fPhone: ['Phone number', 'फ़ोन नंबर', 'فون نمبر'],
   submitEnquiry: ['Submit & send on WhatsApp', 'भेजें और WhatsApp करें', 'بھیجیں اور واٹس ایپ کریں'],
+  qibla: ['Qibla Direction', 'क़िबला दिशा', 'قبلہ کی سمت'],
+  qiblaIntro: [
+    'Point your phone flat and turn until the marker lines up with the top — that is the direction to face for prayer.',
+    'फ़ोन को सपाट पकड़ें और तब तक घुमाएँ जब तक निशान ऊपर से मेल न खाए — यही नमाज़ की दिशा है।',
+    'فون کو ہموار پکڑیں اور اس وقت تک گھمائیں جب تک نشان اوپر سے میل نہ کھائے — یہی نماز کی سمت ہے۔',
+  ],
+  fromNorth: ['from true north', 'सच्चे उत्तर से', 'حقیقی شمال سے'],
+  toKaaba: ['to the Kaaba', 'काबा तक', 'کعبہ تک'],
+  compassUnavailable: [
+    'Your device compass isn’t available — the number above is still accurate; just turn using a separate compass or app.',
+    'आपके डिवाइस का कम्पास उपलब्ध नहीं है — ऊपर की संख्या फिर भी सही है; किसी और कम्पास से दिशा तय करें।',
+    'آپ کے ڈیوائس کا کمپاس دستیاب نہیں ہے — اوپر کا نمبر پھر بھی درست ہے؛ کسی اور کمپاس سے سمت طے کریں۔',
+  ],
 } satisfies Record<string, [string, string, string]>;
 
 export type StringKey = keyof typeof STRINGS;

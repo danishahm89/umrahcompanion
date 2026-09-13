@@ -49,6 +49,7 @@ const ICONS = {
     ],
   },
   clock: { circles: [{ cx: 12, cy: 12, r: 9 }], paths: ['M12 7v5l3.5 2'] },
+  compass: { circles: [{ cx: 12, cy: 12, r: 9 }], paths: ['M15 9l-2 6-6 2 2-6z'] },
 } as const;
 
 export type IconName = keyof typeof ICONS;

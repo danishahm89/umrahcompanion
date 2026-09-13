@@ -22,7 +22,7 @@ import type { RootStackParamList } from '../navigation/types';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
 
-const QUICK: { icon: IconName; labelKey: 'firsttime' | 'duas' | 'packing' | 'vaccine' | 'nusuk' | 'packages' | 'nearbyMosques'; target: keyof RootStackParamList }[] = [
+const QUICK: { icon: IconName; labelKey: 'firsttime' | 'duas' | 'packing' | 'vaccine' | 'nusuk' | 'packages' | 'nearbyMosques' | 'qibla'; target: keyof RootStackParamList }[] = [
   { icon: 'firstTime', labelKey: 'firsttime', target: 'FirstTime' },
   { icon: 'duas', labelKey: 'duas', target: 'Duas' },
   { icon: 'packing', labelKey: 'packing', target: 'Packing' },
@@ -30,6 +30,7 @@ const QUICK: { icon: IconName; labelKey: 'firsttime' | 'duas' | 'packing' | 'vac
   { icon: 'nusuk', labelKey: 'nusuk', target: 'Nusuk' },
   { icon: 'packages', labelKey: 'packages', target: 'Packages' },
   { icon: 'mosque', labelKey: 'nearbyMosques', target: 'NearbyMosques' },
+  { icon: 'compass', labelKey: 'qibla', target: 'Qibla' },
 ];
 
 export function HomeScreen() {

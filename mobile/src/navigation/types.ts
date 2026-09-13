@@ -15,6 +15,7 @@ export type RootStackParamList = {
   Ebooks: undefined;
   ContactUs: undefined;
   NearbyMosques: undefined;
+  Qibla: undefined;
   TicketForm: { kind: 'air' | 'train'; serviceName: string };
   More: undefined;
   Settings: undefined;
@@ -29,7 +30,7 @@ const NEWS_SCREENS: (keyof RootStackParamList)[] = ['News', 'Nusuk'];
 const MORE_SCREENS: (keyof RootStackParamList)[] = ['More', 'Settings', 'Faq', 'Services', 'Ebooks', 'ContactUs', 'TicketForm'];
 
 export function sectionForRoute(routeName: string | undefined): TabSection {
-  if (routeName === 'Home' || routeName === 'NearbyMosques') return 'home';
+  if (routeName === 'Home' || routeName === 'NearbyMosques' || routeName === 'Qibla') return 'home';
   if (GUIDE_SCREENS.includes(routeName as keyof RootStackParamList)) return 'guide';
   if (PACKAGES_SCREENS.includes(routeName as keyof RootStackParamList)) return 'packages';
   if (NEWS_SCREENS.includes(routeName as keyof RootStackParamList)) return 'news';
