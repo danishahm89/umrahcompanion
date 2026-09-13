@@ -140,15 +140,15 @@ async function main() {
     }
   }
 
-  const VAX: [string, string, string, string, string, string, string][] = [
-    ['Meningococcal ACWY', 'मेनिंगोकोकल ACWY', 'مینینگوکوکل ACWY', 'Mandatory', 'Taken 10 days to 3 years before arrival. Certificate checked at visa stage.', '10 दिन से 3 साल पहले लगवाएँ। सर्टिफ़िकेट वीज़ा में जाँचा जाता है।', '10 دن سے 3 سال پہلے لگوائیں۔ سرٹیفکیٹ ویزا میں چیک ہوتا ہے۔'],
-    ['Polio (OPV)', 'पोलियो (OPV)', 'پولیو (OPV)', 'Required for India', 'One dose 4 weeks to 12 months before departure.', 'रवानगी से 4 हफ़्ते से 12 महीने पहले एक ख़ुराक।', 'روانگی سے 4 ہفتے تا 12 ماہ پہلے ایک خوراک۔'],
-    ['Seasonal influenza', 'मौसमी फ़्लू', 'موسمی فلو', 'Recommended', 'Advised for crowded seasons and for elders.', 'भीड़ के मौसम और बुज़ुर्गों के लिए सलाह दी जाती है।', 'ہجوم کے موسم اور بزرگوں کے لیے مشورہ دیا جاتا ہے۔'],
-    ['COVID-19', 'कोविड-19', 'کووڈ-19', 'Recommended', 'Follow the current Saudi advisory at the time of travel.', 'सफ़र के वक़्त की मौजूदा सऊदी सलाह देखें।', 'سفر کے وقت کی موجودہ سعودی ہدایت دیکھیں۔'],
-    ['Yellow fever', 'येलो फ़ीवर', 'یلو فیور', 'If transiting', 'Only if you transit a listed country. Ask us if unsure.', 'सिर्फ़ सूचीबद्ध देश से ट्रांज़िट पर। शक हो तो पूछें।', 'صرف فہرست میں شامل ملک سے ٹرانزٹ پر۔ شک ہو تو پوچھیں۔'],
+  const VAX: [string, string, string, string, string, string, string, string, string][] = [
+    ['Meningococcal ACWY', 'मेनिंगोकोकल ACWY', 'مینینگوکوکل ACWY', 'Mandatory', 'अनिवार्य', 'لازمی', 'Taken 10 days to 3 years before arrival. Certificate checked at visa stage.', '10 दिन से 3 साल पहले लगवाएँ। सर्टिफ़िकेट वीज़ा में जाँचा जाता है।', '10 دن سے 3 سال پہلے لگوائیں۔ سرٹیفکیٹ ویزا میں چیک ہوتا ہے۔'],
+    ['Polio (OPV)', 'पोलियो (OPV)', 'پولیو (OPV)', 'Required for India', 'भारत के लिए आवश्यक', 'بھارت کے لیے لازمی', 'One dose 4 weeks to 12 months before departure.', 'रवानगी से 4 हफ़्ते से 12 महीने पहले एक ख़ुराक।', 'روانگی سے 4 ہفتے تا 12 ماہ پہلے ایک خوراک۔'],
+    ['Seasonal influenza', 'मौसमी फ़्लू', 'موسمی فلو', 'Recommended', 'अनुशंसित', 'تجویز کردہ', 'Advised for crowded seasons and for elders.', 'भीड़ के मौसम और बुज़ुर्गों के लिए सलाह दी जाती है।', 'ہجوم کے موسم اور بزرگوں کے لیے مشورہ دیا جاتا ہے۔'],
+    ['COVID-19', 'कोविड-19', 'کووڈ-19', 'Recommended', 'अनुशंसित', 'تجویز کردہ', 'Follow the current Saudi advisory at the time of travel.', 'सफ़र के वक़्त की मौजूदा सऊदी सलाह देखें।', 'سفر کے وقت کی موجودہ سعودی ہدایت دیکھیں۔'],
+    ['Yellow fever', 'येलो फ़ीवर', 'یلو فیور', 'If transiting', 'ट्रांज़िट करने पर', 'ٹرانزٹ کی صورت میں', 'Only if you transit a listed country. Ask us if unsure.', 'सिर्फ़ सूचीबद्ध देश से ट्रांज़िट पर। शक हो तो पूछें।', 'صرف فہرست میں شامل ملک سے ٹرانزٹ پر۔ شک ہو تو پوچھیں۔'],
   ];
   for (const [i, v] of VAX.entries()) {
-    await prisma.vaccineItem.create({ data: { order: i, nameEn: v[0], nameHi: v[1], nameUr: v[2], statusEn: v[3], statusHi: v[3], statusUr: v[3], descEn: v[4], descHi: v[5], descUr: v[6] } });
+    await prisma.vaccineItem.create({ data: { order: i, nameEn: v[0], nameHi: v[1], nameUr: v[2], statusEn: v[3], statusHi: v[4], statusUr: v[5], descEn: v[6], descHi: v[7], descUr: v[8] } });
   }
 
   const newsSourceNames: [string, string][] = [
