@@ -204,7 +204,7 @@ publicRouter.get('/nearby-mosques', async (req, res) => {
   if (!data) throw new Error(`All Overpass mirrors failed:\n${attempts.join('\n')}`);
 
   type OverpassEl = { id: number; lat?: number; lon?: number; center?: { lat: number; lon: number }; tags?: Record<string, string> };
-  const results = ((data.elements ?? []) as OverpassEl[])
+  const mapped = ((data.elements ?? []) as OverpassEl[])
     .map((el) => {
       const elLat = el.lat ?? el.center?.lat;
       const elLng = el.lon ?? el.center?.lon;
@@ -218,8 +218,18 @@ publicRouter.get('/nearby-mosques', async (req, res) => {
       };
     })
     .filter((r): r is NonNullable<typeof r> => r !== null)
-    .sort((a, b) => a.distanceM - b.distanceM)
-    .slice(0, 20);
+    .sort((a, b) => a.distanceM - b.distanceM);
 
-  res.json(results);
+  // Querying node+way+relation across three tag conventions means the *same* physical
+  // mosque routinely comes back more than once (e.g. its building outline and its entrance
+  // node both carry the tag) — collapse anything within 150m of an already-kept result
+  // into one entry, keeping the closest.
+  const DEDUPE_RADIUS_M = 150;
+  const results: typeof mapped = [];
+  for (const candidate of mapped) {
+    const isDuplicate = results.some((kept) => haversineMeters(kept.lat, kept.lng, candidate.lat, candidate.lng) < DEDUPE_RADIUS_M);
+    if (!isDuplicate) results.push(candidate);
+  }
+
+  res.json(results.slice(0, 20));
 });
