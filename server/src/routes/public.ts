@@ -141,29 +141,45 @@ publicRouter.get('/nearby-mosques', async (req, res) => {
   const radiusM = 5000;
   const query = `[out:json][timeout:15];(node["amenity"="mosque"](around:${radiusM},${lat},${lng});way["amenity"="mosque"](around:${radiusM},${lat},${lng}););out center 30;`;
 
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 12000);
-  let overpassRes: Response;
-  try {
-    overpassRes = await fetch('https://overpass-api.de/api/interpreter', {
-      method: 'POST',
-      // Overpass's front-end rejects requests with no descriptive User-Agent or Accept
-      // header (406 Not Acceptable) — it's meant to identify real API clients, not just
-      // browsers, per their usage policy.
-      headers: {
-        'Content-Type': 'text/plain',
-        Accept: 'application/json, text/plain, */*',
-        'User-Agent': 'UmrahCompanionApp/1.0 (contact: info@alzakwaantours.in)',
-      },
-      body: query,
-      signal: controller.signal,
-    });
-  } finally {
-    clearTimeout(timeout);
-  }
-  if (!overpassRes.ok) throw new Error(`Overpass request failed: ${overpassRes.status}`);
+  // The free public Overpass instances are shared, unmetered infrastructure — any one of
+  // them can be briefly overloaded (504/429). Try a short list in order instead of failing
+  // the whole feature on the first one having a bad moment.
+  const OVERPASS_ENDPOINTS = [
+    'https://overpass-api.de/api/interpreter',
+    'https://overpass.kumi.systems/api/interpreter',
+    'https://overpass.openstreetmap.ru/api/interpreter',
+  ];
 
-  const data = (await overpassRes.json()) as { elements?: Array<Record<string, unknown>> };
+  let data: { elements?: Array<Record<string, unknown>> } | undefined;
+  let lastError: unknown;
+  for (const endpoint of OVERPASS_ENDPOINTS) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 12000);
+    try {
+      const overpassRes = await fetch(endpoint, {
+        method: 'POST',
+        // Overpass's front-end rejects requests with no descriptive User-Agent or Accept
+        // header (406 Not Acceptable) — it's meant to identify real API clients, not just
+        // browsers, per their usage policy.
+        headers: {
+          'Content-Type': 'text/plain',
+          Accept: 'application/json, text/plain, */*',
+          'User-Agent': 'UmrahCompanionApp/1.0 (contact: info@alzakwaantours.in)',
+        },
+        body: query,
+        signal: controller.signal,
+      });
+      if (!overpassRes.ok) throw new Error(`${endpoint} responded ${overpassRes.status}`);
+      data = (await overpassRes.json()) as { elements?: Array<Record<string, unknown>> };
+      break;
+    } catch (err) {
+      lastError = err;
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
+  if (!data) throw new Error(`All Overpass mirrors failed: ${lastError instanceof Error ? lastError.message : lastError}`);
+
   type OverpassEl = { id: number; lat?: number; lon?: number; center?: { lat: number; lon: number }; tags?: Record<string, string> };
   const results = ((data.elements ?? []) as OverpassEl[])
     .map((el) => {
