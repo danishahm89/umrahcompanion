@@ -75,7 +75,7 @@ Prisma Client back to SQLite.
    (your Render URL from step 2, with `/api` on the end).
 4. Deploy. Vercel gives you a URL like `https://umrahcompanion.vercel.app` — that's your
    real admin panel, reachable from anywhere, no PC required. Log in with the same
-   `admin@alzakwaantours.in` account (change that password once this is live).
+   `admin@alzakwaantours.com` account (change that password once this is live).
 
 ## 4. Point the mobile app at production
 

@@ -19,7 +19,7 @@ Nobody else can create these — they tie to your identity/business and require 
    Usually approved instantly, sometimes needs identity verification (1-2 days).
 4. **A privacy policy page**, publicly hosted (both stores require the URL in the store
    listing). A draft matching what this app actually does is in
-   `mobile/PRIVACY_POLICY.md` — publish it at e.g. `alzakwaantour.com/privacy` and use
+   `mobile/PRIVACY_POLICY.md` — publish it at e.g. `alzakwaantours.com/privacy` and use
    that URL in both listings.
 
 ## What I can do once those exist

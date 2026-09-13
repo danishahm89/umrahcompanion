@@ -12,7 +12,7 @@ npm run seed        # seeds all content in EN/HI/UR from the original design
 npm run dev         # http://localhost:4000
 ```
 
-Seeded admin login: `admin@alzakwaantours.in` / `umrah-admin-2026`.
+Seeded admin login: `admin@alzakwaantours.com` / `umrah-admin-2026`.
 
 ## Structure
 

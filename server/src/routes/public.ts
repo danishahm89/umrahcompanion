@@ -187,7 +187,7 @@ publicRouter.get('/nearby-mosques', async (req, res) => {
         headers: {
           'Content-Type': 'text/plain',
           Accept: 'application/json, text/plain, */*',
-          'User-Agent': 'UmrahCompanionApp/1.0 (contact: info@alzakwaantours.in)',
+          'User-Agent': 'UmrahCompanionApp/1.0 (contact: info@alzakwaantours.com)',
         },
         body: query,
         signal: controller.signal,

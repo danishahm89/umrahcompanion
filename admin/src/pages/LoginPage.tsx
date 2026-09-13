@@ -5,7 +5,7 @@ import { useAuth } from '../auth/AuthContext';
 export function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('admin@alzakwaantours.in');
+  const [email, setEmail] = useState('admin@alzakwaantours.com');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);

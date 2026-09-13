@@ -50,7 +50,7 @@ describe('admin API', () => {
 
   it('logs in and performs an authenticated CRUD round-trip', async () => {
     const login = await request(app).post('/api/admin/login').send({
-      email: 'admin@alzakwaantours.in', password: 'umrah-admin-2026',
+      email: 'admin@alzakwaantours.com', password: 'umrah-admin-2026',
     });
     expect(login.status).toBe(200);
     const token = login.body.token as string;
@@ -71,7 +71,7 @@ describe('admin API', () => {
 
   it('preserves itinerary and inclusions across a package update', async () => {
     const login = await request(app).post('/api/admin/login').send({
-      email: 'admin@alzakwaantours.in', password: 'umrah-admin-2026',
+      email: 'admin@alzakwaantours.com', password: 'umrah-admin-2026',
     });
     const token = login.body.token as string;
 

@@ -52,7 +52,7 @@ by contacting us using the details below.
 ## Contact us
 
 - WhatsApp / phone: +91 99905 43267 / +91 85338 98533
-- Email: info@alzakwaantours.in
+- Email: info@alzakwaantours.com
 - Website: [your current site URL]
 
 ## Changes to this policy

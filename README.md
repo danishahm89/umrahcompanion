@@ -20,7 +20,7 @@ cd admin  && npm install && cp .env.example .env && npm run dev
 cd mobile && npm install && cp .env.example .env && npx expo start
 ```
 
-Seeded admin login: `admin@alzakwaantours.in` / `umrah-admin-2026`.
+Seeded admin login: `admin@alzakwaantours.com` / `umrah-admin-2026`.
 
 ## Provenance
 

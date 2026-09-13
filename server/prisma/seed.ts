@@ -27,7 +27,7 @@ async function main() {
 
   await prisma.adminUser.create({
     data: {
-      email: 'admin@alzakwaantours.in',
+      email: 'admin@alzakwaantours.com',
       passwordHash: await bcrypt.hash('umrah-admin-2026', 10),
       name: 'Alzakwaan Staff',
     },

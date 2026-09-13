@@ -15,7 +15,7 @@ cp .env.example .env    # VITE_API_URL, defaults to http://localhost:4000/api
 npm run dev              # http://localhost:5173
 ```
 
-Seeded login: `admin@alzakwaantours.in` / `umrah-admin-2026`.
+Seeded login: `admin@alzakwaantours.com` / `umrah-admin-2026`.
 
 ## Structure
 
