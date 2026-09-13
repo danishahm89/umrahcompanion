@@ -220,6 +220,19 @@ model Service {
   tags    String
 }
 
+model Ebook {
+  id            String  @id @default(cuid())
+  order         Int
+  titleEn       String
+  titleHi       String
+  titleUr       String
+  descEn        String
+  descHi        String
+  descUr        String
+  coverImageUrl String?
+  driveUrl      String
+}
+
 model CustomizeEnquiry {
   id        String   @id @default(cuid())
   city      String

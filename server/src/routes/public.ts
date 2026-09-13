@@ -86,6 +86,10 @@ publicRouter.get('/services', async (_req, res) => {
   res.json(services.map((s) => ({ ...s, tags: JSON.parse(s.tags) })));
 });
 
+publicRouter.get('/ebooks', async (_req, res) => {
+  res.json(await prisma.ebook.findMany({ orderBy: { order: 'asc' } }));
+});
+
 const enquirySchema = z.object({
   city: z.string().min(1),
   pax: z.number().int().positive(),

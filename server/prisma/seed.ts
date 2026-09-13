@@ -5,6 +5,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   await prisma.customizeEnquiry.deleteMany();
+  await prisma.ebook.deleteMany();
   await prisma.dua.deleteMany();
   await prisma.duaStage.deleteMany();
   await prisma.packingItem.deleteMany();

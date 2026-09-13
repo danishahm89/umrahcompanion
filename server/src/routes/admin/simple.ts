@@ -10,3 +10,4 @@ adminSimpleRouter.use('/vaccines', orderedResourceRouter(prisma.vaccineItem));
 adminSimpleRouter.use('/nusuk-links', orderedResourceRouter(prisma.nusukLink));
 adminSimpleRouter.use('/faq', orderedResourceRouter(prisma.faqItem));
 adminSimpleRouter.use('/services', orderedResourceRouter(prisma.service));
+adminSimpleRouter.use('/ebooks', orderedResourceRouter(prisma.ebook));

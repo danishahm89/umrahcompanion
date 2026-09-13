@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Linking, Pressable, View } from 'react-native';
+import { Linking, Pressable, RefreshControl, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ScreenScaffold } from '../components/ScreenScaffold';
@@ -24,7 +24,7 @@ export function PackagesScreen() {
   const { colors } = useTheme();
   const { t, field } = useLanguage();
   const { row } = useDirection();
-  const { data: packages } = usePackages();
+  const { data: packages, refetch, isRefetching } = usePackages();
   const { data: contact } = useContact();
   const [filter, setFilter] = useState('all');
 
@@ -34,7 +34,10 @@ export function PackagesScreen() {
   );
 
   return (
-    <ScreenScaffold title={t('packages')}>
+    <ScreenScaffold
+      title={t('packages')}
+      refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor={colors.accent} />}
+    >
       <CardStack>
         <AppText size={12.5} color={colors.t70} style={{ lineHeight: 18, paddingHorizontal: 2 }}>{t('pkgNote')}</AppText>
 

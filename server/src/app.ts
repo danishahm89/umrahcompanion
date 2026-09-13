@@ -1,3 +1,4 @@
+import 'express-async-errors'; // patches Express to forward a rejected async handler to the error middleware below, instead of an unhandled rejection crashing the whole process
 import cors from 'cors';
 import express from 'express';
 import { publicRouter } from './routes/public';
@@ -14,7 +15,7 @@ export function createApp() {
 
   app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
     console.error(err);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: err.message || 'Internal server error' });
   });
 
   return app;
