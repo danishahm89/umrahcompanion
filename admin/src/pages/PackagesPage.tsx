@@ -9,20 +9,50 @@ const BLANK_PACKAGE: Omit<Package, 'id'> = {
   type: 'group',
   nameEn: '', nameHi: '', nameUr: '',
   priceInr: 0,
+  price2Share: null,
+  price3Share: null,
+  price4Share: null,
+  price5Share: null,
   departDate: new Date().toISOString().slice(0, 10),
   nights: 1,
-  hotelStars: '3★',
-  hotelDistM: 0,
+  makkahHotelStars: 3,
+  makkahHotelDistM: 0,
+  makkahHotelRemark: 'walking',
+  madinahHotelStars: 3,
+  madinahHotelDistM: 0,
+  madinahHotelRemark: 'walking',
   cityEn: '', cityHi: '', cityUr: '',
   mealsEn: '', mealsHi: '', mealsUr: '',
   visaIncluded: true,
   flightIncluded: true,
+  flightConfirmLater: false,
+  flightAirline: '',
+  flightRouting: 'direct',
+  flightViaCity: '',
+  flightDepartureAt: null,
+  flightReturnAt: null,
   hajjShifting: null,
   live: true,
   order: 0,
   itinerary: [],
   inclusions: [],
 };
+
+// Lowest set share price = the "from" price shown to the admin as a live preview; the server
+// recomputes and stores this as priceInr on save, so this is read-only, informational.
+function fromPrice(p: Pick<Package, 'price2Share' | 'price3Share' | 'price4Share' | 'price5Share'>): number | null {
+  const vals = [p.price2Share, p.price3Share, p.price4Share, p.price5Share].filter((v): v is number => typeof v === 'number');
+  return vals.length ? Math.min(...vals) : null;
+}
+
+// <input type="datetime-local"> wants "YYYY-MM-DDTHH:mm" with no timezone/seconds.
+function toDatetimeLocal(iso: string | null): string {
+  if (!iso) return '';
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return '';
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
 
 export function PackagesPage() {
   const [packages, setPackages] = useState<Package[]>([]);
@@ -100,7 +130,7 @@ export function PackagesPage() {
             <div><label>Name (UR)</label><input value={editing.nameUr} onChange={(e) => set('nameUr', e.target.value)} /></div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 8, marginBottom: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 12 }}>
             <div><label>Type</label>
               <select value={editing.type} onChange={(e) => set('type', e.target.value)}>
                 <option value="group">Group</option>
@@ -108,10 +138,21 @@ export function PackagesPage() {
                 <option value="hajj">Hajj</option>
               </select>
             </div>
-            <div><label>Price (INR)</label><input type="number" value={editing.priceInr} onChange={(e) => set('priceInr', Number(e.target.value))} /></div>
             <div><label>Nights</label><input type="number" value={editing.nights} onChange={(e) => set('nights', Number(e.target.value))} /></div>
             <div><label>Departs</label><input type="date" value={editing.departDate.slice(0, 10)} onChange={(e) => set('departDate', e.target.value)} /></div>
           </div>
+
+          <h4 style={{ marginBottom: 8 }}>Room-sharing prices (₹ per person)</h4>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 8, marginBottom: 8 }}>
+            <div><label>2 sharing</label><input type="number" value={editing.price2Share ?? ''} onChange={(e) => set('price2Share', e.target.value === '' ? null : Number(e.target.value))} /></div>
+            <div><label>3 sharing</label><input type="number" value={editing.price3Share ?? ''} onChange={(e) => set('price3Share', e.target.value === '' ? null : Number(e.target.value))} /></div>
+            <div><label>4 sharing</label><input type="number" value={editing.price4Share ?? ''} onChange={(e) => set('price4Share', e.target.value === '' ? null : Number(e.target.value))} /></div>
+            <div><label>5 sharing</label><input type="number" value={editing.price5Share ?? ''} onChange={(e) => set('price5Share', e.target.value === '' ? null : Number(e.target.value))} /></div>
+          </div>
+          <p style={{ fontSize: 12, color: 'var(--color-text-muted, #888)', marginBottom: 16 }}>
+            Leave a tier blank if it isn't offered. "From" price shown in the app and list below is auto-set to the lowest tier filled in
+            {fromPrice(editing) != null ? ` — currently ₹${fromPrice(editing)!.toLocaleString('en-IN')}.` : ' — fill in at least one tier.'}
+          </p>
 
           {editing.type === 'hajj' && (
             <div style={{ marginBottom: 12 }}>
@@ -127,9 +168,36 @@ export function PackagesPage() {
             </div>
           )}
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 12 }}>
-            <div><label>Hotel stars</label><input value={editing.hotelStars} onChange={(e) => set('hotelStars', e.target.value)} /></div>
-            <div><label>Distance from Haram (m)</label><input type="number" value={editing.hotelDistM} onChange={(e) => set('hotelDistM', Number(e.target.value))} /></div>
+          <h4 style={{ marginBottom: 8 }}>Makkah hotel</h4>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 12 }}>
+            <div><label>Stars</label>
+              <select value={editing.makkahHotelStars} onChange={(e) => set('makkahHotelStars', Number(e.target.value))}>
+                {[5, 4, 3, 2, 1].map((n) => <option key={n} value={n}>{n} star</option>)}
+              </select>
+            </div>
+            <div><label>Distance from Haram (m)</label><input type="number" value={editing.makkahHotelDistM} onChange={(e) => set('makkahHotelDistM', Number(e.target.value))} /></div>
+            <div><label>Access</label>
+              <select value={editing.makkahHotelRemark} onChange={(e) => set('makkahHotelRemark', e.target.value)}>
+                <option value="walking">Walking distance</option>
+                <option value="shuttle">Shuttle service</option>
+              </select>
+            </div>
+          </div>
+
+          <h4 style={{ marginBottom: 8 }}>Madinah hotel</h4>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 12 }}>
+            <div><label>Stars</label>
+              <select value={editing.madinahHotelStars} onChange={(e) => set('madinahHotelStars', Number(e.target.value))}>
+                {[5, 4, 3, 2, 1].map((n) => <option key={n} value={n}>{n} star</option>)}
+              </select>
+            </div>
+            <div><label>Distance from Haram (m)</label><input type="number" value={editing.madinahHotelDistM} onChange={(e) => set('madinahHotelDistM', Number(e.target.value))} /></div>
+            <div><label>Access</label>
+              <select value={editing.madinahHotelRemark} onChange={(e) => set('madinahHotelRemark', e.target.value)}>
+                <option value="walking">Walking distance</option>
+                <option value="shuttle">Shuttle service</option>
+              </select>
+            </div>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 12 }}>
@@ -155,6 +223,48 @@ export function PackagesPage() {
               <input type="checkbox" style={{ width: 'auto' }} checked={editing.live} onChange={(e) => set('live', e.target.checked)} /> Live in app
             </label>
           </div>
+
+          <h4 style={{ marginBottom: 8 }}>Flight details</h4>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 6, textTransform: 'none', fontSize: 13, marginBottom: 8 }}>
+            <input
+              type="checkbox"
+              style={{ width: 'auto' }}
+              checked={editing.flightConfirmLater}
+              onChange={(e) => set('flightConfirmLater', e.target.checked)}
+            /> Flight not finalized yet — show "To be confirmed" instead of dates
+          </label>
+          {!editing.flightConfirmLater && (
+            <>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 8 }}>
+                <div><label>Airline</label><input value={editing.flightAirline ?? ''} onChange={(e) => set('flightAirline', e.target.value)} /></div>
+                <div><label>Routing</label>
+                  <select value={editing.flightRouting ?? 'direct'} onChange={(e) => set('flightRouting', e.target.value)}>
+                    <option value="direct">Direct</option>
+                    <option value="via">Via</option>
+                  </select>
+                </div>
+                {editing.flightRouting === 'via' && (
+                  <div><label>Via city</label><input value={editing.flightViaCity ?? ''} onChange={(e) => set('flightViaCity', e.target.value)} /></div>
+                )}
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 12 }}>
+                <div><label>Departure date &amp; time</label>
+                  <input
+                    type="datetime-local"
+                    value={toDatetimeLocal(editing.flightDepartureAt)}
+                    onChange={(e) => set('flightDepartureAt', e.target.value ? new Date(e.target.value).toISOString() : null)}
+                  />
+                </div>
+                <div><label>Return date &amp; time</label>
+                  <input
+                    type="datetime-local"
+                    value={toDatetimeLocal(editing.flightReturnAt)}
+                    onChange={(e) => set('flightReturnAt', e.target.value ? new Date(e.target.value).toISOString() : null)}
+                  />
+                </div>
+              </div>
+            </>
+          )}
 
           <h4 style={{ marginBottom: 8 }}>Itinerary</h4>
           {editing.itinerary.map((it, i) => (

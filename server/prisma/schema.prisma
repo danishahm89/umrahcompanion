@@ -39,11 +39,24 @@ model Package {
   nameEn         String
   nameHi         String
   nameUr         String
+  // Auto-computed on save = the lowest of the room-sharing prices below. Kept as its own
+  // column so list views / sorting / the WhatsApp message don't need to recompute it.
   priceInr       Int
+  // Per-person price (INR) at each room-sharing occupancy. Null = that occupancy isn't offered.
+  price2Share    Int?
+  price3Share    Int?
+  price4Share    Int?
+  price5Share    Int?
   departDate     DateTime
   nights         Int
-  hotelStars     String
-  hotelDistM     Int
+  // Makkah hotel
+  makkahHotelStars  Int
+  makkahHotelDistM  Int
+  makkahHotelRemark String  @default("walking") // "walking" | "shuttle"
+  // Madinah hotel
+  madinahHotelStars  Int
+  madinahHotelDistM  Int
+  madinahHotelRemark String  @default("walking") // "walking" | "shuttle"
   cityEn         String
   cityHi         String
   cityUr         String
@@ -52,6 +65,14 @@ model Package {
   mealsUr        String
   visaIncluded   Boolean            @default(true)
   flightIncluded Boolean            @default(true)
+  // Flight plan. When flightConfirmLater is true, the app shows "To be confirmed" instead of
+  // dates — used when the exact flight isn't locked in yet.
+  flightConfirmLater Boolean   @default(false)
+  flightAirline      String?
+  flightRouting      String?   // "direct" | "via"
+  flightViaCity      String?
+  flightDepartureAt  DateTime?
+  flightReturnAt     DateTime?
   // Only meaningful when type == "hajj": whether the group moves between separate
   // Makkah/Mina/Arafat/Muzdalifah hotels during the Hajj days ("shifting") or keeps one
   // Makkah hotel throughout ("non-shifting"). Null for non-Hajj packages.

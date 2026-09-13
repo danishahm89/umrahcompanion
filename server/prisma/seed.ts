@@ -202,19 +202,75 @@ async function main() {
     await prisma.faqItem.create({ data: { order: i, questionEn: q[0], questionHi: q[1], questionUr: q[2], answerEn: q[3], answerHi: q[4], answerUr: q[5] } });
   }
 
+  // share = [price2Share, price3Share, price4Share, price5Share]; the lowest tier is what used
+  // to be the package's single flat price, so it's kept as the same figure as before for
+  // continuity with the old seed data.
   const PKGS: Array<{
-    name: [string, string, string]; price: number; type: string; date: Date; nights: number;
-    dist: number; stars: string; city: [string, string, string]; meals: [string, string, string];
+    name: [string, string, string]; share: [number, number, number, number]; type: string; date: Date; nights: number;
+    makkah: { stars: number; dist: number; remark: 'walking' | 'shuttle' };
+    madinah: { stars: number; dist: number; remark: 'walking' | 'shuttle' };
+    city: [string, string, string]; meals: [string, string, string];
+    flight: { confirmLater: true } | { confirmLater: false; airline: string; routing: 'direct' | 'via'; viaCity?: string; depart: Date; ret: Date };
     hajjShifting?: boolean;
   }> = [
-    { name: ['Economy Umrah — 10 Nights', 'इकॉनमी उमराह — 10 रातें', 'اکانومی عمرہ — 10 راتیں'], price: 78500, type: 'group', date: new Date(2026, 10, 12), nights: 10, dist: 900, stars: '3★', city: ['Delhi', 'दिल्ली', 'دہلی'], meals: ['Breakfast', 'नाश्ता', 'ناشتہ'] },
-    { name: ['Comfort Umrah — 14 Nights', 'कम्फ़र्ट उमराह — 14 रातें', 'کمفرٹ عمرہ — 14 راتیں'], price: 112000, type: 'group', date: new Date(2026, 10, 24), nights: 14, dist: 450, stars: '4★', city: ['Delhi', 'दिल्ली', 'دہلی'], meals: ['Breakfast & dinner', 'नाश्ता और रात का खाना', 'ناشتہ اور رات کا کھانا'] },
-    { name: ['Premium Haram View — 12 Nights', 'प्रीमियम हरम व्यू — 12 रातें', 'پریمیم حرم ویو — 12 راتیں'], price: 185000, type: 'private', date: new Date(2026, 11, 5), nights: 12, dist: 150, stars: '5★', city: ['Lucknow', 'लखनऊ', 'لکھنؤ'], meals: ['Full board', 'तीनों वक़्त का खाना', 'تینوں وقت کا کھانا'] },
-    { name: ['Ramadan Umrah — 15 Nights', 'रमज़ान उमराह — 15 रातें', 'رمضان عمرہ — 15 راتیں'], price: 210000, type: 'group', date: new Date(2027, 1, 18), nights: 15, dist: 600, stars: '4★', city: ['Patna', 'पटना', 'پٹنہ'], meals: ['Full board', 'तीनों वक़्त का खाना', 'تینوں وقت کا کھانا'] },
-    { name: ['Hajj — 20 Days, Shifting', 'हज — 20 दिन, शिफ़्टिंग', 'حج — 20 دن، شفٹنگ'], price: 320000, type: 'hajj', date: new Date(2027, 5, 2), nights: 19, dist: 700, stars: '4★', city: ['Delhi', 'दिल्ली', 'دہلی'], meals: ['Full board', 'तीनों वक़्त का खाना', 'تینوں وقت کا کھانا'], hajjShifting: true },
-    { name: ['Hajj — 20 Days, Non-Shifting', 'हज — 20 दिन, नॉन-शिफ़्टिंग', 'حج — 20 دن، نان شفٹنگ'], price: 355000, type: 'hajj', date: new Date(2027, 5, 2), nights: 19, dist: 400, stars: '4★', city: ['Delhi', 'दिल्ली', 'دہلی'], meals: ['Full board', 'तीनों वक़्त का खाना', 'تینوں وقت کا کھانا'], hajjShifting: false },
-    { name: ['Hajj — 32 Days, Shifting', 'हज — 32 दिन, शिफ़्टिंग', 'حج — 32 دن، شفٹنگ'], price: 385000, type: 'hajj', date: new Date(2027, 4, 20), nights: 31, dist: 700, stars: '4★', city: ['Lucknow', 'लखनऊ', 'لکھنؤ'], meals: ['Full board', 'तीनों वक़्त का खाना', 'تینوں وقت کا کھانا'], hajjShifting: true },
-    { name: ['Hajj — 32 Days, Non-Shifting', 'हज — 32 दिन, नॉन-शिफ़्टिंग', 'حج — 32 دن، نان شفٹنگ'], price: 425000, type: 'hajj', date: new Date(2027, 4, 20), nights: 31, dist: 350, stars: '5★', city: ['Lucknow', 'लखनऊ', 'لکھنؤ'], meals: ['Full board', 'तीनों वक़्त का खाना', 'تینوں وقت کا کھانا'], hajjShifting: false },
+    {
+      name: ['Economy Umrah — 10 Nights', 'इकॉनमी उमराह — 10 रातें', 'اکانومی عمرہ — 10 راتیں'], share: [95000, 88000, 82000, 78500],
+      type: 'group', date: new Date(2026, 10, 12), nights: 10,
+      makkah: { stars: 3, dist: 900, remark: 'walking' }, madinah: { stars: 3, dist: 500, remark: 'walking' },
+      city: ['Delhi', 'दिल्ली', 'دہلی'], meals: ['Breakfast', 'नाश्ता', 'ناشتہ'],
+      flight: { confirmLater: false, airline: 'IndiGo', routing: 'direct', depart: new Date(2026, 10, 12, 6, 0), ret: new Date(2026, 10, 22, 14, 30) },
+    },
+    {
+      name: ['Comfort Umrah — 14 Nights', 'कम्फ़र्ट उमराह — 14 रातें', 'کمفرٹ عمرہ — 14 راتیں'], share: [140000, 130000, 120000, 112000],
+      type: 'group', date: new Date(2026, 10, 24), nights: 14,
+      makkah: { stars: 4, dist: 450, remark: 'walking' }, madinah: { stars: 4, dist: 300, remark: 'walking' },
+      city: ['Delhi', 'दिल्ली', 'دہلی'], meals: ['Breakfast & dinner', 'नाश्ता और रात का खाना', 'ناشتہ اور رات کا کھانا'],
+      flight: { confirmLater: false, airline: 'Air India Express', routing: 'direct', depart: new Date(2026, 10, 24, 8, 30), ret: new Date(2026, 11, 8, 16, 45) },
+    },
+    {
+      name: ['Premium Haram View — 12 Nights', 'प्रीमियम हरम व्यू — 12 रातें', 'پریمیم حرم ویو — 12 راتیں'], share: [220000, 205000, 195000, 185000],
+      type: 'private', date: new Date(2026, 11, 5), nights: 12,
+      makkah: { stars: 5, dist: 150, remark: 'walking' }, madinah: { stars: 5, dist: 200, remark: 'walking' },
+      city: ['Lucknow', 'लखनऊ', 'لکھنؤ'], meals: ['Full board', 'तीनों वक़्त का खाना', 'تینوں وقت کا کھانا'],
+      flight: { confirmLater: false, airline: 'Saudia', routing: 'direct', depart: new Date(2026, 11, 5, 10, 15), ret: new Date(2026, 11, 17, 19, 0) },
+    },
+    {
+      name: ['Ramadan Umrah — 15 Nights', 'रमज़ान उमराह — 15 रातें', 'رمضان عمرہ — 15 راتیں'], share: [250000, 235000, 220000, 210000],
+      type: 'group', date: new Date(2027, 1, 18), nights: 15,
+      makkah: { stars: 4, dist: 600, remark: 'shuttle' }, madinah: { stars: 4, dist: 350, remark: 'walking' },
+      city: ['Patna', 'पटना', 'پٹنہ'], meals: ['Full board', 'तीनों वक़्त का खाना', 'تینوں وقت کا کھانا'],
+      flight: { confirmLater: false, airline: 'IndiGo', routing: 'via', viaCity: 'Dubai', depart: new Date(2027, 1, 18, 23, 45), ret: new Date(2027, 2, 5, 5, 20) },
+    },
+    {
+      // Hajj flight schedules are only released by the airlines close to the season, so these
+      // stay "confirm later" rather than carrying made-up dates.
+      name: ['Hajj — 20 Days, Shifting', 'हज — 20 दिन, शिफ़्टिंग', 'حج — 20 دن، شفٹنگ'], share: [395000, 370000, 345000, 320000],
+      type: 'hajj', date: new Date(2027, 5, 2), nights: 19,
+      makkah: { stars: 4, dist: 700, remark: 'shuttle' }, madinah: { stars: 4, dist: 400, remark: 'walking' },
+      city: ['Delhi', 'दिल्ली', 'دہلی'], meals: ['Full board', 'तीनों वक़्त का खाना', 'تینوں وقت کا کھانا'],
+      flight: { confirmLater: true }, hajjShifting: true,
+    },
+    {
+      name: ['Hajj — 20 Days, Non-Shifting', 'हज — 20 दिन, नॉन-शिफ़्टिंग', 'حج — 20 دن، نان شفٹنگ'], share: [430000, 405000, 380000, 355000],
+      type: 'hajj', date: new Date(2027, 5, 2), nights: 19,
+      makkah: { stars: 4, dist: 400, remark: 'walking' }, madinah: { stars: 4, dist: 400, remark: 'walking' },
+      city: ['Delhi', 'दिल्ली', 'دہلی'], meals: ['Full board', 'तीनों वक़्त का खाना', 'تینوں وقت کا کھانا'],
+      flight: { confirmLater: true }, hajjShifting: false,
+    },
+    {
+      name: ['Hajj — 32 Days, Shifting', 'हज — 32 दिन, शिफ़्टिंग', 'حج — 32 دن، شفٹنگ'], share: [465000, 435000, 410000, 385000],
+      type: 'hajj', date: new Date(2027, 4, 20), nights: 31,
+      makkah: { stars: 4, dist: 700, remark: 'shuttle' }, madinah: { stars: 4, dist: 400, remark: 'walking' },
+      city: ['Lucknow', 'लखनऊ', 'لکھنؤ'], meals: ['Full board', 'तीनों वक़्त का खाना', 'تینوں وقت کا کھانا'],
+      flight: { confirmLater: true }, hajjShifting: true,
+    },
+    {
+      name: ['Hajj — 32 Days, Non-Shifting', 'हज — 32 दिन, नॉन-शिफ़्टिंग', 'حج — 32 دن، نان شفٹنگ'], share: [505000, 475000, 450000, 425000],
+      type: 'hajj', date: new Date(2027, 4, 20), nights: 31,
+      makkah: { stars: 5, dist: 350, remark: 'walking' }, madinah: { stars: 5, dist: 350, remark: 'walking' },
+      city: ['Lucknow', 'लखनऊ', 'لکھنؤ'], meals: ['Full board', 'तीनों वक़्त का खाना', 'تینوں وقت کا کھانا'],
+      flight: { confirmLater: true }, hajjShifting: false,
+    },
   ];
   const itinTemplate: [string, string, string, string, string, string][] = [
     ['Day 1', 'दिन 1', 'دن 1', 'Flight to Jeddah, transfer to Makkah, Ihram at the Miqat', 'जेद्दा उड़ान, मक्का ट्रांसफ़र, मीक़ात पर एहराम', 'جدہ پرواز، مکہ منتقلی، میقات پر احرام'],
@@ -231,15 +287,24 @@ async function main() {
     ['Zamzam and travel kit', 'ज़मज़म और ट्रैवल किट', 'زمزم اور ٹریول کٹ'],
   ];
   for (const [i, p] of PKGS.entries()) {
+    const [price2Share, price3Share, price4Share, price5Share] = p.share;
     const pkg = await prisma.package.create({
       data: {
         type: p.type, order: i, live: true,
         nameEn: p.name[0], nameHi: p.name[1], nameUr: p.name[2],
-        priceInr: p.price, departDate: p.date, nights: p.nights,
-        hotelStars: p.stars, hotelDistM: p.dist,
+        priceInr: Math.min(...p.share), price2Share, price3Share, price4Share, price5Share,
+        departDate: p.date, nights: p.nights,
+        makkahHotelStars: p.makkah.stars, makkahHotelDistM: p.makkah.dist, makkahHotelRemark: p.makkah.remark,
+        madinahHotelStars: p.madinah.stars, madinahHotelDistM: p.madinah.dist, madinahHotelRemark: p.madinah.remark,
         cityEn: p.city[0], cityHi: p.city[1], cityUr: p.city[2],
         mealsEn: p.meals[0], mealsHi: p.meals[1], mealsUr: p.meals[2],
         visaIncluded: true, flightIncluded: true,
+        flightConfirmLater: p.flight.confirmLater,
+        flightAirline: p.flight.confirmLater ? null : p.flight.airline,
+        flightRouting: p.flight.confirmLater ? null : p.flight.routing,
+        flightViaCity: p.flight.confirmLater ? null : (p.flight.viaCity ?? null),
+        flightDepartureAt: p.flight.confirmLater ? null : p.flight.depart,
+        flightReturnAt: p.flight.confirmLater ? null : p.flight.ret,
         hajjShifting: p.hajjShifting ?? null,
       },
     });

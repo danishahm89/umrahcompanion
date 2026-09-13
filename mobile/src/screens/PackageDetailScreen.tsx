@@ -14,7 +14,7 @@ import { useTheme } from '../theme/ThemeContext';
 import { useLanguage } from '../i18n/LanguageContext';
 import { useDirection } from '../direction/DirectionContext';
 import { useContact, usePackage } from '../api/hooks';
-import { buildPackageFacts, formatPriceInr } from '../utils/packageFacts';
+import { buildPackageFacts, buildSharingPrices, formatDateTime, formatPriceInr } from '../utils/packageFacts';
 import { buildTelUrl, buildWhatsAppUrl } from '../utils/whatsapp';
 import type { RootStackParamList } from '../navigation/types';
 
@@ -40,6 +40,7 @@ export function PackageDetailScreen() {
 
   const name = field(pkg.nameEn, pkg.nameHi, pkg.nameUr);
   const facts = buildPackageFacts(pkg, t, field);
+  const sharingPrices = buildSharingPrices(pkg, t);
   const waUrl = contact ? buildWhatsAppUrl(contact.whatsapp, `Assalamu alaikum, I am interested in ${pkg.nameEn}. Please share details.`) : undefined;
   const telUrl = contact ? buildTelUrl(contact.phone) : undefined;
 
@@ -60,6 +61,32 @@ export function PackageDetailScreen() {
               <FactGrid facts={facts} />
             </View>
           </View>
+        </Card>
+
+        {sharingPrices.length > 0 && (
+          <Card>
+            <AppText weight="display" size={15} color={colors.text} style={{ marginBottom: 12 }}>{t('roomSharing')}</AppText>
+            <FactGrid facts={sharingPrices} />
+          </Card>
+        )}
+
+        <Card>
+          <AppText weight="display" size={15} color={colors.text} style={{ marginBottom: 12 }}>{t('flightDetails')}</AppText>
+          {pkg.flightConfirmLater ? (
+            <AppText size={13} color={colors.text} style={{ lineHeight: 19 }}>{t('flightConfirmLaterNote')}</AppText>
+          ) : (
+            <FactGrid
+              facts={[
+                ...(pkg.flightAirline ? [{ k: t('flightAirlineLabel'), v: pkg.flightAirline }] : []),
+                {
+                  k: t('flightRoutingLabel'),
+                  v: pkg.flightRouting === 'via' ? `${t('flightVia')} ${pkg.flightViaCity ?? ''}`.trim() : t('flightDirect'),
+                },
+                ...(pkg.flightDepartureAt ? [{ k: t('flightDepartureLabel'), v: formatDateTime(pkg.flightDepartureAt) }] : []),
+                ...(pkg.flightReturnAt ? [{ k: t('flightReturnLabel'), v: formatDateTime(pkg.flightReturnAt) }] : []),
+              ]}
+            />
+          )}
         </Card>
 
         <Card>

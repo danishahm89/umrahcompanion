@@ -30,15 +30,30 @@ export interface Package {
   id: string;
   type: string;
   nameEn: string; nameHi: string; nameUr: string;
+  // Auto-computed "from" price = the lowest of the 4 room-sharing prices below.
   priceInr: number;
+  price2Share: number | null;
+  price3Share: number | null;
+  price4Share: number | null;
+  price5Share: number | null;
   departDate: string;
   nights: number;
-  hotelStars: string;
-  hotelDistM: number;
+  makkahHotelStars: number;
+  makkahHotelDistM: number;
+  makkahHotelRemark: string; // "walking" | "shuttle"
+  madinahHotelStars: number;
+  madinahHotelDistM: number;
+  madinahHotelRemark: string; // "walking" | "shuttle"
   cityEn: string; cityHi: string; cityUr: string;
   mealsEn: string; mealsHi: string; mealsUr: string;
   visaIncluded: boolean;
   flightIncluded: boolean;
+  flightConfirmLater: boolean;
+  flightAirline: string | null;
+  flightRouting: string | null; // "direct" | "via"
+  flightViaCity: string | null;
+  flightDepartureAt: string | null;
+  flightReturnAt: string | null;
   hajjShifting: boolean | null;
   live: boolean;
   order: number;
