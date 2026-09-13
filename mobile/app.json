@@ -40,6 +40,14 @@
         {
           "locationWhenInUsePermission": "Umrah Companion uses your location to show prayer times and nearby mosques for where you are."
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
       ]
     ]
   }

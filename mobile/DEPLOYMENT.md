@@ -70,6 +70,16 @@ App Store Connect API key.
   notes) are sent to your own server and opened in WhatsApp; no third-party analytics or
   ad SDKs are in the app currently, which keeps this form simple
 
+## Cleartext (plain HTTP) networking
+
+Android blocks plain `http://` traffic by default in built APKs (Expo Go allows it for
+dev convenience, which is why this can work in Expo Go but fail in a built APK).
+`app.json` sets `expo-build-properties` → `android.usesCleartextTraffic: true` so the app
+can reach an `http://` backend (e.g. your PC's LAN IP during testing). Once
+`EXPO_PUBLIC_API_URL` points at a real HTTPS backend (Render, etc.) for good, this flag
+is no longer needed — safe to leave in, or remove and rebuild once you're fully off local
+HTTP testing.
+
 ## Current placeholder status
 
 The app icon is a placeholder (a simple mosque-dome/crescent mark in the app's palette)
