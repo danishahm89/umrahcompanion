@@ -25,16 +25,30 @@ export function QiblaScreen() {
   const { t } = useLanguage();
   const { location } = useAppLocation();
   const [heading, setHeading] = useState<number | null>(null);
+  const [headingError, setHeadingError] = useState<string | null>(null);
 
   useEffect(() => {
     let subscription: Location.LocationSubscription | undefined;
     let cancelled = false;
     (async () => {
-      const sub = await Location.watchHeadingAsync((h) => {
-        setHeading(h.trueHeading >= 0 ? h.trueHeading : h.magHeading);
-      }).catch(() => undefined);
-      if (cancelled) sub?.remove();
-      else subscription = sub;
+      // Don't assume permission is already granted just because a location is set — it
+      // could have come from typing a city manually, which never touches permissions at
+      // all. Request (or confirm) it explicitly before subscribing to heading updates.
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (cancelled) return;
+      if (status !== 'granted') {
+        setHeadingError('Location permission is off, so the compass can’t get your device’s heading.');
+        return;
+      }
+      try {
+        const sub = await Location.watchHeadingAsync((h) => {
+          setHeading(h.trueHeading >= 0 ? h.trueHeading : h.magHeading);
+        });
+        if (cancelled) sub.remove();
+        else subscription = sub;
+      } catch (err) {
+        if (!cancelled) setHeadingError(err instanceof Error ? err.message : String(err));
+      }
     })();
     return () => {
       cancelled = true;
@@ -108,7 +122,7 @@ export function QiblaScreen() {
               )}
               {heading == null && (
                 <AppText size={12} color={colors.t50} style={{ marginTop: 14, textAlign: 'center', lineHeight: 17 }}>
-                  {t('compassUnavailable')}
+                  {t('compassUnavailable')}{headingError ? ` (${headingError})` : ''}
                 </AppText>
               )}
             </Card>
