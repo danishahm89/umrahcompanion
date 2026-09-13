@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ActivityIndicator, AppState, type AppStateStatus, View } from 'react-native';
+import { ActivityIndicator, AppState, Image, type AppStateStatus, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { QueryClient, QueryClientProvider, focusManager } from '@tanstack/react-query';
@@ -10,6 +10,7 @@ import { useFonts as useNaskh, NotoNaskhArabic_400Regular, NotoNaskhArabic_700Bo
 import { useFonts as usePlayfair, PlayfairDisplay_700Bold, PlayfairDisplay_900Black } from '@expo-google-fonts/playfair-display';
 
 import { ThemeProvider, useTheme } from './src/theme/ThemeContext';
+import { AppText } from './src/components/AppText';
 import { LanguageProvider } from './src/i18n/LanguageContext';
 import { DirectionProvider } from './src/direction/DirectionContext';
 import { LocationProvider } from './src/location/LocationContext';
@@ -28,7 +29,11 @@ function LoadingScreen() {
   const { colors } = useTheme();
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.bg }}>
-      <ActivityIndicator color={colors.accent} />
+      <Image source={require('./assets/splash-icon.png')} style={{ width: 140, height: 140, resizeMode: 'contain' }} />
+      <ActivityIndicator color={colors.accent} style={{ marginTop: 28 }} />
+      <AppText size={12} color={colors.t50} center style={{ position: 'absolute', bottom: 40, paddingHorizontal: 24 }}>
+        Developed by Al Zakwaan Tours & Travels Pvt Ltd
+      </AppText>
     </View>
   );
 }
