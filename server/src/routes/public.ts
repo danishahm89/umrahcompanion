@@ -139,11 +139,12 @@ publicRouter.get('/nearby-mosques', async (req, res) => {
   }
 
   // 5km turned up nothing in areas where OSM's mosque tagging is sparse — 15km casts a much
-  // wider net, and matching both amenity=mosque and building=mosque (a secondary tagging
-  // convention some mappers use instead) plus relations (multi-way mosque complexes), not
-  // just nodes/ways, catches more real-world entries.
+  // wider net. Real mosques on OSM show up under several different tagging conventions —
+  // amenity=mosque, building=mosque, or (very commonly) amenity=place_of_worship with
+  // religion=muslim — missing the last one specifically causes exactly what a mapper would
+  // expect: known nearby mosques absent while farther, differently-tagged ones still show.
   const radiusM = 15000;
-  const tagFilters = ['["amenity"="mosque"]', '["building"="mosque"]'];
+  const tagFilters = ['["amenity"="mosque"]', '["building"="mosque"]', '["amenity"="place_of_worship"]["religion"="muslim"]'];
   const clauses = tagFilters.flatMap((tag) => [
     `node${tag}(around:${radiusM},${lat},${lng});`,
     `way${tag}(around:${radiusM},${lat},${lng});`,
