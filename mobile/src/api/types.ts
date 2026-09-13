@@ -39,6 +39,7 @@ export interface Package {
   mealsEn: string; mealsHi: string; mealsUr: string;
   visaIncluded: boolean;
   flightIncluded: boolean;
+  hajjShifting: boolean | null;
   live: boolean;
   order: number;
   itinerary?: ItineraryItem[];
@@ -118,6 +119,7 @@ export interface Service {
   nameEn: string; nameHi: string; nameUr: string;
   descEn: string; descHi: string; descUr: string;
   tags: string[];
+  formType: string | null;
 }
 
 export interface Ebook {
@@ -126,6 +128,28 @@ export interface Ebook {
   descEn: string; descHi: string; descUr: string;
   coverImageUrl: string | null;
   driveUrl: string;
+}
+
+export interface NearbyMosque {
+  id: string;
+  name: string;
+  lat: number;
+  lng: number;
+  distanceM: number;
+}
+
+export interface TicketEnquiryInput {
+  kind: 'air' | 'train';
+  name: string;
+  phone: string;
+  fromPlace: string;
+  toPlace: string;
+  travelDate: string;
+  returnDate?: string;
+  passengers: number;
+  classPref: string;
+  tatkal?: boolean;
+  notes?: string;
 }
 
 export interface CustomizeEnquiryInput {

@@ -52,6 +52,10 @@ model Package {
   mealsUr        String
   visaIncluded   Boolean            @default(true)
   flightIncluded Boolean            @default(true)
+  // Only meaningful when type == "hajj": whether the group moves between separate
+  // Makkah/Mina/Arafat/Muzdalifah hotels during the Hajj days ("shifting") or keeps one
+  // Makkah hotel throughout ("non-shifting"). Null for non-Hajj packages.
+  hajjShifting   Boolean?
   live           Boolean            @default(true)
   order          Int                @default(0)
   createdAt      DateTime           @default(now())
@@ -209,15 +213,18 @@ model FaqItem {
 }
 
 model Service {
-  id      String @id @default(cuid())
-  order   Int
-  nameEn  String
-  nameHi  String
-  nameUr  String
-  descEn  String
-  descHi  String
-  descUr  String
-  tags    String
+  id       String  @id @default(cuid())
+  order    Int
+  nameEn   String
+  nameHi   String
+  nameUr   String
+  descEn   String
+  descHi   String
+  descUr   String
+  tags     String
+  // When set to "air" or "train", tapping this service in the app opens a dedicated
+  // enquiry form (flight/train details) instead of going straight to WhatsApp.
+  formType String?
 }
 
 model Ebook {
@@ -242,4 +249,20 @@ model CustomizeEnquiry {
   hotel     String
   notes     String?
   createdAt DateTime @default(now())
+}
+
+model TicketEnquiry {
+  id         String    @id @default(cuid())
+  kind       String // "air" | "train"
+  name       String
+  phone      String
+  fromPlace  String
+  toPlace    String
+  travelDate DateTime
+  returnDate DateTime?
+  passengers Int
+  classPref  String
+  tatkal     Boolean   @default(false)
+  notes      String?
+  createdAt  DateTime  @default(now())
 }

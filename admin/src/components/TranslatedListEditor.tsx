@@ -6,6 +6,8 @@ export interface FieldConfig {
   label: string;
   translated: boolean;
   multiline?: boolean;
+  /** Renders a <select> instead of a text input/textarea. */
+  options?: { value: string; label: string }[];
 }
 
 export interface ResourceConfig<T extends { id: string; order: number }> {
@@ -32,14 +34,22 @@ function FieldInputs({ field, values, onChange }: { field: FieldConfig; values: 
     <div style={{ marginBottom: 12 }}>
       <label>{field.label}{field.translated ? ' (EN / HI / UR)' : ''}</label>
       <div style={{ display: 'grid', gridTemplateColumns: field.translated ? '1fr 1fr 1fr' : '1fr', gap: 8 }}>
-        {keys.map((k) => (
-          <Tag
-            key={k}
-            value={(values[k] as string) ?? ''}
-            onChange={(e) => onChange(k, e.target.value)}
-            rows={field.multiline ? 3 : undefined}
-          />
-        ))}
+        {keys.map((k) =>
+          field.options ? (
+            <select key={k} value={(values[k] as string) ?? ''} onChange={(e) => onChange(k, e.target.value)}>
+              {field.options.map((o) => (
+                <option key={o.value} value={o.value}>{o.label}</option>
+              ))}
+            </select>
+          ) : (
+            <Tag
+              key={k}
+              value={(values[k] as string) ?? ''}
+              onChange={(e) => onChange(k, e.target.value)}
+              rows={field.multiline ? 3 : undefined}
+            />
+          ),
+        )}
       </div>
     </div>
   );

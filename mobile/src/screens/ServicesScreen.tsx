@@ -1,5 +1,7 @@
 import React from 'react';
 import { Linking, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ScreenScaffold } from '../components/ScreenScaffold';
 import { AppText } from '../components/AppText';
 import { Button } from '../components/Button';
@@ -10,11 +12,15 @@ import { useLanguage } from '../i18n/LanguageContext';
 import { useDirection } from '../direction/DirectionContext';
 import { useContact, useServices } from '../api/hooks';
 import { buildWhatsAppUrl } from '../utils/whatsapp';
+import type { RootStackParamList } from '../navigation/types';
+
+type Nav = NativeStackNavigationProp<RootStackParamList>;
 
 export function ServicesScreen() {
   const { colors } = useTheme();
   const { t, field } = useLanguage();
   const { row } = useDirection();
+  const navigation = useNavigation<Nav>();
   const { data: services } = useServices();
   const { data: contact } = useContact();
 
@@ -37,7 +43,11 @@ export function ServicesScreen() {
               label={t('enquire')}
               variant="primary"
               block
-              onPress={() => contact && Linking.openURL(buildWhatsAppUrl(contact.whatsapp, `Assalamu alaikum, I need help with ${s.nameEn}.`))}
+              onPress={() =>
+                s.formType === 'air' || s.formType === 'train'
+                  ? navigation.navigate('TicketForm', { kind: s.formType, serviceName: field(s.nameEn, s.nameHi, s.nameUr) })
+                  : contact && Linking.openURL(buildWhatsAppUrl(contact.whatsapp, `Assalamu alaikum, I need help with ${s.nameEn}.`))
+              }
             />
           </Card>
         ))}

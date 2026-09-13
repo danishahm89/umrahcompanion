@@ -8,6 +8,7 @@ import { adminPackingRouter } from './packing';
 import { adminNewsRouter } from './news';
 import { adminContactRouter } from './contact';
 import { adminEnquiriesRouter } from './enquiries';
+import { adminTicketEnquiriesRouter } from './ticketEnquiries';
 
 export const adminRouter = Router();
 
@@ -21,3 +22,4 @@ adminRouter.use('/packing', adminPackingRouter);
 adminRouter.use('/news', adminNewsRouter);
 adminRouter.use('/', adminContactRouter);
 adminRouter.use('/enquiries', adminEnquiriesRouter);
+adminRouter.use('/ticket-enquiries', adminTicketEnquiriesRouter);

@@ -27,10 +27,21 @@ export function PackagesScreen() {
   const { data: packages, refetch, isRefetching } = usePackages();
   const { data: contact } = useContact();
   const [filter, setFilter] = useState('all');
+  const [hajjMovement, setHajjMovement] = useState('all');
+  const [hajjDuration, setHajjDuration] = useState('all');
 
   const filtered = useMemo(
-    () => (packages ?? []).filter((p) => filter === 'all' || p.type === filter),
-    [packages, filter],
+    () =>
+      (packages ?? []).filter((p) => {
+        if (filter !== 'all' && p.type !== filter) return false;
+        if (filter === 'hajj') {
+          if (hajjMovement !== 'all' && p.hajjShifting !== (hajjMovement === 'shifting')) return false;
+          if (hajjDuration === '20' && p.nights > 25) return false;
+          if (hajjDuration === '30plus' && p.nights <= 25) return false;
+        }
+        return true;
+      }),
+    [packages, filter, hajjMovement, hajjDuration],
   );
 
   return (
@@ -51,6 +62,29 @@ export function PackagesScreen() {
             { value: 'hajj', label: t('typeHajj') },
           ]}
         />
+
+        {filter === 'hajj' && (
+          <View style={{ gap: 8 }}>
+            <SegmentedRow
+              value={hajjMovement}
+              onChange={setHajjMovement}
+              options={[
+                { value: 'all', label: t('filterAll') },
+                { value: 'shifting', label: t('shifting') },
+                { value: 'non_shifting', label: t('nonShifting') },
+              ]}
+            />
+            <SegmentedRow
+              value={hajjDuration}
+              onChange={setHajjDuration}
+              options={[
+                { value: 'all', label: t('filterAll') },
+                { value: '20', label: t('days20') },
+                { value: '30plus', label: t('days30plus') },
+              ]}
+            />
+          </View>
+        )}
 
         {filtered.map((p) => {
           const facts = buildPackageFacts(p, t, field).slice(0, 6);

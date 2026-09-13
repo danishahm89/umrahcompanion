@@ -7,6 +7,8 @@ import { AppText } from '../components/AppText';
 import { Button } from '../components/Button';
 import { Card, CardStack } from '../components/Card';
 import { IconBadge } from '../components/IconBadge';
+import { LocationBar } from '../components/LocationBar';
+import { PrayerTimesCard } from '../components/PrayerTimesCard';
 import type { IconName } from '../components/Icon';
 import { Tag } from '../components/Tag';
 import { useTheme } from '../theme/ThemeContext';
@@ -20,13 +22,14 @@ import type { RootStackParamList } from '../navigation/types';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
 
-const QUICK: { icon: IconName; labelKey: 'firsttime' | 'duas' | 'packing' | 'vaccine' | 'nusuk' | 'packages'; target: keyof RootStackParamList }[] = [
+const QUICK: { icon: IconName; labelKey: 'firsttime' | 'duas' | 'packing' | 'vaccine' | 'nusuk' | 'packages' | 'nearbyMosques'; target: keyof RootStackParamList }[] = [
   { icon: 'firstTime', labelKey: 'firsttime', target: 'FirstTime' },
   { icon: 'duas', labelKey: 'duas', target: 'Duas' },
   { icon: 'packing', labelKey: 'packing', target: 'Packing' },
   { icon: 'vaccine', labelKey: 'vaccine', target: 'Vaccine' },
   { icon: 'nusuk', labelKey: 'nusuk', target: 'Nusuk' },
   { icon: 'packages', labelKey: 'packages', target: 'Packages' },
+  { icon: 'mosque', labelKey: 'nearbyMosques', target: 'NearbyMosques' },
 ];
 
 export function HomeScreen() {
@@ -44,6 +47,9 @@ export function HomeScreen() {
   return (
     <ScreenScaffold title={t('home')} scroll contentContainerStyle={{ paddingBottom: 8 }}>
       <CardStack style={{ paddingBottom: 0 }}>
+        <LocationBar />
+        <PrayerTimesCard />
+
         <Card>
           <View style={{ flexDirection: row, justifyContent: 'space-between', alignItems: 'baseline' }}>
             <AppText weight="display" size={17} color={colors.text}>{t('progress')}</AppText>

@@ -22,6 +22,8 @@ import { CustomizeScreen } from '../screens/CustomizeScreen';
 import { ServicesScreen } from '../screens/ServicesScreen';
 import { EbooksScreen } from '../screens/EbooksScreen';
 import { ContactUsScreen } from '../screens/ContactUsScreen';
+import { NearbyMosquesScreen } from '../screens/NearbyMosquesScreen';
+import { TicketFormScreen } from '../screens/TicketFormScreen';
 import { MoreScreen } from '../screens/MoreScreen';
 import { SettingsScreen } from '../screens/SettingsScreen';
 import { GalleryScreen } from '../screens/GalleryScreen';
@@ -56,6 +58,8 @@ export function RootNavigator() {
             <Stack.Screen name="Services" component={ServicesScreen} />
             <Stack.Screen name="Ebooks" component={EbooksScreen} />
             <Stack.Screen name="ContactUs" component={ContactUsScreen} />
+            <Stack.Screen name="NearbyMosques" component={NearbyMosquesScreen} />
+            <Stack.Screen name="TicketForm" component={TicketFormScreen} />
             <Stack.Screen name="More" component={MoreScreen} />
             <Stack.Screen name="Settings" component={SettingsScreen} />
             <Stack.Screen name="Gallery" component={GalleryScreen} />

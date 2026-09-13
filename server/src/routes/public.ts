@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { z } from 'zod';
 import { prisma } from '../db';
+import { haversineMeters } from '../utils/geo';
 
 export const publicRouter = Router();
 
@@ -104,4 +105,75 @@ publicRouter.post('/enquiries', async (req, res) => {
   if (!parsed.success) return res.status(400).json({ error: parsed.error.flatten() });
   const enquiry = await prisma.customizeEnquiry.create({ data: parsed.data });
   res.status(201).json(enquiry);
+});
+
+const ticketEnquirySchema = z.object({
+  kind: z.enum(['air', 'train']),
+  name: z.string().min(1),
+  phone: z.string().min(1),
+  fromPlace: z.string().min(1),
+  toPlace: z.string().min(1),
+  travelDate: z.coerce.date(),
+  returnDate: z.coerce.date().optional(),
+  passengers: z.number().int().positive(),
+  classPref: z.string().min(1),
+  tatkal: z.boolean().optional(),
+  notes: z.string().optional(),
+});
+
+publicRouter.post('/ticket-enquiries', async (req, res) => {
+  const parsed = ticketEnquirySchema.safeParse(req.body);
+  if (!parsed.success) return res.status(400).json({ error: parsed.error.flatten() });
+  const enquiry = await prisma.ticketEnquiry.create({ data: parsed.data });
+  res.status(201).json(enquiry);
+});
+
+// Free, no-API-key mosque search via OpenStreetMap's Overpass API — proxied server-side so
+// the client never talks to a third-party API directly (avoids CORS/rate-limit issues and
+// keeps the option open to cache or swap providers later without an app update).
+publicRouter.get('/nearby-mosques', async (req, res) => {
+  const lat = parseFloat(String(req.query.lat));
+  const lng = parseFloat(String(req.query.lng));
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+    return res.status(400).json({ error: 'lat and lng query params are required' });
+  }
+
+  const radiusM = 5000;
+  const query = `[out:json][timeout:15];(node["amenity"="mosque"](around:${radiusM},${lat},${lng});way["amenity"="mosque"](around:${radiusM},${lat},${lng}););out center 30;`;
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 12000);
+  let overpassRes: Response;
+  try {
+    overpassRes = await fetch('https://overpass-api.de/api/interpreter', {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: query,
+      signal: controller.signal,
+    });
+  } finally {
+    clearTimeout(timeout);
+  }
+  if (!overpassRes.ok) throw new Error(`Overpass request failed: ${overpassRes.status}`);
+
+  const data = (await overpassRes.json()) as { elements?: Array<Record<string, unknown>> };
+  type OverpassEl = { id: number; lat?: number; lon?: number; center?: { lat: number; lon: number }; tags?: Record<string, string> };
+  const results = ((data.elements ?? []) as OverpassEl[])
+    .map((el) => {
+      const elLat = el.lat ?? el.center?.lat;
+      const elLng = el.lon ?? el.center?.lon;
+      if (elLat == null || elLng == null) return null;
+      return {
+        id: String(el.id),
+        name: el.tags?.name || el.tags?.['name:en'] || 'Mosque',
+        lat: elLat,
+        lng: elLng,
+        distanceM: Math.round(haversineMeters(lat, lng, elLat, elLng)),
+      };
+    })
+    .filter((r): r is NonNullable<typeof r> => r !== null)
+    .sort((a, b) => a.distanceM - b.distanceM)
+    .slice(0, 20);
+
+  res.json(results);
 });

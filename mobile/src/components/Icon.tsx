@@ -38,6 +38,17 @@ const ICONS = {
   services: { paths: ['M3 8a2 2 0 012-2h14a2 2 0 012 2 2 2 0 000 4 2 2 0 00-2 2v2H5a2 2 0 01-2-2 2 2 0 000-4z', 'M10 6v12'] },
   book: { paths: ['M5 4h11a3 3 0 013 3v13H8a3 3 0 00-3 3z', 'M5 4v16', 'M8 9h7M8 13h5'] },
   contact: { paths: ['M4 4h4l2 4-2 2a10 10 0 006 6l2-2 4 2v4a2 2 0 01-2 2A14 14 0 014 6a2 2 0 010-2z'] },
+  pin: { circles: [{ cx: 12, cy: 10, r: 2.6 }], paths: ['M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0113 0C18.5 15.4 12 21 12 21z'] },
+  mosque: {
+    paths: [
+      'M3 20h18',
+      'M5 20v-6a7 7 0 0114 0v6',
+      'M12 3v3',
+      'M9.5 9a2.5 2.5 0 015 0c0 1.8-2.5 3-2.5 5',
+      'M4 14h4v6H4zM16 14h4v6h-4z',
+    ],
+  },
+  clock: { circles: [{ cx: 12, cy: 12, r: 9 }], paths: ['M12 7v5l3.5 2'] },
 } as const;
 
 export type IconName = keyof typeof ICONS;

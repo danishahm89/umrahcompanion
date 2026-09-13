@@ -34,6 +34,7 @@ export interface Service extends Translated3 {
   nameEn: string; nameHi: string; nameUr: string;
   descEn: string; descHi: string; descUr: string;
   tags: string; // JSON-encoded string[]
+  formType: string | null; // "air" | "train" | null
 }
 
 export interface Ebook extends Translated3 {
@@ -70,6 +71,7 @@ export interface Package {
   mealsEn: string; mealsHi: string; mealsUr: string;
   visaIncluded: boolean;
   flightIncluded: boolean;
+  hajjShifting: boolean | null;
   live: boolean;
   order: number;
   itinerary: ItineraryItem[];
@@ -145,6 +147,22 @@ export interface CustomizeEnquiry {
   nights: number;
   month: string;
   hotel: string;
+  notes: string | null;
+  createdAt: string;
+}
+
+export interface TicketEnquiry {
+  id: string;
+  kind: string; // "air" | "train"
+  name: string;
+  phone: string;
+  fromPlace: string;
+  toPlace: string;
+  travelDate: string;
+  returnDate: string | null;
+  passengers: number;
+  classPref: string;
+  tatkal: boolean;
   notes: string | null;
   createdAt: string;
 }

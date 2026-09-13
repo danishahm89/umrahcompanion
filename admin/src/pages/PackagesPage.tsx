@@ -17,6 +17,7 @@ const BLANK_PACKAGE: Omit<Package, 'id'> = {
   mealsEn: '', mealsHi: '', mealsUr: '',
   visaIncluded: true,
   flightIncluded: true,
+  hajjShifting: null,
   live: true,
   order: 0,
   itinerary: [],
@@ -111,6 +112,20 @@ export function PackagesPage() {
             <div><label>Nights</label><input type="number" value={editing.nights} onChange={(e) => set('nights', Number(e.target.value))} /></div>
             <div><label>Departs</label><input type="date" value={editing.departDate.slice(0, 10)} onChange={(e) => set('departDate', e.target.value)} /></div>
           </div>
+
+          {editing.type === 'hajj' && (
+            <div style={{ marginBottom: 12 }}>
+              <label>Hajj movement (nights above sets the 20-day / 30+ day bucket shown in the app)</label>
+              <select
+                value={editing.hajjShifting === null ? '' : editing.hajjShifting ? 'shifting' : 'non_shifting'}
+                onChange={(e) => set('hajjShifting', e.target.value === '' ? null : e.target.value === 'shifting')}
+              >
+                <option value="">Not set</option>
+                <option value="shifting">Shifting</option>
+                <option value="non_shifting">Non-shifting</option>
+              </select>
+            </div>
+          )}
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 12 }}>
             <div><label>Hotel stars</label><input value={editing.hotelStars} onChange={(e) => set('hotelStars', e.target.value)} /></div>

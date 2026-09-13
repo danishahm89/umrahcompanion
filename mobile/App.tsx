@@ -12,6 +12,7 @@ import { useFonts as usePlayfair, PlayfairDisplay_700Bold, PlayfairDisplay_900Bl
 import { ThemeProvider, useTheme } from './src/theme/ThemeContext';
 import { LanguageProvider } from './src/i18n/LanguageContext';
 import { DirectionProvider } from './src/direction/DirectionContext';
+import { LocationProvider } from './src/location/LocationContext';
 import { RootNavigator } from './src/navigation/RootNavigator';
 
 const queryClient = new QueryClient();
@@ -63,7 +64,9 @@ export default function App() {
         <ThemeProvider>
           <LanguageProvider>
             <DirectionProvider>
-              <AppInner />
+              <LocationProvider>
+                <AppInner />
+              </LocationProvider>
             </DirectionProvider>
           </LanguageProvider>
         </ThemeProvider>

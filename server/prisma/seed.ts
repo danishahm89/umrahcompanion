@@ -205,11 +205,16 @@ async function main() {
   const PKGS: Array<{
     name: [string, string, string]; price: number; type: string; date: Date; nights: number;
     dist: number; stars: string; city: [string, string, string]; meals: [string, string, string];
+    hajjShifting?: boolean;
   }> = [
     { name: ['Economy Umrah — 10 Nights', 'इकॉनमी उमराह — 10 रातें', 'اکانومی عمرہ — 10 راتیں'], price: 78500, type: 'group', date: new Date(2026, 10, 12), nights: 10, dist: 900, stars: '3★', city: ['Delhi', 'दिल्ली', 'دہلی'], meals: ['Breakfast', 'नाश्ता', 'ناشتہ'] },
     { name: ['Comfort Umrah — 14 Nights', 'कम्फ़र्ट उमराह — 14 रातें', 'کمفرٹ عمرہ — 14 راتیں'], price: 112000, type: 'group', date: new Date(2026, 10, 24), nights: 14, dist: 450, stars: '4★', city: ['Delhi', 'दिल्ली', 'دہلی'], meals: ['Breakfast & dinner', 'नाश्ता और रात का खाना', 'ناشتہ اور رات کا کھانا'] },
     { name: ['Premium Haram View — 12 Nights', 'प्रीमियम हरम व्यू — 12 रातें', 'پریمیم حرم ویو — 12 راتیں'], price: 185000, type: 'private', date: new Date(2026, 11, 5), nights: 12, dist: 150, stars: '5★', city: ['Lucknow', 'लखनऊ', 'لکھنؤ'], meals: ['Full board', 'तीनों वक़्त का खाना', 'تینوں وقت کا کھانا'] },
     { name: ['Ramadan Umrah — 15 Nights', 'रमज़ान उमराह — 15 रातें', 'رمضان عمرہ — 15 راتیں'], price: 210000, type: 'group', date: new Date(2027, 1, 18), nights: 15, dist: 600, stars: '4★', city: ['Patna', 'पटना', 'پٹنہ'], meals: ['Full board', 'तीनों वक़्त का खाना', 'تینوں وقت کا کھانا'] },
+    { name: ['Hajj — 20 Days, Shifting', 'हज — 20 दिन, शिफ़्टिंग', 'حج — 20 دن، شفٹنگ'], price: 320000, type: 'hajj', date: new Date(2027, 5, 2), nights: 19, dist: 700, stars: '4★', city: ['Delhi', 'दिल्ली', 'دہلی'], meals: ['Full board', 'तीनों वक़्त का खाना', 'تینوں وقت کا کھانا'], hajjShifting: true },
+    { name: ['Hajj — 20 Days, Non-Shifting', 'हज — 20 दिन, नॉन-शिफ़्टिंग', 'حج — 20 دن، نان شفٹنگ'], price: 355000, type: 'hajj', date: new Date(2027, 5, 2), nights: 19, dist: 400, stars: '4★', city: ['Delhi', 'दिल्ली', 'دہلی'], meals: ['Full board', 'तीनों वक़्त का खाना', 'تینوں وقت کا کھانا'], hajjShifting: false },
+    { name: ['Hajj — 32 Days, Shifting', 'हज — 32 दिन, शिफ़्टिंग', 'حج — 32 دن، شفٹنگ'], price: 385000, type: 'hajj', date: new Date(2027, 4, 20), nights: 31, dist: 700, stars: '4★', city: ['Lucknow', 'लखनऊ', 'لکھنؤ'], meals: ['Full board', 'तीनों वक़्त का खाना', 'تینوں وقت کا کھانا'], hajjShifting: true },
+    { name: ['Hajj — 32 Days, Non-Shifting', 'हज — 32 दिन, नॉन-शिफ़्टिंग', 'حج — 32 دن، نان شفٹنگ'], price: 425000, type: 'hajj', date: new Date(2027, 4, 20), nights: 31, dist: 350, stars: '5★', city: ['Lucknow', 'लखनऊ', 'لکھنؤ'], meals: ['Full board', 'तीनों वक़्त का खाना', 'تینوں وقت کا کھانا'], hajjShifting: false },
   ];
   const itinTemplate: [string, string, string, string, string, string][] = [
     ['Day 1', 'दिन 1', 'دن 1', 'Flight to Jeddah, transfer to Makkah, Ihram at the Miqat', 'जेद्दा उड़ान, मक्का ट्रांसफ़र, मीक़ात पर एहराम', 'جدہ پرواز، مکہ منتقلی، میقات پر احرام'],
@@ -235,6 +240,7 @@ async function main() {
         cityEn: p.city[0], cityHi: p.city[1], cityUr: p.city[2],
         mealsEn: p.meals[0], mealsHi: p.meals[1], mealsUr: p.meals[2],
         visaIncluded: true, flightIncluded: true,
+        hajjShifting: p.hajjShifting ?? null,
       },
     });
     for (const [j, it] of itinTemplate.entries()) {
@@ -245,13 +251,13 @@ async function main() {
     }
   }
 
-  const SERV: [string, string, string, string, string, string, string[]][] = [
-    ['Air tickets', 'हवाई टिकट', 'ہوائی ٹکٹ', 'Domestic and international fares, including Jeddah and Madinah sectors for pilgrims.', 'घरेलू और अंतरराष्ट्रीय किराए, ज़ायरीन के लिए जेद्दा और मदीना सेक्टर सहित।', 'ملکی و بین الاقوامی کرائے، زائرین کے لیے جدہ اور مدینہ سیکٹر سمیت۔', ['Jeddah', 'Madinah', 'Dubai', 'Group fares']],
-    ['Train tickets', 'रेल टिकट', 'ٹرین ٹکٹ', 'IRCTC bookings to your departure airport, including group and tatkal requests.', 'रवानगी एयरपोर्ट तक IRCTC बुकिंग, ग्रुप और तत्काल सहित।', 'روانگی ایئرپورٹ تک IRCTC بکنگ، گروپ اور تتکال سمیت۔', ['IRCTC', 'Group', 'Tatkal']],
-    ['Visa services', 'वीज़ा सेवाएँ', 'ویزا سروسز', 'Umrah and Hajj visas, plus tourist and business visas for other countries.', 'उमराह और हज वीज़ा, साथ ही अन्य देशों के टूरिस्ट और बिज़नेस वीज़ा।', 'عمرہ اور حج ویزا، نیز دیگر ممالک کے ٹورسٹ اور بزنس ویزا۔', ['Umrah', 'Hajj', 'Tourist', 'Business']],
+  const SERV: [string, string, string, string, string, string, string[], string | null][] = [
+    ['Air tickets', 'हवाई टिकट', 'ہوائی ٹکٹ', 'Domestic and international fares, including Jeddah and Madinah sectors for pilgrims.', 'घरेलू और अंतरराष्ट्रीय किराए, ज़ायरीन के लिए जेद्दा और मदीना सेक्टर सहित।', 'ملکی و بین الاقوامی کرائے، زائرین کے لیے جدہ اور مدینہ سیکٹر سمیت۔', ['Jeddah', 'Madinah', 'Dubai', 'Group fares'], 'air'],
+    ['Train tickets', 'रेल टिकट', 'ٹرین ٹکٹ', 'IRCTC bookings to your departure airport, including group and tatkal requests.', 'रवानगी एयरपोर्ट तक IRCTC बुकिंग, ग्रुप और तत्काल सहित।', 'روانگی ایئرپورٹ تک IRCTC بکنگ، گروپ اور تتکال سمیت۔', ['IRCTC', 'Group', 'Tatkal'], 'train'],
+    ['Visa services', 'वीज़ा सेवाएँ', 'ویزا سروسز', 'Umrah and Hajj visas, plus tourist and business visas for other countries.', 'उमराह और हज वीज़ा, साथ ही अन्य देशों के टूरिस्ट और बिज़नेस वीज़ा।', 'عمرہ اور حج ویزا، نیز دیگر ممالک کے ٹورسٹ اور بزنس ویزا۔', ['Umrah', 'Hajj', 'Tourist', 'Business'], null],
   ];
   for (const [i, s] of SERV.entries()) {
-    await prisma.service.create({ data: { order: i, nameEn: s[0], nameHi: s[1], nameUr: s[2], descEn: s[3], descHi: s[4], descUr: s[5], tags: JSON.stringify(s[6]) } });
+    await prisma.service.create({ data: { order: i, nameEn: s[0], nameHi: s[1], nameUr: s[2], descEn: s[3], descHi: s[4], descUr: s[5], tags: JSON.stringify(s[6]), formType: s[7] } });
   }
 
   console.log('Seed complete.');
