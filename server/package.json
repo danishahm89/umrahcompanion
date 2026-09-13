@@ -11,7 +11,9 @@
     "prisma:migrate": "prisma migrate dev",
     "seed": "ts-node --transpile-only prisma/seed.ts",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "generate:postgres-schema": "node scripts/generate-postgres-schema.js",
+    "render:build": "npm run generate:postgres-schema && prisma generate --schema=prisma/schema.postgres.prisma && prisma db push --schema=prisma/schema.postgres.prisma --accept-data-loss --skip-generate && tsc -p tsconfig.json"
   },
   "dependencies": {
     "@prisma/client": "^5.20.0",
