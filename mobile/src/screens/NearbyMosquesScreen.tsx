@@ -22,7 +22,7 @@ export function NearbyMosquesScreen() {
   const { t } = useLanguage();
   const { row } = useDirection();
   const { location } = useAppLocation();
-  const { data: mosques, isLoading } = useNearbyMosques(location?.lat, location?.lng);
+  const { data: mosques, isLoading, isError, error, refetch, isRefetching } = useNearbyMosques(location?.lat, location?.lng);
 
   return (
     <ScreenScaffold title={t('nearbyMosques')}>
@@ -47,7 +47,16 @@ export function NearbyMosquesScreen() {
           </Card>
         )}
 
-        {location && !isLoading && mosques?.length === 0 && (
+        {location && isError && (
+          <Card>
+            <AppText size={13.5} color="#C0392B">
+              Could not load nearby mosques: {error instanceof Error ? error.message : 'unknown error'}
+            </AppText>
+            <Button label={t('search')} variant="secondary" block style={{ marginTop: 12 }} disabled={isRefetching} onPress={() => refetch()} />
+          </Card>
+        )}
+
+        {location && !isLoading && !isError && mosques?.length === 0 && (
           <Card>
             <AppText size={13.5} color={colors.t70}>{t('noMosquesFound')}</AppText>
           </Card>

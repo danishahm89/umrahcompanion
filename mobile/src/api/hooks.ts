@@ -37,6 +37,9 @@ export const useNearbyMosques = (lat: number | undefined, lng: number | undefine
     queryKey: ['nearby-mosques', lat, lng],
     queryFn: () => apiGet<NearbyMosque[]>(`/nearby-mosques?lat=${lat}&lng=${lng}`),
     enabled: lat != null && lng != null,
+    // The Overpass proxy can be slow or briefly rate-limited — fail fast (one retry) and
+    // surface the error, rather than the default 3 retries with backoff feeling "stuck".
+    retry: 1,
   });
 
 export const useSubmitEnquiry = () =>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Linking, View } from 'react-native';
+import { ActivityIndicator, Linking, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ScreenScaffold } from '../components/ScreenScaffold';
@@ -21,12 +21,27 @@ export function ServicesScreen() {
   const { t, field } = useLanguage();
   const { row } = useDirection();
   const navigation = useNavigation<Nav>();
-  const { data: services } = useServices();
+  const { data: services, isLoading, isError, error, refetch, isRefetching } = useServices();
   const { data: contact } = useContact();
 
   return (
     <ScreenScaffold title={t('services')}>
       <CardStack>
+        {isLoading && (
+          <Card>
+            <ActivityIndicator color={colors.accent} />
+          </Card>
+        )}
+
+        {isError && (
+          <Card>
+            <AppText size={13.5} color="#C0392B">
+              Could not load services: {error instanceof Error ? error.message : 'unknown error'}
+            </AppText>
+            <Button label="Retry" variant="secondary" block style={{ marginTop: 12 }} disabled={isRefetching} onPress={() => refetch()} />
+          </Card>
+        )}
+
         {(services ?? []).map((s, i) => (
           <Card key={s.id}>
             <AppText weight="displayBlack" size={13} color={colors.goldDeep} style={{ letterSpacing: 1, textTransform: 'uppercase' }}>
