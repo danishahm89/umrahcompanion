@@ -153,7 +153,11 @@ export const STRINGS = {
     'آپ کے مقرر کردہ مقام کے قریب مساجد، OpenStreetMap سے۔',
   ],
   getDirections: ['Directions', 'दिशा-निर्देश', 'راستہ دکھائیں'],
-  noMosquesFound: ['No mosques found nearby.', 'आस-पास कोई मस्जिद नहीं मिली।', 'قریب کوئی مسجد نہیں ملی۔'],
+  noMosquesFound: [
+    'No mosques found within 15 km on OpenStreetMap — this area may not be fully mapped yet.',
+    '15 किमी के अंदर OpenStreetMap पर कोई मस्जिद नहीं मिली — यह इलाक़ा अभी पूरी तरह मैप नहीं हुआ होगा।',
+    '15 کلومیٹر کے اندر OpenStreetMap پر کوئی مسجد نہیں ملی — یہ علاقہ ابھی مکمل میپ نہیں ہوا ہوگا۔',
+  ],
   setLocationFirst: [
     'Set your location first to search nearby.',
     'नज़दीक खोजने के लिए पहले अपना स्थान सेट करें।',

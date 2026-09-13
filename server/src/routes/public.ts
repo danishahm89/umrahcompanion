@@ -138,8 +138,18 @@ publicRouter.get('/nearby-mosques', async (req, res) => {
     return res.status(400).json({ error: 'lat and lng query params are required' });
   }
 
-  const radiusM = 5000;
-  const query = `[out:json][timeout:15];(node["amenity"="mosque"](around:${radiusM},${lat},${lng});way["amenity"="mosque"](around:${radiusM},${lat},${lng}););out center 30;`;
+  // 5km turned up nothing in areas where OSM's mosque tagging is sparse — 15km casts a much
+  // wider net, and matching both amenity=mosque and building=mosque (a secondary tagging
+  // convention some mappers use instead) plus relations (multi-way mosque complexes), not
+  // just nodes/ways, catches more real-world entries.
+  const radiusM = 15000;
+  const tagFilters = ['["amenity"="mosque"]', '["building"="mosque"]'];
+  const clauses = tagFilters.flatMap((tag) => [
+    `node${tag}(around:${radiusM},${lat},${lng});`,
+    `way${tag}(around:${radiusM},${lat},${lng});`,
+    `relation${tag}(around:${radiusM},${lat},${lng});`,
+  ]);
+  const query = `[out:json][timeout:20];(${clauses.join('')});out center 30;`;
 
   // The free public Overpass instances are shared, unmetered infrastructure — any one of
   // them can be briefly overloaded (504/429). Try a short list in order instead of failing
@@ -166,7 +176,7 @@ publicRouter.get('/nearby-mosques', async (req, res) => {
   const attempts: string[] = [];
   for (const endpoint of OVERPASS_ENDPOINTS) {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 12000);
+    const timeout = setTimeout(() => controller.abort(), 22000);
     try {
       const overpassRes = await fetch(endpoint, {
         method: 'POST',
