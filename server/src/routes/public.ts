@@ -150,8 +150,20 @@ publicRouter.get('/nearby-mosques', async (req, res) => {
     'https://overpass.openstreetmap.ru/api/interpreter',
   ];
 
+  // Node's fetch collapses any network-level failure (DNS, TLS, connection refused,
+  // timeout) into a generic "fetch failed" — the real reason lives in `err.cause`, which
+  // gets lost if we only keep `err.message`. Capture full detail per endpoint so a failure
+  // is actually diagnosable instead of just "fetch failed".
+  function describeError(err: unknown): string {
+    if (!(err instanceof Error)) return String(err);
+    if (err.name === 'AbortError') return 'timed out after 12s';
+    const cause = (err as { cause?: unknown }).cause;
+    if (cause instanceof Error) return `${err.message}: ${cause.message}`;
+    return err.message;
+  }
+
   let data: { elements?: Array<Record<string, unknown>> } | undefined;
-  let lastError: unknown;
+  const attempts: string[] = [];
   for (const endpoint of OVERPASS_ENDPOINTS) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 12000);
@@ -169,16 +181,16 @@ publicRouter.get('/nearby-mosques', async (req, res) => {
         body: query,
         signal: controller.signal,
       });
-      if (!overpassRes.ok) throw new Error(`${endpoint} responded ${overpassRes.status}`);
+      if (!overpassRes.ok) throw new Error(`responded ${overpassRes.status}`);
       data = (await overpassRes.json()) as { elements?: Array<Record<string, unknown>> };
       break;
     } catch (err) {
-      lastError = err;
+      attempts.push(`${endpoint} -> ${describeError(err)}`);
     } finally {
       clearTimeout(timeout);
     }
   }
-  if (!data) throw new Error(`All Overpass mirrors failed: ${lastError instanceof Error ? lastError.message : lastError}`);
+  if (!data) throw new Error(`All Overpass mirrors failed:\n${attempts.join('\n')}`);
 
   type OverpassEl = { id: number; lat?: number; lon?: number; center?: { lat: number; lon: number }; tags?: Record<string, string> };
   const results = ((data.elements ?? []) as OverpassEl[])
