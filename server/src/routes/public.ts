@@ -147,7 +147,14 @@ publicRouter.get('/nearby-mosques', async (req, res) => {
   try {
     overpassRes = await fetch('https://overpass-api.de/api/interpreter', {
       method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
+      // Overpass's front-end rejects requests with no descriptive User-Agent or Accept
+      // header (406 Not Acceptable) — it's meant to identify real API clients, not just
+      // browsers, per their usage policy.
+      headers: {
+        'Content-Type': 'text/plain',
+        Accept: 'application/json, text/plain, */*',
+        'User-Agent': 'UmrahCompanionApp/1.0 (contact: info@alzakwaantours.in)',
+      },
       body: query,
       signal: controller.signal,
     });
