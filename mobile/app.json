@@ -52,6 +52,13 @@
             "usesCleartextTraffic": true
           }
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/splash-icon.png",
+          "color": "#0F6E4F"
+        }
       ]
     ],
     "extra": {

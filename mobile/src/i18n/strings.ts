@@ -168,6 +168,7 @@ export const STRINGS = {
   asr: ['Asr', 'अस्र', 'عصر'],
   maghrib: ['Maghrib', 'मग़रिब', 'مغرب'],
   isha: ["Isha", 'ईशा', 'عشاء'],
+  prayerAlertTitle: ['Prayer Time', 'नमाज़ का समय', 'نماز کا وقت'],
   nextPrayerLabel: ['Next', 'अगली', 'اگلی'],
   calcMethodNote: ['Umm al-Qura calculation', 'उम्म अल-क़ुरा गणना', 'ام القریٰ حساب'],
   // Nearby mosques

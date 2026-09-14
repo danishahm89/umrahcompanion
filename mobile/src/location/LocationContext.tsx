@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { useLanguage } from '../i18n/LanguageContext';
+import { scheduleUpcomingPrayerNotifications } from '../notifications/prayerNotifications';
 import * as Location from 'expo-location';
 import { usePersistentState } from '../storage/usePersistentState';
 
@@ -101,6 +103,13 @@ export function LocationProvider({ children }: { children: React.ReactNode }) {
   };
 
   const clearLocation = () => setLocation(null);
+
+  const { index: langIndex } = useLanguage();
+  useEffect(() => {
+    if (!location) return;
+    scheduleUpcomingPrayerNotifications(location.lat, location.lng, langIndex);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location?.lat, location?.lng, langIndex]);
 
   return (
     <LocationContext.Provider value={{ location, loading, error, useDeviceLocation, setManualCity, clearLocation }}>
