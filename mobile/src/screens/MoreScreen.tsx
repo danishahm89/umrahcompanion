@@ -14,7 +14,7 @@ import type { IconName } from '../components/Icon';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
 
-const ROWS: { icon: IconName; labelKey: 'gallery' | 'faq' | 'services' | 'ebooks' | 'contactUs' | 'nusuk' | 'packing' | 'vaccine' | 'duas' | 'azkaar' | 'customize' | 'settings'; target: keyof RootStackParamList }[] = [
+const ROWS: { icon: IconName; labelKey: 'gallery' | 'faq' | 'services' | 'ebooks' | 'contactUs' | 'nusuk' | 'packing' | 'vaccine' | 'duas' | 'azkaar' | 'quran' | 'customize' | 'settings'; target: keyof RootStackParamList }[] = [
   { icon: 'gallery', labelKey: 'gallery', target: 'Gallery' },
   { icon: 'faq', labelKey: 'faq', target: 'Faq' },
   { icon: 'services', labelKey: 'services', target: 'Services' },
@@ -23,6 +23,7 @@ const ROWS: { icon: IconName; labelKey: 'gallery' | 'faq' | 'services' | 'ebooks
   { icon: 'packing', labelKey: 'packing', target: 'Packing' },
   { icon: 'vaccine', labelKey: 'vaccine', target: 'Vaccine' },
   { icon: 'duas', labelKey: 'duas', target: 'Duas' }, { icon: 'duas', labelKey: 'azkaar', target: 'Azkaar' },
+  { icon: 'book', labelKey: 'quran', target: 'Quran' },
   { icon: 'firstTime', labelKey: 'customize', target: 'Customize' },
   { icon: 'contact', labelKey: 'contactUs', target: 'ContactUs' },
   { icon: 'settings', labelKey: 'settings', target: 'Settings' },

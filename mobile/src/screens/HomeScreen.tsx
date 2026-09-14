@@ -22,9 +22,10 @@ import type { RootStackParamList } from '../navigation/types';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
 
-const QUICK: { icon: IconName; labelKey: 'firsttime' | 'duas' | 'azkaar' | 'packing' | 'vaccine' | 'nusuk' | 'packages' | 'nearbyMosques' | 'qibla'; target: keyof RootStackParamList }[] = [
+const QUICK: { icon: IconName; labelKey: 'firsttime' | 'duas' | 'azkaar' | 'quran' | 'packing' | 'vaccine' | 'nusuk' | 'packages' | 'nearbyMosques' | 'qibla'; target: keyof RootStackParamList }[] = [
   { icon: 'firstTime', labelKey: 'firsttime', target: 'FirstTime' },
   { icon: 'duas', labelKey: 'duas', target: 'Duas' }, { icon: 'duas', labelKey: 'azkaar', target: 'Azkaar' },
+  { icon: 'book', labelKey: 'quran', target: 'Quran' },
   { icon: 'packing', labelKey: 'packing', target: 'Packing' },
   { icon: 'vaccine', labelKey: 'vaccine', target: 'Vaccine' },
   { icon: 'nusuk', labelKey: 'nusuk', target: 'Nusuk' },
