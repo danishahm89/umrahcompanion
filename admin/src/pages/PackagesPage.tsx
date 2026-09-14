@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { adminApi } from '../api/client';
-import type { ItineraryItem, Package, PackageInclusion } from '../api/types';
+import type { ItineraryItem, Package, PackageInclusion, PackageExclusion } from '../api/types';
 
 const BLANK_ITIN = (order: number): ItineraryItem => ({ order, keyEn: '', keyHi: '', keyUr: '', textEn: '', textHi: '', textUr: '' });
 const BLANK_INCL = (order: number): PackageInclusion => ({ order, textEn: '', textHi: '', textUr: '' });
+const BLANK_EXCL = (order: number): PackageExclusion => ({ order, textEn: '', textHi: '', textUr: '' });
 
 const BLANK_PACKAGE: Omit<Package, 'id'> = {
   type: 'group',
@@ -18,9 +19,11 @@ const BLANK_PACKAGE: Omit<Package, 'id'> = {
   makkahHotelStars: 3,
   makkahHotelDistM: 0,
   makkahHotelRemark: 'walking',
+  makkahHotelName: '',
   madinahHotelStars: 3,
   madinahHotelDistM: 0,
   madinahHotelRemark: 'walking',
+  madinahHotelName: '',
   cityEn: '', cityHi: '', cityUr: '',
   mealsEn: '', mealsHi: '', mealsUr: '',
   visaIncluded: true,
@@ -36,10 +39,11 @@ const BLANK_PACKAGE: Omit<Package, 'id'> = {
   order: 0,
   itinerary: [],
   inclusions: [],
+  exclusions: [],
 };
 
 // Lowest set share price = the "from" price shown to the admin as a live preview; the server
-// recomputes and stores this as priceInr on save, so this is read-only, informational.
+// recomputes the same thing on save.
 function fromPrice(p: Pick<Package, 'price2Share' | 'price3Share' | 'price4Share' | 'price5Share'>): number | null {
   const vals = [p.price2Share, p.price3Share, p.price4Share, p.price5Share].filter((v): v is number => typeof v === 'number');
   return vals.length ? Math.min(...vals) : null;
@@ -54,11 +58,62 @@ function toDatetimeLocal(iso: string | null): string {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
+// Moves array[from] to index `to` and renumbers every row's `order` to match its new position,
+// so drag-reordering itinerary/inclusion/exclusion rows (or packages) is just "move then save".
+function moveItem<T extends { order: number }>(arr: T[], from: number, to: number): T[] {
+  const copy = arr.slice();
+  const [item] = copy.splice(from, 1);
+  copy.splice(to, 0, item);
+  return copy.map((x, i) => ({ ...x, order: i }));
+}
+
+// Immutable single-field update for one row in an itinerary/inclusion/exclusion array.
+function updateRow<T>(arr: T[], idx: number, patch: Partial<T>): T[] {
+  return arr.map((x, j) => (j === idx ? { ...x, ...patch } : x));
+}
+
+type RecentField =
+  | 'nameEn' | 'nameHi' | 'nameUr' | 'cityEn' | 'cityHi' | 'cityUr'
+  | 'mealsEn' | 'mealsHi' | 'mealsUr' | 'makkahHotelName' | 'madinahHotelName'
+  | 'flightAirline' | 'flightViaCity'
+  | 'itKeyEn' | 'itKeyHi' | 'itKeyUr' | 'itTextEn' | 'itTextHi' | 'itTextUr'
+  | 'inclTextEn' | 'inclTextHi' | 'inclTextUr'
+  | 'exclTextEn' | 'exclTextHi' | 'exclTextUr';
+
+// A self-maintaining "recently used" list per field, built from every value already saved on
+// any package (newest package first) -- no separate list to manage, it just reflects reality.
+function buildRecent(packages: Package[]): Record<RecentField, string[]> {
+  const acc = {} as Record<RecentField, string[]>;
+  const push = (field: RecentField, value: string | null | undefined) => {
+    if (!value) return;
+    const list = acc[field] ?? (acc[field] = []);
+    if (!list.includes(value)) list.push(value);
+  };
+  for (const p of [...packages].reverse()) {
+    push('nameEn', p.nameEn); push('nameHi', p.nameHi); push('nameUr', p.nameUr);
+    push('cityEn', p.cityEn); push('cityHi', p.cityHi); push('cityUr', p.cityUr);
+    push('mealsEn', p.mealsEn); push('mealsHi', p.mealsHi); push('mealsUr', p.mealsUr);
+    push('makkahHotelName', p.makkahHotelName); push('madinahHotelName', p.madinahHotelName);
+    push('flightAirline', p.flightAirline); push('flightViaCity', p.flightViaCity);
+    for (const it of p.itinerary) {
+      push('itKeyEn', it.keyEn); push('itKeyHi', it.keyHi); push('itKeyUr', it.keyUr);
+      push('itTextEn', it.textEn); push('itTextHi', it.textHi); push('itTextUr', it.textUr);
+    }
+    for (const inc of p.inclusions) { push('inclTextEn', inc.textEn); push('inclTextHi', inc.textHi); push('inclTextUr', inc.textUr); }
+    for (const exc of p.exclusions) { push('exclTextEn', exc.textEn); push('exclTextHi', exc.textHi); push('exclTextUr', exc.textUr); }
+  }
+  return acc;
+}
+
 export function PackagesPage() {
   const [packages, setPackages] = useState<Package[]>([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<Package | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [dragPkg, setDragPkg] = useState<number | null>(null);
+  const [dragItin, setDragItin] = useState<number | null>(null);
+  const [dragIncl, setDragIncl] = useState<number | null>(null);
+  const [dragExcl, setDragExcl] = useState<number | null>(null);
 
   const load = () => {
     setLoading(true);
@@ -66,6 +121,11 @@ export function PackagesPage() {
   };
 
   useEffect(load, []);
+
+  const recent = useMemo(() => buildRecent(packages), [packages]);
+  const dl = (field: RecentField) => (
+    <datalist id={`dl-${field}`}>{(recent[field] ?? []).map((v) => <option key={v} value={v} />)}</datalist>
+  );
 
   const save = async () => {
     if (!editing) return;
@@ -87,6 +147,27 @@ export function PackagesPage() {
     load();
   };
 
+  const duplicate = (p: Package) => {
+    setError(null);
+    setEditing({
+      ...p,
+      id: '',
+      nameEn: `${p.nameEn} (copy)`,
+      live: false,
+      order: packages.length,
+      itinerary: p.itinerary.map((it, i) => ({ ...it, id: undefined, order: i })),
+      inclusions: p.inclusions.map((inc, i) => ({ ...inc, id: undefined, order: i })),
+      exclusions: p.exclusions.map((exc, i) => ({ ...exc, id: undefined, order: i })),
+    });
+  };
+
+  const reorderPackages = async (from: number, to: number) => {
+    if (from === to) return;
+    const reordered = moveItem(packages, from, to);
+    setPackages(reordered);
+    await adminApi.put('/packages/reorder', reordered.map((p, i) => ({ id: p.id, order: i })));
+  };
+
   const set = <K extends keyof Package>(key: K, value: Package[K]) => setEditing((e) => (e ? { ...e, [key]: value } : e));
 
   return (
@@ -96,14 +177,22 @@ export function PackagesPage() {
         <button className="primary" onClick={() => setEditing({ id: '', ...BLANK_PACKAGE, order: packages.length })}>New package</button>
       </div>
 
-      {loading ? <p>Loading…</p> : (
+      {loading ? <p>Loading...</p> : (
         <table>
           <thead>
-            <tr><th>Package</th><th>Price</th><th>Nights</th><th>Departs</th><th>Type</th><th>Live</th><th /></tr>
+            <tr><th /><th>Package</th><th>Price</th><th>Nights</th><th>Departs</th><th>Type</th><th>Live</th><th /></tr>
           </thead>
           <tbody>
-            {packages.map((p) => (
-              <tr key={p.id}>
+            {packages.map((p, i) => (
+              <tr
+                key={p.id}
+                draggable
+                onDragStart={() => setDragPkg(i)}
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={() => { if (dragPkg !== null) reorderPackages(dragPkg, i); setDragPkg(null); }}
+                style={{ opacity: dragPkg === i ? 0.5 : 1 }}
+              >
+                <td style={{ cursor: 'grab', color: 'var(--t50)' }} title="Drag to reorder">⠿</td>
                 <td>{p.nameEn}</td>
                 <td>₹{p.priceInr.toLocaleString('en-IN')}</td>
                 <td>{p.nights}</td>
@@ -112,6 +201,7 @@ export function PackagesPage() {
                 <td><span className={`tag ${p.live ? '' : 'outline'}`}>{p.live ? 'On' : 'Off'}</span></td>
                 <td style={{ display: 'flex', gap: 6 }}>
                   <button className="secondary" onClick={() => setEditing(p)}>Edit</button>
+                  <button className="secondary" onClick={() => duplicate(p)}>Duplicate</button>
                   <button className="danger" onClick={() => remove(p.id)}>Delete</button>
                 </td>
               </tr>
@@ -125,9 +215,9 @@ export function PackagesPage() {
           <h3 style={{ marginBottom: 12 }}>{editing.id ? 'Edit' : 'New'} package</h3>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 12 }}>
-            <div><label>Name (EN)</label><input value={editing.nameEn} onChange={(e) => set('nameEn', e.target.value)} /></div>
-            <div><label>Name (HI)</label><input value={editing.nameHi} onChange={(e) => set('nameHi', e.target.value)} /></div>
-            <div><label>Name (UR)</label><input value={editing.nameUr} onChange={(e) => set('nameUr', e.target.value)} /></div>
+            <div><label>Name (EN)</label><input list="dl-nameEn" value={editing.nameEn} onChange={(e) => set('nameEn', e.target.value)} />{dl('nameEn')}</div>
+            <div><label>Name (HI)</label><input list="dl-nameHi" value={editing.nameHi} onChange={(e) => set('nameHi', e.target.value)} />{dl('nameHi')}</div>
+            <div><label>Name (UR)</label><input list="dl-nameUr" value={editing.nameUr} onChange={(e) => set('nameUr', e.target.value)} />{dl('nameUr')}</div>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 12 }}>
@@ -158,12 +248,12 @@ export function PackagesPage() {
             <div style={{ marginBottom: 12 }}>
               <label>Hajj movement (nights above sets the 20-day / 30+ day bucket shown in the app)</label>
               <select
-                value={editing.hajjShifting === null ? '' : editing.hajjShifting ? 'shifting' : 'non_shifting'}
-                onChange={(e) => set('hajjShifting', e.target.value === '' ? null : e.target.value === 'shifting')}
+                value={editing.hajjShifting === null ? '' : String(editing.hajjShifting)}
+                onChange={(e) => set('hajjShifting', e.target.value === '' ? null : e.target.value === 'true')}
               >
-                <option value="">Not set</option>
-                <option value="shifting">Shifting</option>
-                <option value="non_shifting">Non-shifting</option>
+                <option value="">Not applicable</option>
+                <option value="true">Shifting (separate Mina/Arafat/Muzdalifah hotels)</option>
+                <option value="false">Non-shifting (one Makkah hotel throughout)</option>
               </select>
             </div>
           )}
@@ -182,6 +272,7 @@ export function PackagesPage() {
                 <option value="shuttle">Shuttle service</option>
               </select>
             </div>
+            <div style={{ gridColumn: '1 / -1' }}><label>Hotel name</label><input list="dl-makkahHotelName" value={editing.makkahHotelName} onChange={(e) => set('makkahHotelName', e.target.value)} />{dl('makkahHotelName')}</div>
           </div>
 
           <h4 style={{ marginBottom: 8 }}>Madinah hotel</h4>
@@ -198,101 +289,124 @@ export function PackagesPage() {
                 <option value="shuttle">Shuttle service</option>
               </select>
             </div>
+            <div style={{ gridColumn: '1 / -1' }}><label>Hotel name</label><input list="dl-madinahHotelName" value={editing.madinahHotelName} onChange={(e) => set('madinahHotelName', e.target.value)} />{dl('madinahHotelName')}</div>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 12 }}>
-            <div><label>Departure city (EN)</label><input value={editing.cityEn} onChange={(e) => set('cityEn', e.target.value)} /></div>
-            <div><label>City (HI)</label><input value={editing.cityHi} onChange={(e) => set('cityHi', e.target.value)} /></div>
-            <div><label>City (UR)</label><input value={editing.cityUr} onChange={(e) => set('cityUr', e.target.value)} /></div>
+            <div><label>Departure city (EN)</label><input list="dl-cityEn" value={editing.cityEn} onChange={(e) => set('cityEn', e.target.value)} />{dl('cityEn')}</div>
+            <div><label>City (HI)</label><input list="dl-cityHi" value={editing.cityHi} onChange={(e) => set('cityHi', e.target.value)} />{dl('cityHi')}</div>
+            <div><label>City (UR)</label><input list="dl-cityUr" value={editing.cityUr} onChange={(e) => set('cityUr', e.target.value)} />{dl('cityUr')}</div>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 12 }}>
-            <div><label>Meals (EN)</label><input value={editing.mealsEn} onChange={(e) => set('mealsEn', e.target.value)} /></div>
-            <div><label>Meals (HI)</label><input value={editing.mealsHi} onChange={(e) => set('mealsHi', e.target.value)} /></div>
-            <div><label>Meals (UR)</label><input value={editing.mealsUr} onChange={(e) => set('mealsUr', e.target.value)} /></div>
+            <div><label>Meals (EN)</label><input list="dl-mealsEn" value={editing.mealsEn} onChange={(e) => set('mealsEn', e.target.value)} />{dl('mealsEn')}</div>
+            <div><label>Meals (HI)</label><input list="dl-mealsHi" value={editing.mealsHi} onChange={(e) => set('mealsHi', e.target.value)} />{dl('mealsHi')}</div>
+            <div><label>Meals (UR)</label><input list="dl-mealsUr" value={editing.mealsUr} onChange={(e) => set('mealsUr', e.target.value)} />{dl('mealsUr')}</div>
           </div>
 
-          <div style={{ display: 'flex', gap: 20, marginBottom: 16, fontSize: 13 }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 6, textTransform: 'none' }}>
-              <input type="checkbox" style={{ width: 'auto' }} checked={editing.visaIncluded} onChange={(e) => set('visaIncluded', e.target.checked)} /> Visa included
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 6, textTransform: 'none' }}>
-              <input type="checkbox" style={{ width: 'auto' }} checked={editing.flightIncluded} onChange={(e) => set('flightIncluded', e.target.checked)} /> Flight included
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 6, textTransform: 'none' }}>
-              <input type="checkbox" style={{ width: 'auto' }} checked={editing.live} onChange={(e) => set('live', e.target.checked)} /> Live in app
-            </label>
+          <div style={{ display: 'flex', gap: 16, marginBottom: 12 }}>
+            <label><input type="checkbox" checked={editing.visaIncluded} onChange={(e) => set('visaIncluded', e.target.checked)} /> Visa included</label>
+            <label><input type="checkbox" checked={editing.flightIncluded} onChange={(e) => set('flightIncluded', e.target.checked)} /> Flight included</label>
+            <label><input type="checkbox" checked={editing.live} onChange={(e) => set('live', e.target.checked)} /> Live (visible in app)</label>
           </div>
 
-          <h4 style={{ marginBottom: 8 }}>Flight details</h4>
-          <label style={{ display: 'flex', alignItems: 'center', gap: 6, textTransform: 'none', fontSize: 13, marginBottom: 8 }}>
-            <input
-              type="checkbox"
-              style={{ width: 'auto' }}
-              checked={editing.flightConfirmLater}
-              onChange={(e) => set('flightConfirmLater', e.target.checked)}
-            /> Flight not finalized yet — show "To be confirmed" instead of dates
-          </label>
-          {!editing.flightConfirmLater && (
-            <>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 8 }}>
-                <div><label>Airline</label><input value={editing.flightAirline ?? ''} onChange={(e) => set('flightAirline', e.target.value)} /></div>
-                <div><label>Routing</label>
-                  <select value={editing.flightRouting ?? 'direct'} onChange={(e) => set('flightRouting', e.target.value)}>
-                    <option value="direct">Direct</option>
-                    <option value="via">Via</option>
-                  </select>
-                </div>
-                {editing.flightRouting === 'via' && (
-                  <div><label>Via city</label><input value={editing.flightViaCity ?? ''} onChange={(e) => set('flightViaCity', e.target.value)} /></div>
-                )}
+          {editing.flightIncluded && (
+            <div style={{ border: '1px solid var(--color-divider-strong)', padding: 12, marginBottom: 12 }}>
+              <h4 style={{ marginBottom: 8 }}>Flight details</h4>
+              <div style={{ marginBottom: 12 }}>
+                <label><input type="checkbox" checked={editing.flightConfirmLater} onChange={(e) => set('flightConfirmLater', e.target.checked)} /> Confirm flight details later</label>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 12 }}>
-                <div><label>Departure date &amp; time</label>
-                  <input
-                    type="datetime-local"
-                    value={toDatetimeLocal(editing.flightDepartureAt)}
-                    onChange={(e) => set('flightDepartureAt', e.target.value ? new Date(e.target.value).toISOString() : null)}
-                  />
-                </div>
-                <div><label>Return date &amp; time</label>
-                  <input
-                    type="datetime-local"
-                    value={toDatetimeLocal(editing.flightReturnAt)}
-                    onChange={(e) => set('flightReturnAt', e.target.value ? new Date(e.target.value).toISOString() : null)}
-                  />
-                </div>
-              </div>
-            </>
+              {!editing.flightConfirmLater && (
+                <>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 12 }}>
+                    <div><label>Airline</label><input list="dl-flightAirline" value={editing.flightAirline ?? ''} onChange={(e) => set('flightAirline', e.target.value)} />{dl('flightAirline')}</div>
+                    <div>
+                      <label>Routing</label>
+                      <select value={editing.flightRouting ?? 'direct'} onChange={(e) => set('flightRouting', e.target.value)}>
+                        <option value="direct">Direct</option>
+                        <option value="via">Via city</option>
+                      </select>
+                    </div>
+                    {editing.flightRouting === 'via' && (
+                      <div><label>Via city</label><input list="dl-flightViaCity" value={editing.flightViaCity ?? ''} onChange={(e) => set('flightViaCity', e.target.value)} />{dl('flightViaCity')}</div>
+                    )}
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 12 }}>
+                    <div><label>Departure at</label><input type="datetime-local" value={toDatetimeLocal(editing.flightDepartureAt)} onChange={(e) => set('flightDepartureAt', e.target.value ? new Date(e.target.value).toISOString() : null)} /></div>
+                    <div><label>Return at</label><input type="datetime-local" value={toDatetimeLocal(editing.flightReturnAt)} onChange={(e) => set('flightReturnAt', e.target.value ? new Date(e.target.value).toISOString() : null)} /></div>
+                  </div>
+                </>
+              )}
+            </div>
           )}
 
-          <h4 style={{ marginBottom: 8 }}>Itinerary</h4>
+          <h4 style={{ marginTop: 16, marginBottom: 8 }}>Itinerary</h4>
           {editing.itinerary.map((it, i) => (
-            <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 2fr 2fr 2fr auto', gap: 6, marginBottom: 6, alignItems: 'center' }}>
-              <input placeholder="Day (EN)" value={it.keyEn} onChange={(e) => set('itinerary', editing.itinerary.map((x, j) => (j === i ? { ...x, keyEn: e.target.value } : x)))} />
-              <input placeholder="Day (HI)" value={it.keyHi} onChange={(e) => set('itinerary', editing.itinerary.map((x, j) => (j === i ? { ...x, keyHi: e.target.value } : x)))} />
-              <input placeholder="Day (UR)" value={it.keyUr} onChange={(e) => set('itinerary', editing.itinerary.map((x, j) => (j === i ? { ...x, keyUr: e.target.value } : x)))} />
-              <input placeholder="Text (EN)" value={it.textEn} onChange={(e) => set('itinerary', editing.itinerary.map((x, j) => (j === i ? { ...x, textEn: e.target.value } : x)))} />
-              <input placeholder="Text (HI)" value={it.textHi} onChange={(e) => set('itinerary', editing.itinerary.map((x, j) => (j === i ? { ...x, textHi: e.target.value } : x)))} />
-              <input placeholder="Text (UR)" value={it.textUr} onChange={(e) => set('itinerary', editing.itinerary.map((x, j) => (j === i ? { ...x, textUr: e.target.value } : x)))} />
-              <button className="danger" onClick={() => set('itinerary', editing.itinerary.filter((_, j) => j !== i))}>✕</button>
+            <div
+              key={i}
+              draggable
+              onDragStart={() => setDragItin(i)}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={() => { if (dragItin !== null) set('itinerary', moveItem(editing.itinerary, dragItin, i)); setDragItin(null); }}
+              style={{ display: 'grid', gridTemplateColumns: '20px 1fr 1fr 1fr 30px', gap: 6, alignItems: 'start', marginBottom: 6, opacity: dragItin === i ? 0.5 : 1 }}
+            >
+              <span style={{ cursor: 'grab', color: 'var(--t50)' }} title="Drag to reorder">⠿</span>
+              <div>
+                <input list="dl-itKeyEn" placeholder="Key (EN)" value={it.keyEn} onChange={(e) => set('itinerary', updateRow(editing.itinerary, i, { keyEn: e.target.value }))} />{dl('itKeyEn')}
+                <input list="dl-itKeyHi" placeholder="Key (HI)" value={it.keyHi} onChange={(e) => set('itinerary', updateRow(editing.itinerary, i, { keyHi: e.target.value }))} />{dl('itKeyHi')}
+                <input list="dl-itKeyUr" placeholder="Key (UR)" value={it.keyUr} onChange={(e) => set('itinerary', updateRow(editing.itinerary, i, { keyUr: e.target.value }))} />{dl('itKeyUr')}
+              </div>
+              <div>
+                <input list="dl-itTextEn" placeholder="Text (EN)" value={it.textEn} onChange={(e) => set('itinerary', updateRow(editing.itinerary, i, { textEn: e.target.value }))} />{dl('itTextEn')}
+                <input list="dl-itTextHi" placeholder="Text (HI)" value={it.textHi} onChange={(e) => set('itinerary', updateRow(editing.itinerary, i, { textHi: e.target.value }))} />{dl('itTextHi')}
+                <input list="dl-itTextUr" placeholder="Text (UR)" value={it.textUr} onChange={(e) => set('itinerary', updateRow(editing.itinerary, i, { textUr: e.target.value }))} />{dl('itTextUr')}
+              </div>
+              <button className="danger" onClick={() => set('itinerary', editing.itinerary.filter((_, j) => j !== i).map((x, j) => ({ ...x, order: j })))}>✕</button>
             </div>
           ))}
-          <button className="secondary" style={{ marginBottom: 16 }} onClick={() => set('itinerary', [...editing.itinerary, BLANK_ITIN(editing.itinerary.length)])}>Add itinerary row</button>
+          <button className="secondary" onClick={() => set('itinerary', [...editing.itinerary, BLANK_ITIN(editing.itinerary.length)])}>Add itinerary row</button>
 
-          <h4 style={{ marginBottom: 8 }}>Inclusions</h4>
+          <h4 style={{ marginTop: 16, marginBottom: 8 }}>Inclusions</h4>
           {editing.inclusions.map((inc, i) => (
-            <div key={i} style={{ display: 'grid', gridTemplateColumns: '2fr 2fr 2fr auto', gap: 6, marginBottom: 6 }}>
-              <input placeholder="EN" value={inc.textEn} onChange={(e) => set('inclusions', editing.inclusions.map((x, j) => (j === i ? { ...x, textEn: e.target.value } : x)))} />
-              <input placeholder="HI" value={inc.textHi} onChange={(e) => set('inclusions', editing.inclusions.map((x, j) => (j === i ? { ...x, textHi: e.target.value } : x)))} />
-              <input placeholder="UR" value={inc.textUr} onChange={(e) => set('inclusions', editing.inclusions.map((x, j) => (j === i ? { ...x, textUr: e.target.value } : x)))} />
-              <button className="danger" onClick={() => set('inclusions', editing.inclusions.filter((_, j) => j !== i))}>✕</button>
+            <div
+              key={i}
+              draggable
+              onDragStart={() => setDragIncl(i)}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={() => { if (dragIncl !== null) set('inclusions', moveItem(editing.inclusions, dragIncl, i)); setDragIncl(null); }}
+              style={{ display: 'grid', gridTemplateColumns: '20px 1fr 1fr 1fr 30px', gap: 6, alignItems: 'start', marginBottom: 6, opacity: dragIncl === i ? 0.5 : 1 }}
+            >
+              <span style={{ cursor: 'grab', color: 'var(--t50)' }} title="Drag to reorder">⠿</span>
+              <div><input list="dl-inclTextEn" placeholder="Text (EN)" value={inc.textEn} onChange={(e) => set('inclusions', updateRow(editing.inclusions, i, { textEn: e.target.value }))} />{dl('inclTextEn')}</div>
+              <div><input list="dl-inclTextHi" placeholder="Text (HI)" value={inc.textHi} onChange={(e) => set('inclusions', updateRow(editing.inclusions, i, { textHi: e.target.value }))} />{dl('inclTextHi')}</div>
+              <div><input list="dl-inclTextUr" placeholder="Text (UR)" value={inc.textUr} onChange={(e) => set('inclusions', updateRow(editing.inclusions, i, { textUr: e.target.value }))} />{dl('inclTextUr')}</div>
+              <button className="danger" onClick={() => set('inclusions', editing.inclusions.filter((_, j) => j !== i).map((x, j) => ({ ...x, order: j })))}>✕</button>
             </div>
           ))}
-          <button className="secondary" style={{ marginBottom: 16 }} onClick={() => set('inclusions', [...editing.inclusions, BLANK_INCL(editing.inclusions.length)])}>Add inclusion row</button>
+          <button className="secondary" onClick={() => set('inclusions', [...editing.inclusions, BLANK_INCL(editing.inclusions.length)])}>Add inclusion</button>
 
-          {error && <p style={{ color: 'var(--danger)' }}>{error}</p>}
-          <div style={{ display: 'flex', gap: 8 }}>
+          <h4 style={{ marginTop: 16, marginBottom: 8 }}>Exclusions</h4>
+          {editing.exclusions.map((exc, i) => (
+            <div
+              key={i}
+              draggable
+              onDragStart={() => setDragExcl(i)}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={() => { if (dragExcl !== null) set('exclusions', moveItem(editing.exclusions, dragExcl, i)); setDragExcl(null); }}
+              style={{ display: 'grid', gridTemplateColumns: '20px 1fr 1fr 1fr 30px', gap: 6, alignItems: 'start', marginBottom: 6, opacity: dragExcl === i ? 0.5 : 1 }}
+            >
+              <span style={{ cursor: 'grab', color: 'var(--t50)' }} title="Drag to reorder">⠿</span>
+              <div><input list="dl-exclTextEn" placeholder="Text (EN)" value={exc.textEn} onChange={(e) => set('exclusions', updateRow(editing.exclusions, i, { textEn: e.target.value }))} />{dl('exclTextEn')}</div>
+              <div><input list="dl-exclTextHi" placeholder="Text (HI)" value={exc.textHi} onChange={(e) => set('exclusions', updateRow(editing.exclusions, i, { textHi: e.target.value }))} />{dl('exclTextHi')}</div>
+              <div><input list="dl-exclTextUr" placeholder="Text (UR)" value={exc.textUr} onChange={(e) => set('exclusions', updateRow(editing.exclusions, i, { textUr: e.target.value }))} />{dl('exclTextUr')}</div>
+              <button className="danger" onClick={() => set('exclusions', editing.exclusions.filter((_, j) => j !== i).map((x, j) => ({ ...x, order: j })))}>✕</button>
+            </div>
+          ))}
+          <button className="secondary" onClick={() => set('exclusions', [...editing.exclusions, BLANK_EXCL(editing.exclusions.length)])}>Add exclusion</button>
+
+          {error && <p style={{ color: 'var(--color-danger, #c00)', marginTop: 12 }}>{error}</p>}
+
+          <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
             <button className="primary" onClick={save}>Save</button>
             <button className="secondary" onClick={() => setEditing(null)}>Cancel</button>
           </div>

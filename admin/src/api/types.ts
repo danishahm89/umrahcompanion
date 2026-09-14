@@ -58,6 +58,12 @@ export interface PackageInclusion {
   textEn: string; textHi: string; textUr: string;
 }
 
+export interface PackageExclusion {
+  id?: string;
+  order: number;
+  textEn: string; textHi: string; textUr: string;
+}
+
 export interface Package {
   id: string;
   type: string;
@@ -73,9 +79,11 @@ export interface Package {
   makkahHotelStars: number;
   makkahHotelDistM: number;
   makkahHotelRemark: string; // "walking" | "shuttle"
+  makkahHotelName: string;
   madinahHotelStars: number;
   madinahHotelDistM: number;
   madinahHotelRemark: string; // "walking" | "shuttle"
+  madinahHotelName: string;
   cityEn: string; cityHi: string; cityUr: string;
   mealsEn: string; mealsHi: string; mealsUr: string;
   visaIncluded: boolean;
@@ -91,6 +99,7 @@ export interface Package {
   order: number;
   itinerary: ItineraryItem[];
   inclusions: PackageInclusion[];
+  exclusions: PackageExclusion[];
 }
 
 export interface Dua {

@@ -53,10 +53,12 @@ model Package {
   makkahHotelStars  Int
   makkahHotelDistM  Int
   makkahHotelRemark String  @default("walking") // "walking" | "shuttle"
+  makkahHotelName      String  @default("")
   // Madinah hotel
   madinahHotelStars  Int
   madinahHotelDistM  Int
   madinahHotelRemark String  @default("walking") // "walking" | "shuttle"
+  madinahHotelName     String  @default("")
   cityEn         String
   cityHi         String
   cityUr         String
@@ -83,6 +85,7 @@ model Package {
   updatedAt      DateTime           @updatedAt
   itinerary      ItineraryItem[]
   inclusions     PackageInclusion[]
+  exclusions     PackageExclusion[]
 }
 
 model ItineraryItem {
@@ -286,4 +289,14 @@ model TicketEnquiry {
   tatkal     Boolean   @default(false)
   notes      String?
   createdAt  DateTime  @default(now())
+}
+
+model PackageExclusion {
+  id        String  @id @default(cuid())
+  packageId String
+  package   Package @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  order     Int
+  textEn    String
+  textHi    String
+  textUr    String
 }

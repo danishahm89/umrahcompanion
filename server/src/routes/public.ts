@@ -31,6 +31,7 @@ publicRouter.get('/packages/:id', async (req, res) => {
     include: {
       itinerary: { orderBy: { order: 'asc' } },
       inclusions: { orderBy: { order: 'asc' } },
+      exclusions: { orderBy: { order: 'asc' } },
     },
   });
   if (!pkg) return res.status(404).json({ error: 'Package not found' });

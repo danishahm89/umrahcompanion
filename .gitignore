@@ -1,2 +1,7 @@
 node_modules/
 .env
+data/
+translate-models/
+*.bak-*
+node_modules/
+dist/
