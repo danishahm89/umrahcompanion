@@ -39,9 +39,9 @@ export const STRINGS = {
   tapDone: ['Tap a step to mark it done', 'पूरा हुआ चरण टैप करें', 'مکمل مرحلہ ٹیپ کریں'],
   packNote: ['Tap to tick. Your list is saved.', 'टैप कर टिक करें। सूची सेव रहती है।', 'ٹیپ کر کے ٹک کریں۔ فہرست محفوظ رہتی ہے۔'],
   vaxNote: [
-    'Meningococcal ACWY is required before your visa is issued. Confirm the rest with your doctor.',
-    'वीज़ा से पहले मेनिंगोकोकल ACWY ज़रूरी है। बाक़ी अपने डॉक्टर से पुष्टि करें।',
-    'ویزا سے پہلے مینینگوکوکل ACWY لازمی ہے۔ باقی اپنے ڈاکٹر سے تصدیق کریں۔',
+    'Meningococcal ACWY is required before your visa is issued. Confirm the rest with your doctor. These vaccine suggestions are not mandatory — please check with your travel agent.',
+    'वीज़ा से पहले मेनिंगोकोकल ACWY ज़रूरी है। बाक़ी अपने डॉक्टर से पुष्टि करें। ये टीका सुझाव जरूरी नहीं हैं, अपने ट्रैवल एजेंट से ज़रूर पूछें।',
+    'ویزا سے پہلے مینینگوکوکل ACWY لازمی ہے۔ باقی اپنے ڈاکٹر سے تصدیق کریں۔ یہ ویکسین تجاویز لازمی نہیں ہیں، براہ کرم اپنے ٹریول ایجنٹ سے تصدیق کریں۔',
   ],
   syncNote: [
     'Synced 2 hours ago from nusuk.sa, haj.gov.sa and spa.gov.sa',
