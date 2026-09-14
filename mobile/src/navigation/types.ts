@@ -3,6 +3,7 @@ export type RootStackParamList = {
   GuideHub: undefined;
   FirstTime: undefined;
   Duas: undefined;
+  Azkaar: undefined;
   Packing: undefined;
   Vaccine: undefined;
   News: undefined;
@@ -24,7 +25,7 @@ export type RootStackParamList = {
 
 export type TabSection = 'home' | 'guide' | 'packages' | 'news' | 'more' | null;
 
-const GUIDE_SCREENS: (keyof RootStackParamList)[] = ['GuideHub', 'FirstTime', 'Duas', 'Packing', 'Vaccine'];
+const GUIDE_SCREENS: (keyof RootStackParamList)[] = ['GuideHub', 'FirstTime', 'Duas', 'Azkaar', 'Packing', 'Vaccine'];
 const PACKAGES_SCREENS: (keyof RootStackParamList)[] = ['Packages', 'PackageDetail', 'Customize'];
 const NEWS_SCREENS: (keyof RootStackParamList)[] = ['News', 'Nusuk'];
 const MORE_SCREENS: (keyof RootStackParamList)[] = ['More', 'Settings', 'Faq', 'Services', 'Ebooks', 'ContactUs', 'TicketForm'];

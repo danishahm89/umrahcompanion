@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { apiGet, apiPost } from './client';
 import type {
-  AppSettings, ContactInfo, CustomizeEnquiryInput, DuaStage, Ebook, FaqItem, FirstTimeStep,
+  AppSettings, AzkaarCategory, ContactInfo, CustomizeEnquiryInput, DuaStage, Ebook, FaqItem, FirstTimeStep,
   GuideRitual, NearbyMosque, NewsItem, NusukLink, Package, PackingGroup, Service, TicketEnquiryInput, VaccineItem,
 } from './types';
 
@@ -24,6 +24,7 @@ export const usePackage = (id: string | undefined) =>
 export const useGuideRituals = () => useQuery({ queryKey: ['guide-rituals'], queryFn: () => apiGet<GuideRitual[]>('/guide/rituals') });
 export const useGuideSteps = () => useQuery({ queryKey: ['guide-steps'], queryFn: () => apiGet<FirstTimeStep[]>('/guide/steps') });
 export const useDuaStages = () => useQuery({ queryKey: ['duas'], queryFn: () => apiGet<DuaStage[]>('/duas') });
+export const useAzkaar = () => useQuery({ queryKey: ['azkaar'], queryFn: () => apiGet<AzkaarCategory[]>('/azkaar') });
 export const usePackingGroups = () => useQuery({ queryKey: ['packing'], queryFn: () => apiGet<PackingGroup[]>('/packing') });
 export const useVaccines = () => useQuery({ queryKey: ['vaccines'], queryFn: () => apiGet<VaccineItem[]>('/vaccines') });
 export const useNews = () => useQuery({ queryKey: ['news'], queryFn: () => apiGet<NewsItem[]>('/news') });

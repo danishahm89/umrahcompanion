@@ -7,6 +7,8 @@ export const STRINGS = {
   guide: ['Umrah Guide', 'उमराह गाइड', 'عمرہ گائیڈ'],
   firsttime: ['First Time Umrah', 'पहली बार उमराह', 'پہلی بار عمرہ'],
   duas: ['Duas for the Journey', 'सफ़र की दुआएँ', 'سفر کی دعائیں'],
+  azkaar: ['Daily Azkaar', 'रोज़ाना के अज़कार', 'روزانہ کے اذکار'],
+  repeatTimes: ['Repeat {n} times', '{n} बार दोहराएँ', '{n} بار دہرائیں'],
   packing: ['Packing Checklist', 'सामान चेकलिस्ट', 'سامان چیک لسٹ'],
   vaccine: ['Vaccine Checklist', 'टीका चेकलिस्ट', 'ویکسین چیک لسٹ'],
   news: ['Umrah News', 'उमराह ख़बरें', 'عمرہ خبریں'],

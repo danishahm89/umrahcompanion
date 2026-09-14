@@ -89,6 +89,22 @@ export interface DuaStage {
   duas: Dua[];
 }
 
+export interface Azkaar {
+  id: string;
+  order: number;
+  arabic: string;
+  transliteration: string;
+  repeat: number;
+  meaningEn: string; meaningHi: string; meaningUr: string;
+}
+
+export interface AzkaarCategory {
+  id: string; order: number;
+  nameEn: string; nameHi: string; nameUr: string;
+  noteEn: string; noteHi: string; noteUr: string;
+  azkaar: Azkaar[];
+}
+
 export interface PackingItem {
   id: string; order: number;
   textEn: string; textHi: string; textUr: string;

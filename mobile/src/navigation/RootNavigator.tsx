@@ -11,6 +11,7 @@ import { HomeScreen } from '../screens/HomeScreen';
 import { GuideHubScreen } from '../screens/GuideHubScreen';
 import { FirstTimeScreen } from '../screens/FirstTimeScreen';
 import { DuasScreen } from '../screens/DuasScreen';
+import { AzkaarScreen } from '../screens/AzkaarScreen';
 import { PackingScreen } from '../screens/PackingScreen';
 import { VaccineScreen } from '../screens/VaccineScreen';
 import { NewsScreen } from '../screens/NewsScreen';
@@ -48,6 +49,7 @@ export function RootNavigator() {
             <Stack.Screen name="GuideHub" component={GuideHubScreen} />
             <Stack.Screen name="FirstTime" component={FirstTimeScreen} />
             <Stack.Screen name="Duas" component={DuasScreen} />
+            <Stack.Screen name="Azkaar" component={AzkaarScreen} />
             <Stack.Screen name="Packing" component={PackingScreen} />
             <Stack.Screen name="Vaccine" component={VaccineScreen} />
             <Stack.Screen name="News" component={NewsScreen} />
