@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import * as Location from 'expo-location';
 import { usePersistentState } from '../storage/usePersistentState';
 
@@ -23,6 +23,39 @@ export function LocationProvider({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = usePersistentState<AppLocation | null>('home-location', null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Ask for location access once, right when the app opens, so prayer times / Qibla /
+  // nearby-mosques all have a starting point. Falls back to Delhi if denied or unavailable.
+  const askedOnStart = useRef(false);
+  useEffect(() => {
+    if (askedOnStart.current) return;
+    askedOnStart.current = true;
+    if (location !== null) return;
+    (async () => {
+      setLoading(true);
+      try {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status === 'granted') {
+          const pos = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
+          let label = 'Current location';
+          try {
+            const [place] = await Location.reverseGeocodeAsync({ latitude: pos.coords.latitude, longitude: pos.coords.longitude });
+            if (place) label = [place.city, place.region].filter(Boolean).join(', ') || label;
+          } catch {
+            // reverse geocoding is best-effort
+          }
+          setLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude, label });
+        } else {
+          setLocation({ lat: 28.6139, lng: 77.209, label: 'Delhi' });
+        }
+      } catch {
+        setLocation({ lat: 28.6139, lng: 77.209, label: 'Delhi' });
+      } finally {
+        setLoading(false);
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const useDeviceLocation = async () => {
     setLoading(true);
