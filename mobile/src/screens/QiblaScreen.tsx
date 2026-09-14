@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { View, type DimensionValue } from 'react-native';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Animated, Easing, View, type DimensionValue } from 'react-native';
 import * as Location from 'expo-location';
 import { ScreenScaffold } from '../components/ScreenScaffold';
 import { AppText } from '../components/AppText';
@@ -26,6 +26,10 @@ export function QiblaScreen() {
   const { location } = useAppLocation();
   const [heading, setHeading] = useState<number | null>(null);
   const [headingError, setHeadingError] = useState<string | null>(null);
+  // Continuous (unwrapped) heading in degrees, animated smoothly so the needle
+  // never snaps and never spins the long way round the 0/360 seam.
+  const continuousHeadingRef = useRef(0);
+  const animatedHeading = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     let subscription: Location.LocationSubscription | undefined;
@@ -42,7 +46,21 @@ export function QiblaScreen() {
       }
       try {
         const sub = await Location.watchHeadingAsync((h) => {
-          setHeading(h.trueHeading >= 0 ? h.trueHeading : h.magHeading);
+          const raw = h.trueHeading >= 0 ? h.trueHeading : h.magHeading;
+          setHeading(raw);
+          const prev = continuousHeadingRef.current;
+          const prevMod = ((prev % 360) + 360) % 360;
+          let delta = raw - prevMod;
+          if (delta > 180) delta -= 360;
+          if (delta < -180) delta += 360;
+          const next = prev + delta;
+          continuousHeadingRef.current = next;
+          Animated.timing(animatedHeading, {
+            toValue: next,
+            duration: 180,
+            easing: Easing.out(Easing.quad),
+            useNativeDriver: true,
+          }).start();
         });
         if (cancelled) sub.remove();
         else subscription = sub;
@@ -59,8 +77,17 @@ export function QiblaScreen() {
   const qiblaBearing = useMemo(() => (location ? computeQiblaBearing(location.lat, location.lng) : null), [location]);
   const distanceKm = useMemo(() => (location ? computeDistanceToKaabaKm(location.lat, location.lng) : null), [location]);
 
-  const dialRotation = heading != null ? -heading : 0;
-  const needleRotation = (qiblaBearing ?? 0) - (heading ?? 0);
+  const dialRotate = animatedHeading.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '-1deg'],
+    extrapolate: 'extend',
+  });
+  const bearing = qiblaBearing ?? 0;
+  const needleRotate = animatedHeading.interpolate({
+    inputRange: [0, 1],
+    outputRange: [`${bearing}deg`, `${bearing - 1}deg`],
+    extrapolate: 'extend',
+  });
 
   return (
     <ScreenScaffold title={t('qibla')}>
@@ -79,7 +106,7 @@ export function QiblaScreen() {
 
             <Card style={{ alignItems: 'center', paddingVertical: 32 }}>
               <View style={{ width: DIAL_SIZE, height: DIAL_SIZE, alignItems: 'center', justifyContent: 'center' }}>
-                <View
+                <Animated.View
                   style={{
                     position: 'absolute',
                     width: DIAL_SIZE,
@@ -87,7 +114,7 @@ export function QiblaScreen() {
                     borderRadius: DIAL_SIZE / 2,
                     borderWidth: 2,
                     borderColor: colors.hairline,
-                    transform: [{ rotate: `${dialRotation}deg` }],
+                    transform: [{ rotate: dialRotate }],
                   }}
                 >
                   {RING_LABELS.map((l) => (
@@ -95,19 +122,19 @@ export function QiblaScreen() {
                       <AppText weight="semibold" size={13} color={l.dir === 'N' ? colors.accent : colors.t50}>{l.dir}</AppText>
                     </View>
                   ))}
-                </View>
+                </Animated.View>
 
-                <View
+                <Animated.View
                   style={{
                     position: 'absolute',
                     width: DIAL_SIZE,
                     height: DIAL_SIZE,
                     alignItems: 'center',
-                    transform: [{ rotate: `${needleRotation}deg` }],
+                    transform: [{ rotate: needleRotate }],
                   }}
                 >
                   <Icon name="pin" size={30} color={colors.gold} strokeWidth={2} />
-                </View>
+                </Animated.View>
 
                 <View style={{ width: 12, height: 12, borderRadius: 6, backgroundColor: colors.accent }} />
               </View>
