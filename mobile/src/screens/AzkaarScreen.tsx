@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
 import { ScreenScaffold } from '../components/ScreenScaffold';
 import { AppText, ArabicText } from '../components/AppText';
 import { Card, CardStack } from '../components/Card';
@@ -21,20 +21,24 @@ export function AzkaarScreen() {
   return (
     <ScreenScaffold title={t('azkaar')}>
       <CardStack>
-        <View style={{ flexDirection: 'row', gap: 4, backgroundColor: colors.neutral100, borderRadius: radius.pill, padding: 4 }}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ flexDirection: 'row', gap: 4, backgroundColor: colors.neutral100, borderRadius: radius.pill, padding: 4 }}
+        >
           {(categories ?? []).map((c, i) => {
             const active = i === categoryIndex;
             return (
               <Pressable
                 key={c.id}
                 onPress={() => setCategoryIndex(i)}
-                style={{ flex: 1, alignItems: 'center', paddingVertical: 9, borderRadius: radius.pill, backgroundColor: active ? colors.accent : 'transparent' }}
+                style={{ alignItems: 'center', paddingVertical: 9, paddingHorizontal: 16, borderRadius: radius.pill, backgroundColor: active ? colors.accent : 'transparent' }}
               >
                 <AppText size={12.5} weight={active ? 'semibold' : 'regular'} color={active ? '#fff' : colors.text}>{field(c.nameEn, c.nameHi, c.nameUr)}</AppText>
               </Pressable>
             );
           })}
-        </View>
+        </ScrollView>
 
         {category && (
           <AppText size={12.5} color={colors.t70} style={{ lineHeight: 19, paddingHorizontal: 4 }}>
