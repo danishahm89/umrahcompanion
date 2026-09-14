@@ -54,6 +54,14 @@ publicRouter.get('/duas', async (_req, res) => {
   res.json(stages);
 });
 
+publicRouter.get('/azkaar', async (_req, res) => {
+  const categories = await prisma.azkaarCategory.findMany({
+    orderBy: { order: 'asc' },
+    include: { azkaar: { orderBy: { order: 'asc' } } },
+  });
+  res.json(categories);
+});
+
 publicRouter.get('/packing', async (_req, res) => {
   const groups = await prisma.packingGroup.findMany({
     orderBy: { order: 'asc' },

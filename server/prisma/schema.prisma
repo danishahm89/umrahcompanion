@@ -160,6 +160,31 @@ model Dua {
   meaningUr       String
 }
 
+model AzkaarCategory {
+  id      String   @id @default(cuid())
+  order   Int
+  nameEn  String
+  nameHi  String
+  nameUr  String
+  noteEn  String
+  noteHi  String
+  noteUr  String
+  azkaar  Azkaar[]
+}
+
+model Azkaar {
+  id              String         @id @default(cuid())
+  categoryId      String
+  category        AzkaarCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  order           Int
+  arabic          String
+  transliteration String
+  repeat          Int            @default(1)
+  meaningEn       String
+  meaningHi       String
+  meaningUr       String
+}
+
 model PackingGroup {
   id      String        @id @default(cuid())
   order   Int
