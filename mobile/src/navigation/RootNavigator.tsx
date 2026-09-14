@@ -14,6 +14,9 @@ import { DuasScreen } from '../screens/DuasScreen';
 import { AzkaarScreen } from '../screens/AzkaarScreen';
 import { QuranScreen } from '../screens/QuranScreen';
 import { QuranSurahScreen } from '../screens/QuranSurahScreen';
+import { HadithScreen } from '../screens/HadithScreen';
+import { HadithBookScreen } from '../screens/HadithBookScreen';
+import { HadithChapterScreen } from '../screens/HadithChapterScreen';
 import { PackingScreen } from '../screens/PackingScreen';
 import { VaccineScreen } from '../screens/VaccineScreen';
 import { NewsScreen } from '../screens/NewsScreen';
@@ -54,6 +57,9 @@ export function RootNavigator() {
             <Stack.Screen name="Azkaar" component={AzkaarScreen} />
             <Stack.Screen name="Quran" component={QuranScreen} />
             <Stack.Screen name="QuranSurah" component={QuranSurahScreen} />
+            <Stack.Screen name="Hadith" component={HadithScreen} />
+            <Stack.Screen name="HadithBook" component={HadithBookScreen} />
+            <Stack.Screen name="HadithChapter" component={HadithChapterScreen} />
             <Stack.Screen name="Packing" component={PackingScreen} />
             <Stack.Screen name="Vaccine" component={VaccineScreen} />
             <Stack.Screen name="News" component={NewsScreen} />

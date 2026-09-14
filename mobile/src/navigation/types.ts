@@ -6,6 +6,9 @@ export type RootStackParamList = {
   Azkaar: undefined;
   Quran: undefined;
   QuranSurah: { number: number };
+  Hadith: undefined;
+  HadithBook: { bookId: string; nameEn: string };
+  HadithChapter: { bookId: string; nameEn: string; chapterNumber: number; chapterName: string };
   Packing: undefined;
   Vaccine: undefined;
   News: undefined;
