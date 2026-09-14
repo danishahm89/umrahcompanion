@@ -11,7 +11,11 @@ import { HomeScreen } from '../screens/HomeScreen';
 import { GuideHubScreen } from '../screens/GuideHubScreen';
 import { FirstTimeScreen } from '../screens/FirstTimeScreen';
 import { DuasScreen } from '../screens/DuasScreen';
+import { DuaCategoryScreen } from '../screens/DuaCategoryScreen';
+import { DuaDetailScreen } from '../screens/DuaDetailScreen';
 import { AzkaarScreen } from '../screens/AzkaarScreen';
+import { AzkaarCategoryScreen } from '../screens/AzkaarCategoryScreen';
+import { AzkaarDetailScreen } from '../screens/AzkaarDetailScreen';
 import { QuranScreen } from '../screens/QuranScreen';
 import { QuranSurahScreen } from '../screens/QuranSurahScreen';
 import { HadithScreen } from '../screens/HadithScreen';
@@ -54,7 +58,11 @@ export function RootNavigator() {
             <Stack.Screen name="GuideHub" component={GuideHubScreen} />
             <Stack.Screen name="FirstTime" component={FirstTimeScreen} />
             <Stack.Screen name="Duas" component={DuasScreen} />
+            <Stack.Screen name="DuaCategory" component={DuaCategoryScreen} />
+            <Stack.Screen name="DuaDetail" component={DuaDetailScreen} />
             <Stack.Screen name="Azkaar" component={AzkaarScreen} />
+            <Stack.Screen name="AzkaarCategory" component={AzkaarCategoryScreen} />
+            <Stack.Screen name="AzkaarDetail" component={AzkaarDetailScreen} />
             <Stack.Screen name="Quran" component={QuranScreen} />
             <Stack.Screen name="QuranSurah" component={QuranSurahScreen} />
             <Stack.Screen name="Hadith" component={HadithScreen} />

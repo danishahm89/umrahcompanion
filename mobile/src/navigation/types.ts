@@ -4,6 +4,10 @@ export type RootStackParamList = {
   FirstTime: undefined;
   Duas: undefined;
   Azkaar: undefined;
+  DuaCategory: { stageId: string };
+  DuaDetail: { stageId: string; duaId: string };
+  AzkaarCategory: { categoryId: string };
+  AzkaarDetail: { categoryId: string; azkaarId: string };
   Quran: undefined;
   QuranSurah: { number: number };
   Hadith: undefined;
@@ -30,7 +34,14 @@ export type RootStackParamList = {
 
 export type TabSection = 'home' | 'guide' | 'packages' | 'news' | 'more' | null;
 
-const GUIDE_SCREENS: (keyof RootStackParamList)[] = ['GuideHub', 'FirstTime', 'Duas', 'Azkaar', 'Packing', 'Vaccine'];
+const GUIDE_SCREENS: (keyof RootStackParamList)[] = [
+  'GuideHub', 'FirstTime',
+  'Duas', 'DuaCategory', 'DuaDetail',
+  'Azkaar', 'AzkaarCategory', 'AzkaarDetail',
+  'Quran', 'QuranSurah',
+  'Hadith', 'HadithBook', 'HadithChapter',
+  'Packing', 'Vaccine',
+];
 const PACKAGES_SCREENS: (keyof RootStackParamList)[] = ['Packages', 'PackageDetail', 'Customize'];
 const NEWS_SCREENS: (keyof RootStackParamList)[] = ['News', 'Nusuk'];
 const MORE_SCREENS: (keyof RootStackParamList)[] = ['More', 'Settings', 'Faq', 'Services', 'Ebooks', 'ContactUs', 'TicketForm'];

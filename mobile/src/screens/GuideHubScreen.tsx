@@ -60,6 +60,8 @@ export function GuideHubScreen() {
         <View style={{ gap: 10 }}>
           <Button label={t('duas')} variant="secondary" block onPress={() => navigation.navigate('Duas')} />
         <Button label={t('azkaar')} variant="secondary" block onPress={() => navigation.navigate('Azkaar')} />
+        <Button label={t('quran')} variant="secondary" block onPress={() => navigation.navigate('Quran')} />
+        <Button label={t('hadith')} variant="secondary" block onPress={() => navigation.navigate('Hadith')} />
           <Button label={t('packing')} variant="secondary" block onPress={() => navigation.navigate('Packing')} />
           <Button label={t('vaccine')} variant="secondary" block onPress={() => navigation.navigate('Vaccine')} />
         </View>

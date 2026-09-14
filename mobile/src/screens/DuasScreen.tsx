@@ -1,71 +1,69 @@
-import React, { useState } from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import React from 'react';
+import { Pressable, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ScreenScaffold } from '../components/ScreenScaffold';
-import { AppText, ArabicText } from '../components/AppText';
+import { AppText } from '../components/AppText';
 import { Card, CardStack } from '../components/Card';
+import { IconBadge } from '../components/IconBadge';
+import type { IconName } from '../components/Icon';
 import { useTheme } from '../theme/ThemeContext';
 import { useLanguage } from '../i18n/LanguageContext';
-import { useDirection } from '../direction/DirectionContext';
 import { useDuaStages } from '../api/hooks';
-import { radius } from '../theme/tokens';
+import type { RootStackParamList } from '../navigation/types';
+
+type Nav = NativeStackNavigationProp<RootStackParamList>;
+
+const STAGE_ICON: Record<string, IconName> = {
+  'Setting Out': 'external',
+  Ihram: 'check',
+  'Entering Masjid al-Haram': 'mosque',
+  Tawaf: 'compass',
+  'At the Multazam': 'duas',
+  Sai: 'arrowRight',
+  'Drinking Zamzam': 'vaccine',
+  Halq: 'minus',
+};
 
 export function DuasScreen() {
   const { colors } = useTheme();
   const { t, field } = useLanguage();
-  const { row } = useDirection();
-  const { data: stages } = useDuaStages();
-  const [stageIndex, setStageIndex] = useState(0);
-
-  const stage = stages?.[stageIndex];
+  const navigation = useNavigation<Nav>();
+  const { data: stages, isLoading } = useDuaStages();
 
   return (
     <ScreenScaffold title={t('duas')}>
       <CardStack>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ flexDirection: row, gap: 4, backgroundColor: colors.neutral100, borderRadius: radius.pill, padding: 4 }}
-        >
-          {(stages ?? []).map((s, i) => {
-            const active = i === stageIndex;
-            return (
-              <Pressable
-                key={s.id}
-                onPress={() => setStageIndex(i)}
-                style={{ alignItems: 'center', paddingVertical: 9, paddingHorizontal: 16, borderRadius: radius.pill, backgroundColor: active ? colors.accent : 'transparent' }}
-              >
-                <AppText size={12.5} weight={active ? 'semibold' : 'regular'} color={active ? '#fff' : colors.text}>{field(s.nameEn, s.nameHi, s.nameUr)}</AppText>
-              </Pressable>
-            );
-          })}
-        </ScrollView>
-
-        {stage && (
-          <AppText size={12.5} color={colors.t70} style={{ lineHeight: 19, paddingHorizontal: 4 }}>
-            {field(stage.noteEn, stage.noteHi, stage.noteUr)}
+        <AppText size={12.5} color={colors.t70} style={{ paddingHorizontal: 4, lineHeight: 19 }}>
+          {t('duasIntro')}
+        </AppText>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12 }}>
+          {(stages ?? []).map((s) => (
+            <Pressable
+              key={s.id}
+              onPress={() => navigation.navigate('DuaCategory', { stageId: s.id })}
+              style={{ width: '47%' }}
+            >
+              <Card style={{ alignItems: 'flex-start', gap: 10, minHeight: 148 }}>
+                <IconBadge name={STAGE_ICON[s.nameEn] ?? 'duas'} />
+                <AppText weight="display" size={14.5} color={colors.text} style={{ lineHeight: 19 }}>
+                  {field(s.nameEn, s.nameHi, s.nameUr)}
+                </AppText>
+                <AppText size={11.5} color={colors.t70} style={{ lineHeight: 16 }}>
+                  {field(s.noteEn, s.noteHi, s.noteUr)}
+                </AppText>
+                <AppText size={10.5} color={colors.accent} weight="semibold" style={{ marginTop: 'auto' }}>
+                  {t('duasCount').replace('{n}', String(s.duas.length))}
+                </AppText>
+              </Card>
+            </Pressable>
+          ))}
+        </View>
+        {isLoading && (
+          <AppText size={13} color={colors.t70} style={{ textAlign: 'center', marginTop: 12 }}>
+            {t('loading') ?? '...'}
           </AppText>
         )}
-
-        {(stage?.duas ?? []).map((d) => (
-          <Card key={d.id}>
-            <AppText size={10} color={colors.gold} style={{ letterSpacing: 1.2, textTransform: 'uppercase' }}>
-              {field(d.whenEn, d.whenHi, d.whenUr)}
-            </AppText>
-            <ArabicText color={colors.text} style={{ marginTop: 14 }}>{d.arabic}</ArabicText>
-            <View style={{ marginTop: 14, paddingTop: 12, borderTopWidth: 1, borderTopColor: colors.hairline }}>
-              <AppText
-                size={12.5}
-                color={colors.t50}
-                style={{ fontStyle: 'italic', lineHeight: 19, textAlign: 'left', writingDirection: 'ltr' }}
-              >
-                {d.transliteration}
-              </AppText>
-              <AppText size={13.5} color={colors.text} style={{ marginTop: 8, lineHeight: 20 }}>
-                {field(d.meaningEn, d.meaningHi, d.meaningUr)}
-              </AppText>
-            </View>
-          </Card>
-        ))}
       </CardStack>
     </ScreenScaffold>
   );
