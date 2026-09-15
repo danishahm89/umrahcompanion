@@ -1,4 +1,4 @@
-const BASE_URL = process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:4000/api';
+const BASE_URL = process.env.EXPO_PUBLIC_API_URL ?? 'https://api.alzakwaantours.com/api';
 
 export class ApiError extends Error {
   constructor(public status: number, message: string) {

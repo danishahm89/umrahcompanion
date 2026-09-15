@@ -19,8 +19,8 @@ export function QuranSurahScreen() {
   const edition = TRANSLATION_EDITIONS[lang] ?? TRANSLATION_EDITIONS.en;
   const { data: surah, isLoading, isError } = useQuranSurah(number, edition);
 
-  const arabicEdition = surah?.editions.find((e) => e.identifier === 'quran-uthmani');
-  const translationEditionData = surah?.editions.find((e) => e.identifier === edition);
+  const arabicEdition = surah?.editions?.find((e) => e.identifier === 'quran-uthmani');
+  const translationEditionData = surah?.editions?.find((e) => e.identifier === edition);
 
   return (
     <ScreenScaffold title={surah ? `${surah.number}. ${surah.englishName}` : t('quran')}>
