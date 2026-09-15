@@ -6,7 +6,7 @@ workflows:
       node: 20
       vars:
         PROJECT_DIR: mobile
-      EXPO_PUBLIC_API_URL: https://api.alzakwaantours.com/api
+        EXPO_PUBLIC_API_URL: https://api.alzakwaantours.com/api
     scripts:
       - name: Install dependencies
         script: |
