@@ -14,6 +14,7 @@ export const STRINGS = {
   hadith: ['Hadith Books', 'हदीस की किताबें', 'کتب حدیث'],
   hadithSearchPlaceholder: ['Search hadith text...', 'हदीस खोजें...', 'حدیث تلاش کریں...'],
   hadithNoResults: ['No matching hadith found.', 'कोई मेल खाती हदीस नहीं मिली।', 'کوئی مماثل حدیث نہیں ملی۔'],
+  hadithHindiUnavailable: ['Hindi translation is not available for Hadith yet; showing English text.', 'हदीस का हिंदी अनुवाद अभी उपलब्ध नहीं है; अंग्रेज़ी पाठ दिखाया जा रहा है।', 'حدیث کا ہندی ترجمہ ابھی دستیاب نہیں ہے؛ انگریزی متن دکھایا جا رہا ہے۔'],
   repeatTimes: ['Repeat {n} times', '{n} बार दोहराएँ', '{n} بار دہرائیں'],
   duasCount: ['{n} duas', '{n} दुआएँ', '{n} دعائیں'],
   azkarCount: ['{n} azkar', '{n} अज़कार', '{n} اذکار'],

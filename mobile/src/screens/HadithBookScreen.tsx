@@ -41,6 +41,11 @@ export function HadithBookScreen() {
   return (
     <ScreenScaffold title={field(nameEn, nameHi ?? nameEn, nameUr ?? nameEn)}>
       <CardStack>
+        {lang === 'hi' && (
+          <AppText size={12} color={colors.t70} style={{ padding: 12, textAlign: 'center' }}>
+            {t('hadithHindiUnavailable')}
+          </AppText>
+        )}
         {isLoading && <ActivityIndicator color={colors.accent} style={{ marginTop: 24 }} />}
         {isError && (
           <AppText size={13.5} color={colors.t70} style={{ padding: 16, textAlign: 'center' }}>
