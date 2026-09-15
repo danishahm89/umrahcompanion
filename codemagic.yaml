@@ -15,11 +15,11 @@ workflows:
         script: |
           cd $PROJECT_DIR
           npx expo prebuild --platform android --non-interactive
-      - name: Build debug APK
+      - name: Build release APK
         script: |
           cd $PROJECT_DIR/android
           chmod +x ./gradlew
-          ./gradlew assembleDebug
+          ./gradlew assembleRelease
     artifacts:
       - mobile/android/app/build/outputs/**/*.apk
     publishing:
