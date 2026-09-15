@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-const QURAN_BASE = 'https://api.alquran.cloud/v1';
+const QURAN_BASE = 'https://api.alzakwaantours.com/api/quran';
 
 export interface SurahMeta {
   number: number;
@@ -37,9 +37,7 @@ export interface SurahDetail {
 async function quranGet<T>(path: string): Promise<T> {
   const res = await fetch(`${QURAN_BASE}${path}`);
   if (!res.ok) throw new Error(`Quran API error ${res.status}`);
-  const json = await res.json();
-  if (json.code !== 200) throw new Error('Quran API error');
-  return json.data as T;
+  return (await res.json()) as T;
 }
 
 export const TRANSLATION_EDITIONS: Record<string, string> = {
@@ -51,7 +49,7 @@ export const TRANSLATION_EDITIONS: Record<string, string> = {
 export function useQuranSurahList() {
   return useQuery({
     queryKey: ['quran', 'surahs'],
-    queryFn: () => quranGet<SurahMeta[]>('/surah'),
+    queryFn: () => quranGet<SurahMeta[]>('/surahs.json'),
     staleTime: 1000 * 60 * 60 * 24,
   });
 }
@@ -60,7 +58,7 @@ export function useQuranSurah(number: number | undefined, translationEdition: st
   return useQuery({
     queryKey: ['quran', 'surah', number, translationEdition],
     queryFn: () =>
-      quranGet<SurahDetail>(`/surah/${number}/editions/quran-uthmani,${translationEdition}`),
+      quranGet<SurahDetail>(`/${number}.json`),
     enabled: !!number,
     staleTime: 1000 * 60 * 60 * 24,
   });

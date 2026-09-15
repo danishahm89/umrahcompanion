@@ -24,6 +24,7 @@ export function HadithBookScreen() {
   const [query, setQuery] = useState('');
 
   const { data, isLoading, isError } = useHadithBook(bookId, lang);
+  const hindiBlocked = lang === 'hi';
 
   const sections = useMemo(() => {
     if (!data) return [];
@@ -41,18 +42,18 @@ export function HadithBookScreen() {
   return (
     <ScreenScaffold title={field(nameEn, nameHi ?? nameEn, nameUr ?? nameEn)}>
       <CardStack>
-        {lang === 'hi' && (
+        {hindiBlocked && (
           <AppText size={12} color={colors.t70} style={{ padding: 12, textAlign: 'center' }}>
-            {t('hadithHindiUnavailable')}
+            {t('hindiNotSupported')}
           </AppText>
         )}
-        {isLoading && <ActivityIndicator color={colors.accent} style={{ marginTop: 24 }} />}
-        {isError && (
+        {!hindiBlocked && isLoading && <ActivityIndicator color={colors.accent} style={{ marginTop: 24 }} />}
+        {!hindiBlocked && isError && (
           <AppText size={13.5} color={colors.t70} style={{ padding: 16, textAlign: 'center' }}>
             {t('quranLoadError')}
           </AppText>
         )}
-        {data && (
+        {!hindiBlocked && data && (
           <TextInput
             value={query}
             onChangeText={setQuery}
@@ -73,7 +74,7 @@ export function HadithBookScreen() {
           />
         )}
 
-        {showSearch
+        {!hindiBlocked && showSearch
           ? searchResults.map((h) => (
               <Card key={h.hadithnumber}>
                 <AppText size={10} color={colors.gold} style={{ letterSpacing: 1.2 }}>

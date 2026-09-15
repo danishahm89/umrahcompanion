@@ -18,6 +18,7 @@ export function HadithChapterScreen() {
   const { bookId, chapterNumber, chapterName } = route.params;
 
   const { data, isLoading, isError } = useHadithBook(bookId, lang);
+  const hindiBlocked = lang === 'hi';
 
   const hadiths = useMemo(
     () => (data ? data.hadiths.filter((h) => h.reference.book === chapterNumber) : []),
@@ -27,18 +28,18 @@ export function HadithChapterScreen() {
   return (
     <ScreenScaffold title={chapterName}>
       <CardStack>
-        {lang === 'hi' && (
+        {hindiBlocked && (
           <AppText size={12} color={colors.t70} style={{ padding: 12, textAlign: 'center' }}>
-            {t('hadithHindiUnavailable')}
+            {t('hindiNotSupported')}
           </AppText>
         )}
-        {isLoading && <ActivityIndicator color={colors.accent} style={{ marginTop: 24 }} />}
-        {isError && (
+          {!hindiBlocked && isLoading && <ActivityIndicator color={colors.accent} style={{ marginTop: 24 }} />}
+        {!hindiBlocked && isError && (
           <AppText size={13.5} color={colors.t70} style={{ padding: 16, textAlign: 'center' }}>
             {t('quranLoadError')}
           </AppText>
         )}
-        {hadiths.map((h) => (
+        {!hindiBlocked && hadiths.map((h) => (
           <Card key={h.hadithnumber}>
             <AppText size={10} color={colors.gold} style={{ letterSpacing: 1.2 }}>
               #{h.hadithnumber}

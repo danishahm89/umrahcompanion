@@ -15,21 +15,27 @@ type Nav = NativeStackNavigationProp<RootStackParamList>;
 
 export function QuranScreen() {
   const { colors } = useTheme();
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const { row } = useDirection();
   const navigation = useNavigation<Nav>();
   const { data: surahs, isLoading, isError } = useQuranSurahList();
+  const hindiBlocked = lang === 'hi';
 
   return (
     <ScreenScaffold title={t('quran')}>
       <CardStack>
-        {isLoading && <ActivityIndicator color={colors.accent} style={{ marginTop: 24 }} />}
-        {isError && (
+        {hindiBlocked && (
+          <AppText size={13.5} color={colors.t70} style={{ padding: 16, textAlign: 'center' }}>
+            {t('hindiNotSupported')}
+          </AppText>
+        )}
+        {!hindiBlocked && isLoading && <ActivityIndicator color={colors.accent} style={{ marginTop: 24 }} />}
+        {!hindiBlocked && isError && (
           <AppText size={13.5} color={colors.t70} style={{ padding: 16, textAlign: 'center' }}>
             {t('quranLoadError')}
           </AppText>
         )}
-        {(surahs ?? []).map((s) => (
+        {!hindiBlocked && (surahs ?? []).map((s) => (
           <Card key={s.number}>
             <Pressable
               onPress={() => navigation.navigate('QuranSurah', { number: s.number })}

@@ -18,6 +18,7 @@ export function QuranSurahScreen() {
   const { number } = route.params;
   const edition = TRANSLATION_EDITIONS[lang] ?? TRANSLATION_EDITIONS.en;
   const { data: surah, isLoading, isError } = useQuranSurah(number, edition);
+  const hindiBlocked = lang === 'hi';
 
   const arabicEdition = surah?.editions?.find((e) => e.identifier === 'quran-uthmani');
   const translationEditionData = surah?.editions?.find((e) => e.identifier === edition);
@@ -25,18 +26,23 @@ export function QuranSurahScreen() {
   return (
     <ScreenScaffold title={surah ? `${surah.number}. ${surah.englishName}` : t('quran')}>
       <CardStack>
-        {isLoading && <ActivityIndicator color={colors.accent} style={{ marginTop: 24 }} />}
-        {isError && (
+        {hindiBlocked && (
+          <AppText size={13.5} color={colors.t70} style={{ padding: 16, textAlign: 'center' }}>
+            {t('hindiNotSupported')}
+          </AppText>
+        )}
+        {!hindiBlocked && isLoading && <ActivityIndicator color={colors.accent} style={{ marginTop: 24 }} />}
+        {!hindiBlocked && isError && (
           <AppText size={13.5} color={colors.t70} style={{ padding: 16, textAlign: 'center' }}>
             {t('quranLoadError')}
           </AppText>
         )}
-        {surah && (
+        {!hindiBlocked && surah && (
           <AppText size={12.5} color={colors.t70} style={{ paddingHorizontal: 4, marginBottom: 4 }}>
             {surah.englishNameTranslation} · {surah.revelationType} · {surah.numberOfAyahs} {t('ayahs')}
           </AppText>
         )}
-        {arabicEdition?.ayahs.map((ayah, i) => (
+        {!hindiBlocked && arabicEdition?.ayahs.map((ayah, i) => (
           <Card key={ayah.number}>
             <AppText size={10} color={colors.gold} style={{ letterSpacing: 1.2 }}>
               {surah?.number}:{ayah.numberInSurah}

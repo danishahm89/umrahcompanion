@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-const HADITH_BASE = 'https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1';
+const HADITH_BASE = 'https://api.alzakwaantours.com/api/hadith';
 
 export interface HadithBookMeta {
   id: string;
@@ -38,7 +38,7 @@ export interface HadithEditionData {
 /** Maps app language to the hadith-api language prefix; falls back to English (no Hindi edition available). */
 export function hadithEditionFor(bookId: string, lang: string): string {
   const prefix = lang === 'ur' ? 'urd' : 'eng';
-  return `${prefix}-${bookId}`;
+  return `${bookId}-${prefix}`;
 }
 
 async function fetchJson<T>(url: string): Promise<T> {
@@ -51,7 +51,7 @@ export function useHadithBook(bookId: string | undefined, lang: string) {
   const edition = bookId ? hadithEditionFor(bookId, lang) : undefined;
   return useQuery({
     queryKey: ['hadith', 'book', edition],
-    queryFn: () => fetchJson<HadithEditionData>(`${HADITH_BASE}/editions/${edition}.min.json`),
+    queryFn: () => fetchJson<HadithEditionData>(`${HADITH_BASE}/${edition}.json`),
     enabled: !!bookId,
     staleTime: 1000 * 60 * 60 * 24,
   });

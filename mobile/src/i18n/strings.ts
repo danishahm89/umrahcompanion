@@ -15,6 +15,7 @@ export const STRINGS = {
   hadithSearchPlaceholder: ['Search hadith text...', 'हदीस खोजें...', 'حدیث تلاش کریں...'],
   hadithNoResults: ['No matching hadith found.', 'कोई मेल खाती हदीस नहीं मिली।', 'کوئی مماثل حدیث نہیں ملی۔'],
   hadithHindiUnavailable: ['Hindi translation is not available for Hadith yet; showing English text.', 'हदीस का हिंदी अनुवाद अभी उपलब्ध नहीं है; अंग्रेज़ी पाठ दिखाया जा रहा है।', 'حدیث کا ہندی ترجمہ ابھی دستیاب نہیں ہے؛ انگریزی متن دکھایا جا رہا ہے۔'],
+  hindiNotSupported: ['Hindi is not supported for Quran and Hadith yet. Please switch to English or Urdu.', 'कुरान और हदीस के लिए हिंदी अभी उपलब्ध नहीं है। कृपया अंग्रेज़ी या उर्दू चुनें।', 'قرآن اور حدیث کے لیے ہندی ابھی دستیاب نہیں ہے۔ براہ کرم انگریزی یا اردو منتخب کریں۔'],
   repeatTimes: ['Repeat {n} times', '{n} बार दोहराएँ', '{n} بار دہرائیں'],
   duasCount: ['{n} duas', '{n} दुआएँ', '{n} دعائیں'],
   azkarCount: ['{n} azkar', '{n} अज़कार', '{n} اذکار'],
