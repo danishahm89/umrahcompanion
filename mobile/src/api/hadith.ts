@@ -6,15 +6,17 @@ export interface HadithBookMeta {
   id: string;
   nameEn: string;
   nameAr: string;
+  nameHi: string;
+  nameUr: string;
 }
 
 export const HADITH_BOOKS: HadithBookMeta[] = [
-  { id: 'bukhari', nameEn: 'Sahih al-Bukhari', nameAr: 'صحيح البخاري' },
-  { id: 'muslim', nameEn: 'Sahih Muslim', nameAr: 'صحيح مسلم' },
-  { id: 'abudawud', nameEn: 'Sunan Abu Dawud', nameAr: 'سنن أبي داود' },
-  { id: 'tirmidhi', nameEn: 'Jami at-Tirmidhi', nameAr: 'جامع الترمذي' },
-  { id: 'nasai', nameEn: "Sunan an-Nasa'i", nameAr: 'سنن النسائي' },
-  { id: 'ibnmajah', nameEn: 'Sunan Ibn Majah', nameAr: 'سنن ابن ماجه' },
+  { id: 'bukhari', nameEn: 'Sahih al-Bukhari', nameAr: 'صحيح البخاري', nameHi: 'सहीह अल-बुखारी', nameUr: 'صحیح بخاری' },
+  { id: 'muslim', nameEn: 'Sahih Muslim', nameAr: 'صحيح مسلم', nameHi: 'सहीह मुस्लिम', nameUr: 'صحیح مسلم' },
+  { id: 'abudawud', nameEn: 'Sunan Abu Dawud', nameAr: 'سنن أبي داود', nameHi: 'सुनन अबू दाوूद', nameUr: 'سنن ابو داود' },
+  { id: 'tirmidhi', nameEn: 'Jami at-Tirmidhi', nameAr: 'جامع الترمذي', nameHi: 'जामे तिरमिजी', nameUr: 'جامع ترمذی' },
+  { id: 'nasai', nameEn: "Sunan an-Nasa'i", nameAr: 'سنن النسائي', nameHi: 'सुनन नसाई', nameUr: 'سنن نسائی' },
+  { id: 'ibnmajah', nameEn: 'Sunan Ibn Majah', nameAr: 'سنن ابن ماجه', nameHi: 'सुनन इब्ने माजह', nameUr: 'سنن ابن ماجہ' },
 ];
 
 export interface Hadith {

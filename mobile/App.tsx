@@ -15,6 +15,7 @@ import { LanguageProvider } from './src/i18n/LanguageContext';
 import { DirectionProvider } from './src/direction/DirectionContext';
 import { LocationProvider } from './src/location/LocationContext';
 import { RootNavigator } from './src/navigation/RootNavigator';
+import { ErrorBoundary } from './src/components/ErrorBoundary';
 
 const queryClient = new QueryClient();
 
@@ -52,7 +53,9 @@ function AppInner() {
   return (
     <>
       <StatusBar style="auto" />
-      <RootNavigator />
+      <ErrorBoundary>
+        <RootNavigator />
+      </ErrorBoundary>
     </>
   );
 }

@@ -16,11 +16,11 @@ type BookRoute = RouteProp<RootStackParamList, 'HadithBook'>;
 
 export function HadithBookScreen() {
   const { colors } = useTheme();
-  const { t, lang } = useLanguage();
+  const { t, lang, field } = useLanguage();
   const { row, textAlign, writingDirection } = useDirection();
   const navigation = useNavigation<Nav>();
   const route = useRoute<BookRoute>();
-  const { bookId, nameEn } = route.params;
+  const { bookId, nameEn, nameHi, nameUr } = route.params;
   const [query, setQuery] = useState('');
 
   const { data, isLoading, isError } = useHadithBook(bookId, lang);
@@ -39,7 +39,7 @@ export function HadithBookScreen() {
   const showSearch = query.trim().length >= 3;
 
   return (
-    <ScreenScaffold title={nameEn}>
+    <ScreenScaffold title={field(nameEn, nameHi ?? nameEn, nameUr ?? nameEn)}>
       <CardStack>
         {isLoading && <ActivityIndicator color={colors.accent} style={{ marginTop: 24 }} />}
         {isError && (

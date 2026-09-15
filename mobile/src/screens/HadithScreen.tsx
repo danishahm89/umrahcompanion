@@ -15,7 +15,7 @@ type Nav = NativeStackNavigationProp<RootStackParamList>;
 
 export function HadithScreen() {
   const { colors } = useTheme();
-  const { t } = useLanguage();
+  const { t, field } = useLanguage();
   const { row } = useDirection();
   const navigation = useNavigation<Nav>();
 
@@ -25,12 +25,12 @@ export function HadithScreen() {
         {HADITH_BOOKS.map((b) => (
           <Card key={b.id}>
             <Pressable
-              onPress={() => navigation.navigate('HadithBook', { bookId: b.id, nameEn: b.nameEn })}
+              onPress={() => navigation.navigate('HadithBook', { bookId: b.id, nameEn: b.nameEn, nameHi: b.nameHi, nameUr: b.nameUr })}
               style={{ flexDirection: row, alignItems: 'center', justifyContent: 'space-between' }}
             >
               <View style={{ flex: 1 }}>
                 <AppText size={14} weight="semibold" color={colors.text}>
-                  {b.nameEn}
+                  {field(b.nameEn, b.nameHi, b.nameUr)}
                 </AppText>
               </View>
               <ArabicText color={colors.t70} style={{ fontSize: 18 }}>
