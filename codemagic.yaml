@@ -1,28 +1,34 @@
 workflows:
-  android-apk:
-    name: Android APK (Expo prebuild + Gradle)
+  android-aab:
+    name: Android AAB Release
     max_build_duration: 60
+
     environment:
       node: 20
       vars:
         PROJECT_DIR: mobile
         EXPO_PUBLIC_API_URL: https://api.alzakwaantours.com/api
+
     scripts:
       - name: Install dependencies
         script: |
           cd $PROJECT_DIR
           npm install
+
       - name: Prebuild native Android project
         script: |
           cd $PROJECT_DIR
           npx expo prebuild --platform android --non-interactive
-      - name: Build release APK
+
+      - name: Build release AAB
         script: |
           cd $PROJECT_DIR/android
           chmod +x ./gradlew
-          ./gradlew assembleRelease
+          ./gradlew bundleRelease
+
     artifacts:
-      - mobile/android/app/build/outputs/**/*.apk
+      - mobile/android/app/build/outputs/bundle/release/*.aab
+
     publishing:
       email:
         recipients:
