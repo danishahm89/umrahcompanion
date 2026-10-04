@@ -34,31 +34,16 @@ workflows:
           echo "MYAPP_UPLOAD_KEY_ALIAS=umrah" >> "$PROJECT_DIR/android/gradle.properties"
           echo "MYAPP_UPLOAD_STORE_PASSWORD=umrah123" >> "$PROJECT_DIR/android/gradle.properties"
           echo "MYAPP_UPLOAD_KEY_PASSWORD=umrah123" >> "$PROJECT_DIR/android/gradle.properties"
-          python3 - << 'PYEOF'
-import re, os
-path = os.path.join(os.environ['PROJECT_DIR'], 'android/app/build.gradle')
-with open(path) as f:
-    content = f.read()
-signing_block = """
-    signingConfigs {
-        release {
-            storeFile file(MYAPP_UPLOAD_STORE_FILE)
-            storePassword MYAPP_UPLOAD_STORE_PASSWORD
-            keyAlias MYAPP_UPLOAD_KEY_ALIAS
-            keyPassword MYAPP_UPLOAD_KEY_PASSWORD
-        }
-    }
-"""
-content = re.sub(r'(\s+buildTypes\s*\{)', signing_block + r'\1', content, count=1)
-content = re.sub(
-    r'(release\s*\{[^}]*?)signingConfig\s+signingConfigs\.debug',
-    r'\1signingConfig signingConfigs.release',
-    content, count=1, flags=re.DOTALL
-)
-with open(path, 'w') as f:
-    f.write(content)
-print('build.gradle patched OK')
-PYEOF
+          PY=/tmp/patch.py
+          echo 'import re, os' > $PY
+          echo "gp = os.path.join(os.environ.get('PROJECT_DIR','mobile'),'android/app/build.gradle')" >> $PY
+          echo "c = open(gp).read()" >> $PY
+          echo "sb = '\n    signingConfigs {\n        release {\n            storeFile file(MYAPP_UPLOAD_STORE_FILE)\n            storePassword MYAPP_UPLOAD_STORE_PASSWORD\n            keyAlias MYAPP_UPLOAD_KEY_ALIAS\n            keyPassword MYAPP_UPLOAD_KEY_PASSWORD\n        }\n    }\n'" >> $PY
+          echo "c = re.sub(r'(\s+buildTypes\s*\{)', sb + r'\1', c, count=1)" >> $PY
+          echo "c = re.sub(r'(release\s*\{[^}]*?)signingConfig\s+signingConfigs\.debug', r'\1signingConfig signingConfigs.release', c, count=1, flags=re.DOTALL)" >> $PY
+          echo "open(gp,'w').write(c)" >> $PY
+          echo "print('Patched OK')" >> $PY
+          python3 $PY
 
       - name: Build release AAB
         script: |
