@@ -30,15 +30,11 @@ workflows:
             -dname "CN=Umrah Companion, OU=AlZakwaan, O=AlZakwaan Tours, L=Aligarh, S=UP, C=IN" \
             -storepass umrah123 \
             -keypass umrah123 -noprompt
-          echo "MYAPP_UPLOAD_STORE_FILE=$KEYSTORE_PATH" >> "$PROJECT_DIR/android/gradle.properties"
-          echo "MYAPP_UPLOAD_KEY_ALIAS=umrah" >> "$PROJECT_DIR/android/gradle.properties"
-          echo "MYAPP_UPLOAD_STORE_PASSWORD=umrah123" >> "$PROJECT_DIR/android/gradle.properties"
-          echo "MYAPP_UPLOAD_KEY_PASSWORD=umrah123" >> "$PROJECT_DIR/android/gradle.properties"
           PY=/tmp/patch.py
           echo 'import re, os' > $PY
           echo "gp = os.path.join(os.environ.get('PROJECT_DIR','mobile'),'android/app/build.gradle')" >> $PY
           echo "c = open(gp).read()" >> $PY
-          echo "sb = '\n    signingConfigs {\n        release {\n            storeFile file(MYAPP_UPLOAD_STORE_FILE)\n            storePassword MYAPP_UPLOAD_STORE_PASSWORD\n            keyAlias MYAPP_UPLOAD_KEY_ALIAS\n            keyPassword MYAPP_UPLOAD_KEY_PASSWORD\n        }\n    }\n'" >> $PY
+          echo "sb = '\n    signingConfigs {\n        release {\n            storeFile file(\"/tmp/umrah-release.jks\")\n            storePassword \"umrah123\"\n            keyAlias \"umrah\"\n            keyPassword \"umrah123\"\n        }\n    }\n'" >> $PY
           echo "c = re.sub(r'(\s+buildTypes\s*\{)', sb + r'\1', c, count=1)" >> $PY
           echo "c = re.sub(r'(release\s*\{[^}]*?)signingConfig\s+signingConfigs\.debug', r'\1signingConfig signingConfigs.release', c, count=1, flags=re.DOTALL)" >> $PY
           echo "open(gp,'w').write(c)" >> $PY
