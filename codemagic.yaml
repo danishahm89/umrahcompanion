@@ -34,9 +34,31 @@ workflows:
           echo "MYAPP_UPLOAD_KEY_ALIAS=umrah" >> "$PROJECT_DIR/android/gradle.properties"
           echo "MYAPP_UPLOAD_STORE_PASSWORD=umrah123" >> "$PROJECT_DIR/android/gradle.properties"
           echo "MYAPP_UPLOAD_KEY_PASSWORD=umrah123" >> "$PROJECT_DIR/android/gradle.properties"
-          GRADLE_PATH="$PROJECT_DIR/android/app/build.gradle"
-          sed -i 's/    buildTypes {/    signingConfigs {\n        release {\n            storeFile file(MYAPP_UPLOAD_STORE_FILE)\n            storePassword MYAPP_UPLOAD_STORE_PASSWORD\n            keyAlias MYAPP_UPLOAD_KEY_ALIAS\n            keyPassword MYAPP_UPLOAD_KEY_PASSWORD\n        }\n    }\n    buildTypes {/' "$GRADLE_PATH"
-          awk '/release \{/{found=1} found && /signingConfig signingConfigs\.debug/{sub(/debug/, "release"); found=0} {print}' "$GRADLE_PATH" > /tmp/bg.tmp && mv /tmp/bg.tmp "$GRADLE_PATH"
+          python3 - << 'PYEOF'
+import re, os
+path = os.path.join(os.environ['PROJECT_DIR'], 'android/app/build.gradle')
+with open(path) as f:
+    content = f.read()
+signing_block = """
+    signingConfigs {
+        release {
+            storeFile file(MYAPP_UPLOAD_STORE_FILE)
+            storePassword MYAPP_UPLOAD_STORE_PASSWORD
+            keyAlias MYAPP_UPLOAD_KEY_ALIAS
+            keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+        }
+    }
+"""
+content = re.sub(r'(\s+buildTypes\s*\{)', signing_block + r'\1', content, count=1)
+content = re.sub(
+    r'(release\s*\{[^}]*?)signingConfig\s+signingConfigs\.debug',
+    r'\1signingConfig signingConfigs.release',
+    content, count=1, flags=re.DOTALL
+)
+with open(path, 'w') as f:
+    f.write(content)
+print('build.gradle patched OK')
+PYEOF
 
       - name: Build release AAB
         script: |
