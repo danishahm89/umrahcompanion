@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { Platform } from 'react-native';
 import { useLanguage } from '../i18n/LanguageContext';
 import { scheduleUpcomingPrayerNotifications } from '../notifications/prayerNotifications';
 import * as Location from 'expo-location';
@@ -71,8 +72,17 @@ export function LocationProvider({ children }: { children: React.ReactNode }) {
       const pos = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
       let label = 'Current location';
       try {
-        const [place] = await Location.reverseGeocodeAsync({ latitude: pos.coords.latitude, longitude: pos.coords.longitude });
-        if (place) label = [place.city, place.region].filter(Boolean).join(', ') || label;
+                if (Platform.OS === 'web') {
+          const res = await fetch('https://nominatim.openstreetmap.org/reverse?lat=' + pos.coords.latitude + '&lon=' + pos.coords.longitude + '&format=json&accept-language=en&email=info@alzakwaantours.com');
+          const data = await res.json();
+          const addr = data.address || {};
+          const city = addr.city || addr.town || addr.municipality || addr.village || addr.suburb || addr.state_district || addr.county || '';
+          const country = addr.country_code ? addr.country_code.toUpperCase() : (addr.country || '');
+          if (city) label = city + ', ' + country;
+        } else {
+          const [place] = await Location.reverseGeocodeAsync({ latitude: pos.coords.latitude, longitude: pos.coords.longitude });
+          if (place) label = [place.city, place.region].filter(Boolean).join(', ') || label;
+        }
       } catch {
         // reverse geocoding is best-effort — keep the generic label if it fails
       }

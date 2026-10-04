@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { navigationRef } from './navigationRef';
@@ -48,12 +48,19 @@ export function RootNavigator() {
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
       <View style={{ flex: 1 }}>
-        <NavigationContainer
+        <NavigationContainer documentTitle={{ formatter: () => "Umrah Companion" }}
           ref={navigationRef}
           onReady={() => setSection(sectionForRoute(navigationRef.getCurrentRoute()?.name))}
           onStateChange={() => setSection(sectionForRoute(navigationRef.getCurrentRoute()?.name))}
         >
-          <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
+          <Stack.Navigator initialRouteName="Home" screenOptions={{
+              headerShown: false,
+              ...(Platform.OS !== 'web' && {
+                animation: 'slide_from_right',
+                animationDuration: 250,
+                gestureEnabled: true,
+              }),
+            }}>
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="GuideHub" component={GuideHubScreen} />
             <Stack.Screen name="FirstTime" component={FirstTimeScreen} />

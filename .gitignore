@@ -5,3 +5,13 @@ translate-models/
 *.bak-*
 node_modules/
 dist/
+
+# Expo web build artifacts (go to mobile/dist/, not repo root)
+_expo/
+assets/
+favicon.ico
+index.html
+metadata.json
+mobile/web/
+offline.html
+privacy.html
