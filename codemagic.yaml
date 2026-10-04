@@ -20,6 +20,24 @@ workflows:
           cd $PROJECT_DIR
           npx expo prebuild --platform android --non-interactive
 
+      - name: Setup release signing
+        script: |
+          KEYSTORE_PATH="/tmp/umrah-release.jks"
+          keytool -genkeypair -v \
+            -keystore "$KEYSTORE_PATH" \
+            -keyalg RSA -keysize 2048 -validity 10000 \
+            -alias umrah \
+            -dname "CN=Umrah Companion, OU=AlZakwaan, O=AlZakwaan Tours, L=Aligarh, S=UP, C=IN" \
+            -storepass umrah123 \
+            -keypass umrah123 -noprompt
+          echo "MYAPP_UPLOAD_STORE_FILE=$KEYSTORE_PATH" >> "$PROJECT_DIR/android/gradle.properties"
+          echo "MYAPP_UPLOAD_KEY_ALIAS=umrah" >> "$PROJECT_DIR/android/gradle.properties"
+          echo "MYAPP_UPLOAD_STORE_PASSWORD=umrah123" >> "$PROJECT_DIR/android/gradle.properties"
+          echo "MYAPP_UPLOAD_KEY_PASSWORD=umrah123" >> "$PROJECT_DIR/android/gradle.properties"
+          GRADLE_PATH="$PROJECT_DIR/android/app/build.gradle"
+          sed -i 's/    buildTypes {/    signingConfigs {\n        release {\n            storeFile file(MYAPP_UPLOAD_STORE_FILE)\n            storePassword MYAPP_UPLOAD_STORE_PASSWORD\n            keyAlias MYAPP_UPLOAD_KEY_ALIAS\n            keyPassword MYAPP_UPLOAD_KEY_PASSWORD\n        }\n    }\n    buildTypes {/' "$GRADLE_PATH"
+          awk '/release \{/{found=1} found && /signingConfig signingConfigs\.debug/{sub(/debug/, "release"); found=0} {print}' "$GRADLE_PATH" > /tmp/bg.tmp && mv /tmp/bg.tmp "$GRADLE_PATH"
+
       - name: Build release AAB
         script: |
           cd $PROJECT_DIR/android
@@ -28,11 +46,4 @@ workflows:
 
     artifacts:
       - mobile/android/app/build/outputs/bundle/release/*.aab
-
-    publishing:
-      email:
-        recipients:
-          - danishahm89@gmail.com
-        notify:
-          success: true
-          failure: true
+      - /tmp/umrah-release.jks
