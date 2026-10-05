@@ -237,6 +237,22 @@ export const STRINGS = {
     'आपके डिवाइस का कम्पास उपलब्ध नहीं है — ऊपर की संख्या फिर भी सही है; किसी और कम्पास से दिशा तय करें।',
     'آپ کے ڈیوائس کا کمپاس دستیاب نہیں ہے — اوپر کا نمبر پھر بھی درست ہے؛ کسی اور کمپاس سے سمت طے کریں۔',
   ],
+
+  tapToCount: ['Tap to count', 'गिनती के लिए टैप करें', 'گننے کے لیے ٹیپ کریں'],
+  azkaarComplete: ['Complete!', 'पूरा!', 'مکمل!'],
+  reset: ['Reset', 'रीसेट', 'ری سیٹ'],
+  installAppBanner: ['Add to home screen for quick access', 'त्वरित पहुँच के लिए होम स्क्रीन पर जोड़ें', 'فوری رسائی کے لیے ہوم اسکرین پر شامل کریں'],
+  install: ['Install', 'इंस्टॉल करें', 'انسٹال کریں'],
+  installIosTip: ['Add to Home Screen', 'होम स्क्रीन पर जोड़ें', 'ہوم اسکرین میں شامل کریں'],
+  installIosInstructions: ['Tap Share, then "Add to Home Screen"', 'शेयर टैप करें, फिर "होम स्क्रीन पर जोड़ें"', 'شیئر ٹیپ کریں، پھر "ہوم اسکرین میں شامل کریں"'],
+  featuredPackage: ['Featured Package', 'विशेष पैकेज', 'خاص پیکیج'],
+  departing: ['Departing', 'रवानगी', 'روانگی'],
+  viewDetails: ['View Details', 'विवरण देखें', 'تفصیلات دیکھیں'],
+  notNow: ['Not Now', 'अभी नहीं', 'ابھی نہیں'],
+  navHome: ['Home', 'होम', 'ہوم'],
+  navGuide: ['Guide', 'गाइड', 'گائیڈ'],
+  navNews: ['News', 'समाचार', 'خبریں'],
+  navMore: ['More', 'अधिक', 'مزید'],
 } satisfies Record<string, [string, string, string]>;
 
 export type StringKey = keyof typeof STRINGS;
