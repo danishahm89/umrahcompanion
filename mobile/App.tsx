@@ -16,6 +16,7 @@ import { DirectionProvider } from './src/direction/DirectionContext';
 import { LocationProvider } from './src/location/LocationContext';
 import { RootNavigator } from './src/navigation/RootNavigator';
 import { ErrorBoundary } from './src/components/ErrorBoundary';
+import { ToastProvider } from './src/components/Toast';
 
 const queryClient = new QueryClient();
 
@@ -73,7 +74,9 @@ export default function App() {
           <LanguageProvider>
             <DirectionProvider>
               <LocationProvider>
-                <AppInner />
+                <ToastProvider>
+              <AppInner />
+            </ToastProvider>
               </LocationProvider>
             </DirectionProvider>
           </LanguageProvider>

@@ -9,6 +9,8 @@ import { useLanguage } from '../i18n/LanguageContext';
 import { useDirection } from '../direction/DirectionContext';
 import { usePackingGroups } from '../api/hooks';
 import { usePersistentState } from '../storage/usePersistentState';
+import { useToast } from '../components/Toast';
+import { FadeInRow } from '../components/FadeInRow';
 
 export function PackingScreen() {
   const { colors } = useTheme();
@@ -16,6 +18,7 @@ export function PackingScreen() {
   const { row } = useDirection();
   const { data: groups } = usePackingGroups();
   const [checks, setChecks] = usePersistentState<Record<string, boolean>>('packing-checks', {});
+  const { showToast } = useToast();
 
   const totalItems = (groups ?? []).reduce((sum, g) => sum + g.items.length, 0);
   const doneCount = Object.values(checks).filter(Boolean).length;
@@ -40,11 +43,21 @@ export function PackingScreen() {
               return (
                 <Pressable
                   key={item.id}
-                  onPress={() => setChecks((c) => ({ ...c, [item.id]: !c[item.id] }))}
+                  onPress={() => {
+                    const nowChecked = !checks[item.id];
+                    setChecks((c) => ({ ...c, [item.id]: !c[item.id] }));
+                    if (nowChecked) showToast('✓ ' + field(item.textEn, item.textHi, item.textUr).slice(0, 30), 'success');
+                  }}
                   style={{ flexDirection: row, alignItems: 'center', gap: 12, paddingVertical: 12, paddingHorizontal: 16, borderBottomWidth: i < arr.length - 1 ? 1 : 0, borderBottomColor: colors.hairline }}
                 >
                   <CheckBox checked={checked} color={colors.t50} />
-                  <AppText size={14} color={colors.text} style={{ flex: 1 }}>{field(item.textEn, item.textHi, item.textUr)}</AppText>
+                  <AppText
+                      size={14}
+                      color={checked ? colors.t50 : colors.text}
+                      style={{ flex: 1, textDecorationLine: checked ? 'line-through' : 'none' }}
+                    >
+                      {field(item.textEn, item.textHi, item.textUr)}
+                    </AppText>
                 </Pressable>
               );
             })}

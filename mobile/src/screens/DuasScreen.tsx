@@ -8,6 +8,7 @@ import { Card, CardStack } from '../components/Card';
 import { IconBadge } from '../components/IconBadge';
 import type { IconName } from '../components/Icon';
 import { useTheme } from '../theme/ThemeContext';
+import { FadeInRow } from '../components/FadeInRow';
 import { useLanguage } from '../i18n/LanguageContext';
 import { useDuaStages } from '../api/hooks';
 import type { RootStackParamList } from '../navigation/types';
@@ -38,10 +39,10 @@ export function DuasScreen() {
           {t('duasIntro')}
         </AppText>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12 }}>
-          {(stages ?? []).map((s) => (
-            <Pressable
-              key={s.id}
-              onPress={() => navigation.navigate('DuaCategory', { stageId: s.id })}
+          {(stages ?? []).map((s, i) => (
+            <FadeInRow key={s.id} delay={i * 60}>
+        <Pressable
+                  onPress={() => navigation.navigate('DuaCategory', { stageId: s.id })}
               style={{ width: '47%' }}
             >
               <Card style={{ alignItems: 'flex-start', gap: 10, minHeight: 148 }}>
@@ -57,6 +58,7 @@ export function DuasScreen() {
                 </AppText>
               </Card>
             </Pressable>
+        </FadeInRow>
           ))}
         </View>
         {isLoading && (

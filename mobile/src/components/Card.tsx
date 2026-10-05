@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, type StyleProp, type ViewStyle } from 'react-native';
+import React, { useRef } from 'react';
+import { View, Pressable, Animated, type StyleProp, type ViewStyle } from 'react-native';
 import { useTheme } from '../theme/ThemeContext';
 import { radius, shadow } from '../theme/tokens';
 
@@ -8,27 +8,58 @@ interface CardProps {
   style?: StyleProp<ViewStyle>;
   padded?: boolean;
   elevation?: 'sm' | 'md' | 'lg';
+  onPress?: () => void;
 }
 
 /** The premium redesign's base surface: a rounded, softly-shadowed card floating on the
  * warm ivory ground — replacing the handoff's edge-to-edge sections divided by flat rules. */
-export function Card({ children, style, padded = true, elevation = 'md' }: CardProps) {
+export function Card({ children, style, padded = true, elevation = 'md', onPress }: CardProps) {
   const { colors } = useTheme();
+
+  // A7: Press scale-down + spring-bounce
+  const scaleAnim = useRef(new Animated.Value(1)).current;
+  const handlePressIn = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 0.97,
+      useNativeDriver: true,
+      tension: 200,
+      friction: 10,
+    }).start();
+  };
+  const handlePressOut = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 1,
+      useNativeDriver: true,
+      tension: 80,
+      friction: 5,
+    }).start();
+  };
+
+  const cardStyle = [
+    {
+      backgroundColor: colors.surface,
+      borderRadius: radius.lg,
+      padding: padded ? 16 : 0,
+      overflow: 'hidden' as const,
+    },
+    shadow(colors, elevation),
+    style,
+  ];
+
+  if (onPress) {
+    return (
+      <Pressable onPress={onPress} onPressIn={handlePressIn} onPressOut={handlePressOut}>
+        <Animated.View style={[...cardStyle, { transform: [{ scale: scaleAnim }] }]}>
+          {children}
+        </Animated.View>
+      </Pressable>
+    );
+  }
+
   return (
-    <View
-      style={[
-        {
-          backgroundColor: colors.surface,
-          borderRadius: radius.lg,
-          padding: padded ? 16 : 0,
-          overflow: 'hidden',
-        },
-        shadow(colors, elevation),
-        style,
-      ]}
-    >
+    <Animated.View style={[...cardStyle, { transform: [{ scale: scaleAnim }] }]}>
       {children}
-    </View>
+    </Animated.View>
   );
 }
 
