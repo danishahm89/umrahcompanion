@@ -7,6 +7,7 @@ import { useTheme } from '../theme/ThemeContext';
 import { useLanguage } from '../i18n/LanguageContext';
 import { radius, shadow } from '../theme/tokens';
 import type { TabSection } from './types';
+import { TAB_SCREEN_MAP } from './types';
 import { navigate } from './navigationRef';
 
 const TABS: { key: TabSection; labelKey: string; icon: string }[] = [
