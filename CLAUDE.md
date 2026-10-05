@@ -119,3 +119,65 @@ docker compose -f /docker/umrahcompanion/docker-compose.yml up -d api
 - [ ] Fill Google Play Console data safety section
 - [ ] Add Play Console store listing (description, screenshots)
 - [ ] Set privacy policy URL in Play Console to https://companion.alzakwaantours.com/privacy
+
+---
+
+## Redesign Planner (pick up here next session)
+
+Full analysis doc: https://claude.ai/artifact/XutpZUQVPas9CjRfY6fhVM
+Prototype (V6): https://claude.ai/artifact/G3QTq83trsMnz2pHhSriXb
+
+### What the redesign adds
+- New bottom tabs: My Umrah / Ibadah / Navigate / Plan / More
+- Tasbih counter screen (TasbihScreen.tsx — use react-native-svg arc, no CSS)
+- Journey Diary (local AsyncStorage, no backend needed)
+- Home screen hero: ritual progress timeline + crowd density cards
+- Navigate tab: Makkah ritual map + Madinah Ziyarat grid
+- Plan hub: links to existing Packing/Vaccine + new Schedule + Preparations screens
+
+### What must NOT change
+- Prayer times engine: adhan + UmmAlQura + LocationContext + prayerNotifications.ts
+- All API hooks in src/api/hooks.ts (useDuaStages, useAzkaar, useGuideRituals, useGuideSteps, etc.)
+- Quran + Hadith external API clients (src/api/quran.ts, src/api/hadith.ts)
+- usePersistentState hook and all existing AsyncStorage keys (prefix: umrah-companion:)
+- i18n system (LanguageContext, strings.ts) — all new strings must be added to strings.ts
+- RTL layout via DirectionContext
+- Theme tokens in src/theme/tokens.ts — use existing colors, do NOT remap palette
+
+### Phased plan
+
+**Phase 1 — Web blank screen**
+- Fix was rolled back to an earlier working git commit — web is currently working
+- If blank screen reappears during redesign, swap `createNativeStackNavigator` → `createStackNavigator` (needs `@react-navigation/stack` added to package.json)
+- Don't touch this unless the issue actually shows up
+
+**Phase 2 — Restructure bottom nav + create hub screens**
+- Update types.ts: change TabSection to 'home' | 'ibadah' | 'navigate' | 'plan' | 'more'
+- Update BottomTabBar.tsx: new labels (My Umrah / Ibadah / Navigate / Plan / More), new icons
+- Create src/screens/IbadahHubScreen.tsx: links to existing Duas, Azkaar, Quran, Hadith + new Tasbih
+- Create src/screens/NavigateScreen.tsx: Makkah ritual map (useGuideRituals) + Madinah Ziyarat grid
+- Create src/screens/PlanHubScreen.tsx: links to existing Packing/Vaccine + new Schedule/Prep screens
+- Move Packages/News/Gallery/Ebooks links into MoreScreen.tsx
+
+**Phase 3 — New screens (additive only, nothing deleted)**
+- TasbihScreen.tsx: SVG arc ring, usePersistentState('tasbih-count', 0)
+- JournalScreen.tsx: diary entries, usePersistentState('journal-entries', [])
+- ZiyaratScreen.tsx: Madinah sites grid (static data, 8 key sites)
+- ScheduleScreen.tsx: day-by-day itinerary (static initially)
+- PreparationsScreen.tsx: ihram/miqat guidance (static content)
+- Register all new screens in RootNavigator.tsx and types.ts
+
+**Phase 4 — Home screen refresh**
+- Replace quick-launch grid with hero card (location + next prayer + ritual progress)
+- Add ritual progress mini-timeline (useGuideSteps + 'guide-steps-done' — already in HomeScreen)
+- Add Journey Diary strip
+- Add Hadith of the Day card (existing Hadith API)
+- Use PlayfairDisplay_700Bold for display headings (same feel as Cormorant Garamond in prototype)
+
+### Key technical notes
+- Tasbih ring: use react-native-svg <Circle strokeDashoffset> — CSS conic-gradient doesn't exist on native
+- Color palette: keep deep emerald + gold (existing tokens). Use colors.accentDeep for dark hero backgrounds
+- Font: PlayfairDisplay_700Bold already loaded — no need to add Cormorant Garamond
+- Crowd density: no real-time API exists; use static placeholder cards with disclaimer
+- After tab rename: show one-time banner (AsyncStorage key: 'tab-redesign-seen') explaining changes
+- CRITICAL: do NOT push to git until live validation at companion.alzakwaantours.com confirmed
