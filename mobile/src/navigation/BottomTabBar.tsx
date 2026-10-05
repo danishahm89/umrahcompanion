@@ -10,11 +10,11 @@ import type { TabSection } from './types';
 import { navigate } from './navigationRef';
 
 const TABS: { key: TabSection; labelKey: string; icon: string }[] = [
-  { key: 'home',     labelKey: 'navHome',    icon: 'navHome'     },
-  { key: 'guide',    labelKey: 'navGuide',   icon: 'navGuide'    },
-  { key: 'packages', labelKey: 'packages',   icon: 'packages' },
-  { key: 'news',     labelKey: 'navNews',    icon: 'navNews'     },
-  { key: 'more',     labelKey: 'navMore',    icon: 'navMore'     },
+  { key: 'home',     screen: 'Home',     labelKey: 'navHome',    icon: 'navHome'     },
+  { key: 'guide',    screen: 'GuideHub', labelKey: 'navGuide',   icon: 'navGuide'    },
+  { key: 'packages', screen: 'Packages', labelKey: 'packages',   icon: 'packages' },
+  { key: 'news',     screen: 'News',     labelKey: 'navNews',    icon: 'navNews'     },
+  { key: 'more',     screen: 'More',     labelKey: 'navMore',    icon: 'navMore'     },
 ];
 
 export function BottomTabBar({ active }: { active: TabSection }) {
@@ -87,7 +87,7 @@ export function BottomTabBar({ active }: { active: TabSection }) {
                   return next;
                 });
               }}
-              onPress={() => (navigate as any)(tab.key)}
+              onPress={() => (navigate as any)(TAB_SCREEN_MAP[tab.key] ?? tab.key)}
               style={{ flex: 1, alignItems: 'center', paddingVertical: 10, paddingTop: 14 }}
             >
               <Icon

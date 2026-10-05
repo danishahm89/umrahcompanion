@@ -54,3 +54,16 @@ export function sectionForRoute(routeName: string | undefined): TabSection {
   if (MORE_SCREENS.includes(routeName as keyof RootStackParamList)) return 'more';
   return null; // Gallery: no tab highlighted, matching the design.
 }
+
+/**
+ * Single source of truth: maps each TabSection key to its root route name.
+ * TypeScript enforces that values are valid keyof RootStackParamList, so a
+ * renamed route becomes a compile error here — preventing silent mismatches.
+ */
+export const TAB_SCREEN_MAP: Record<Exclude<TabSection, null>, keyof RootStackParamList> = {
+  home:     'Home',
+  guide:    'GuideHub',
+  packages: 'Packages',
+  news:     'News',
+  more:     'More',
+};
