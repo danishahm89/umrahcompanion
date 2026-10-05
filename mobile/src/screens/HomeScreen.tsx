@@ -23,18 +23,18 @@ import type { RootStackParamList } from '../navigation/types';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
 
-const QUICK: { icon: IconName; labelKey: 'firsttime' | 'duas' | 'azkaar' | 'quran' | 'hadith' | 'packing' | 'vaccine' | 'nusuk' | 'packages' | 'nearbyMosques' | 'qibla'; target: keyof RootStackParamList }[] = [
-  { icon: 'firstTime', labelKey: 'firsttime', target: 'FirstTime' },
-  { icon: 'duas', labelKey: 'duas', target: 'Duas' },
-  { icon: 'duas', labelKey: 'azkaar', target: 'Azkaar' },
-  { icon: 'book', labelKey: 'quran', target: 'Quran' },
-  { icon: 'contact', labelKey: 'hadith', target: 'Hadith' },
-  { icon: 'packing', labelKey: 'packing', target: 'Packing' },
-  { icon: 'vaccine', labelKey: 'vaccine', target: 'Vaccine' },
-  { icon: 'nusuk', labelKey: 'nusuk', target: 'Nusuk' },
-  { icon: 'packages', labelKey: 'packages', target: 'Packages' },
-  { icon: 'mosque', labelKey: 'nearbyMosques', target: 'NearbyMosques' },
-  { icon: 'compass', labelKey: 'qibla', target: 'Qibla' },
+const QUICK: { icon: IconName; labelKey: 'firsttime' | 'duas' | 'azkaar' | 'quran' | 'hadith' | 'packing' | 'vaccine' | 'nusuk' | 'packages' | 'nearbyMosques' | 'qibla'; target: keyof RootStackParamList; grad: [string, string] }[] = [
+  { icon: 'firstTime', labelKey: 'firsttime', target: 'FirstTime', grad: ['#6C63FF', '#A78BFA'] },
+  { icon: 'duas', labelKey: 'duas', target: 'Duas', grad: ['#059669', '#34D399'] },
+  { icon: 'duas', labelKey: 'azkaar', target: 'Azkaar', grad: ['#0891B2', '#67E8F9'] },
+  { icon: 'book', labelKey: 'quran', target: 'Quran', grad: ['#D97706', '#FCD34D'] },
+  { icon: 'contact', labelKey: 'hadith', target: 'Hadith', grad: ['#7C3AED', '#C4B5FD'] },
+  { icon: 'packing', labelKey: 'packing', target: 'Packing', grad: ['#DC2626', '#FCA5A5'] },
+  { icon: 'vaccine', labelKey: 'vaccine', target: 'Vaccine', grad: ['#0D9488', '#5EEAD4'] },
+  { icon: 'nusuk', labelKey: 'nusuk', target: 'Nusuk', grad: ['#B45309', '#FDE68A'] },
+  { icon: 'packages', labelKey: 'packages', target: 'Packages', grad: ['#1D4ED8', '#93C5FD'] },
+  { icon: 'mosque', labelKey: 'nearbyMosques', target: 'NearbyMosques', grad: ['#065F46', '#6EE7B7'] },
+  { icon: 'compass', labelKey: 'qibla', target: 'Qibla', grad: ['#9D174D', '#F9A8D4'] },
 ];
 
 export function HomeScreen() {
@@ -81,6 +81,7 @@ export function HomeScreen() {
 
   // A4: Quick-grid staggered fade-in
   const quickAnims = useRef(QUICK.map(() => new Animated.Value(0))).current;
+  const quickScaleAnims = useRef(QUICK.map(() => new Animated.Value(1))).current;
   useEffect(() => {
     const animations = quickAnims.map((anim, i) =>
       Animated.timing(anim, {
@@ -216,34 +217,50 @@ export function HomeScreen() {
         {/* A4: Quick grid with staggered fade-in + A18: glow on press */}
         <Animated.View style={animSection(3)}>
           <Card padded={false}>
-            <AppText weight="display" size={16} color={colors.text} style={{ padding: 16, paddingBottom: 8 }}>{t('quick')}</AppText>
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+            <AppText weight="display" size={16} color={colors.text} style={{ padding: 16, paddingBottom: 12 }}>{t('quick')}</AppText>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: 8, gap: 10 }}>
               {QUICK.map((q, idx) => (
-                <Animated.View key={q.target} style={{ width: '50%', opacity: quickAnims[idx] }}>
+                <Animated.View
+                  key={q.target}
+                  style={{
+                    width: '46%',
+                    flex: 1,
+                    minWidth: '46%',
+                    opacity: quickAnims[idx],
+                    transform: [{ scale: quickScaleAnims[idx] }],
+                  }}
+                >
                   <Pressable
                     onPress={() => navigation.navigate(q.target as never)}
-                    onPressIn={() => setActiveQuick(q.target)}
-                    onPressOut={() => setActiveQuick(null)}
-                    style={{
-                      padding: 14,
-                      alignItems: 'flex-start',
-                      gap: 10,
-                      backgroundColor: activeQuick === q.target ? colors.accent100 : 'transparent',
-                      borderRadius: radius.md,
-                      margin: 2,
+                    onPressIn={() => {
+                      setActiveQuick(q.target);
+                      Animated.spring(quickScaleAnims[idx], { toValue: 0.93, useNativeDriver: true, speed: 30 }).start();
                     }}
+                    onPressOut={() => {
+                      setActiveQuick(null);
+                      Animated.spring(quickScaleAnims[idx], { toValue: 1, useNativeDriver: true, speed: 20 }).start();
+                    }}
+                    style={{ borderRadius: 16, overflow: 'hidden' }}
                   >
-                    {/* A18: icon background tint + border glow on active */}
-                    <View style={{
-                      padding: 8,
-                      borderRadius: radius.md,
-                      backgroundColor: activeQuick === q.target ? colors.accent + '25' : colors.neutral100,
-                      borderWidth: activeQuick === q.target ? 1.5 : 0,
-                      borderColor: activeQuick === q.target ? colors.accent : 'transparent',
-                    }}>
-                      <IconBadge name={q.icon} />
-                    </View>
-                    <AppText weight="semibold" size={13.5} color={colors.text}>{t(q.labelKey)}</AppText>
+                    <LinearGradient
+                      colors={q.grad}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 1 }}
+                      style={{
+                        padding: 16,
+                        borderRadius: 16,
+                        minHeight: 110,
+                        justifyContent: 'space-between',
+                        shadowColor: q.grad[0],
+                        shadowOffset: { width: 0, height: 4 },
+                        shadowOpacity: 0.35,
+                        shadowRadius: 8,
+                        elevation: 6,
+                      }}
+                    >
+                      <IconBadge name={q.icon} size={44} iconSize={22} tone="accent" />
+                      <AppText weight="bold" size={13} color="#fff" numberOfLines={2}>{t(q.labelKey)}</AppText>
+                    </LinearGradient>
                   </Pressable>
                 </Animated.View>
               ))}
